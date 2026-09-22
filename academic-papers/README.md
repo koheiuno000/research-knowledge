@@ -95,19 +95,30 @@ Literature synthesis / manuscript
 ```
 PDF
   ↓
-Read original paper
-  ↓
-Create structured Markdown summary
+Structured paper summary (academic-papers/<category>/*.md)
   ↓
 Evidence Mapping
   ↓
-Assign primary category
+Primary category (folder)
   ↓
-Create / verify BibTeX entry
+BibTeX entry (literature-review/references.bib)
   ↓
 Researcher verification
   ↓
-Later synthesis
+Generate integrated literature review
+  ↓
+Commit
+```
+
+1. **Individual paper summaries** under `academic-papers/` are the **substantive source of truth** (findings, Evidence Mapping, interpretation).
+2. **`literature-review/references.bib`** is the **bibliographic source of truth**.
+3. **`literature-review/literature_review.md`** is a **generated, derived** evidence dashboard—do **not** manually maintain paper-level findings there.
+4. **`literature-review/literature_synthesis.md`** is a separate, **researcher-written** narrative synthesis (not generated).
+
+Rebuild the integrated page after updating summaries or adding papers:
+
+```bash
+python3 scripts/build_literature_review.py
 ```
 
 ## Workflow
