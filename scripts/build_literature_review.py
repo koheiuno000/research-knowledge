@@ -85,7 +85,9 @@ class PaperSummary:
     category_label: str
     citation_key: str = "Not recorded"
     full_citation: str = "Not recorded"
-    country_context: str = "Not recorded"
+    country: str = "Not recorded"
+    region: str = "Not recorded"
+    setting: str = "Not recorded"
     paper_type: str = "Not recorded"
     primary_category: str = "Not recorded"
     research_question: str = "Not recorded"
@@ -333,13 +335,23 @@ def parse_summary(path: Path) -> PaperSummary:
     if fc:
         paper.full_citation = fc
 
-    ctx = extract_bold_field(text, "Country / Context") or extract_bold_field(
-        text, "Country / context"
-    )
-    if ctx:
-        paper.country_context = ctx
+    country = extract_bold_field(text, "Country")
+    if country:
+        paper.country = country
     else:
-        paper.warnings.append("Country / Context")
+        paper.warnings.append("Country")
+
+    region = extract_bold_field(text, "Region")
+    if region:
+        paper.region = region
+    else:
+        paper.warnings.append("Region")
+
+    setting = extract_bold_field(text, "Setting")
+    if setting:
+        paper.setting = setting
+    else:
+        paper.warnings.append("Setting")
 
     pc = extract_bold_field(text, "Primary category")
     if pc:
@@ -496,14 +508,17 @@ def build_markdown(papers: list[PaperSummary]) -> str:
     lines.append("## 2. Evidence Base at a Glance")
     lines.append("")
     lines.append(
-        "| Citation | Context | Paper Type | Primary Category | Main Contribution |"
+        "| Citation | Country | Region | Setting | Paper Type | Primary Category | Main Contribution |"
     )
-    lines.append("|----------|---------|------------|------------------|-------------------|")
+    lines.append(
+        "|----------|---------|--------|---------|------------|------------------|-------------------|"
+    )
     for p in sorted(papers, key=lambda x: (x.category_folder, x.citation_key)):
         cite = f"`{p.citation_key}`" if p.citation_key != "Not recorded" else p.author_label
         lines.append(
-            f"| {cite} | {truncate(p.country_context, 80)} | {truncate(p.paper_type, 50)} "
-            f"| `{p.category_folder}` | {truncate(p.core_contribution, 100)} |"
+            f"| {cite} | {truncate(p.country, 40)} | {truncate(p.region, 28)} "
+            f"| {truncate(p.setting, 60)} | {truncate(p.paper_type, 40)} "
+            f"| `{p.category_folder}` | {truncate(p.core_contribution, 80)} |"
         )
     lines.append("")
     lines.append("---")
@@ -550,7 +565,11 @@ def build_markdown(papers: list[PaperSummary]) -> str:
             lines.append("")
             lines.append(f"**Citation key:** `{p.citation_key}`")
             lines.append("")
-            lines.append(f"**Context:** {p.country_context}")
+            lines.append(f"**Country:** {p.country}")
+            lines.append("")
+            lines.append(f"**Region:** {p.region}")
+            lines.append("")
+            lines.append(f"**Setting:** {p.setting}")
             lines.append("")
             lines.append(f"**Paper type:** {p.paper_type}")
             lines.append("")

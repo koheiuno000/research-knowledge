@@ -32,7 +32,11 @@
 
 **Journal / Series:** *The World Bank Research Observer*, vol. 37, no. 1 (2022).
 
-**Country / Context:** Synthesis focused on **low- and middle-income countries**; at-scale sample from **14 countries** (e.g., Burkina Faso, Cambodia, El Salvador, The Gambia, Guinea, India [Bihar], Jordan, Kazakhstan, Kyrgyz Republic, Mauritania, Mexico, Moldova, Niger, Russian Federation—PDF pp. 15–16). Evaluated-program search: LMIC impact evaluations with student test scores in math, language, or science (PDF pp. 8–9).
+**Country:** Multi-country
+
+**Region:** Multi-region
+
+**Setting:** Cross-study synthesis focused on **low- and middle-income countries**; **33** rigorously evaluated LMIC PD programs with student test-score impacts in math, language, or science (PDF pp. 8–9); **139** government-funded at-scale programs coded with ITTSI/BITTSI from **14 countries** (e.g., Burkina Faso, Cambodia, El Salvador, The Gambia, Guinea, India [Bihar], Jordan, Kazakhstan, Kyrgyz Republic, Mauritania, Mexico, Moldova, Niger, Russian Federation—PDF pp. 15–16).
 
 All bibliographic information must be verified against the original paper or another explicitly verified bibliographic source. Do not infer missing metadata.
 

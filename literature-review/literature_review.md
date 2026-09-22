@@ -4,17 +4,18 @@
 
 > **Sources of truth:** substantive content → paper summaries; bibliographic metadata → `literature-review/references.bib`.
 
-*Generated: 2026-09-22 10:25 UTC*
+*Generated: 2026-09-22 10:30 UTC*
 
 ---
 
 ## 1. Overview
 
-- **Total reviewed papers:** 2
+- **Total reviewed papers:** 3
 - **Primary categories represented:** 2
-- **Paper types represented:** 2
+- **Paper types represented:** 3
   - Cross-study synthesis + descriptive survey + exploratory correlational analysis.
   - Discussion paper (not peer-reviewed; assessed by the JICA Ogata Research Institute review committee, PDF p. 2).
+  - Large-scale cluster randomized evaluation
 
 Conceptual architecture (not all papers estimate every arrow):
 
@@ -34,10 +35,11 @@ Some papers evaluate a **specific PD intervention** (folder 07); others **review
 
 ## 2. Evidence Base at a Glance
 
-| Citation | Context | Paper Type | Primary Category | Main Contribution |
-|----------|---------|------------|------------------|-------------------|
-| `kozuka2025` | Ethiopia (Oromia Region); government-implemented SMASE-style in-service PD for … | Discussion paper (not peer-reviewed; assessed by … | `07_teacher-pd-interventions` | Randomized evaluation in Ethiopia shows government **SMASE-style PD** substantially improved **obse… |
-| `popova2022` | Synthesis focused on **low- and middle-income countries**; at-scale sample from… | Cross-study synthesis + descriptive survey + expl… | `08_reviews-and-synthesis` | **ITTSI** + **cross-study associational analysis** (33 LMIC PD evaluations) and **descriptive compa… |
+| Citation | Country | Region | Setting | Paper Type | Primary Category | Main Contribution |
+|----------|---------|--------|---------|------------|------------------|-------------------|
+| `kozuka2025` | Ethiopia | Sub-Saharan Africa | Oromia Region; government-implemented SMASE-style in-servic… | Discussion paper (not peer-reviewed; as… | `07_teacher-pd-interventions` | Randomized evaluation in Ethiopia shows government **SMASE-style PD** substanti… |
+| `loyalka2019` | China | East Asia and Pacific | Randomized evaluation of the government **National Teacher … | Large-scale cluster randomized evaluati… | `07_teacher-pd-interventions` | **Cluster RCT** of China’s **National Teacher Training Program** shows **precis… |
+| `popova2022` | Multi-country | Multi-region | Cross-study synthesis focused on **low- and middle-income c… | Cross-study synthesis + descriptive sur… | `08_reviews-and-synthesis` | **ITTSI** + **cross-study associational analysis** (33 LMIC PD evaluations) and… |
 
 ---
 
@@ -46,6 +48,7 @@ Some papers evaluate a **specific PD intervention** (folder 07); others **review
 | Paper | PD → Teacher Knowledge | PD → Teaching Practice | PD → Student Achievement | Teacher Knowledge → Teaching Practice | Teaching Practice → Student Achievement | Teacher Knowledge → Student Achievement | Knowledge → Practice → Achievement |
 |-------|---|---|---|---|---|---|---|
 | kozuka2025 | RCT | RCT | RCT | — | — | — | — |
+| loyalka2019 | RCT | RCT | RCT | — | — | — | — |
 | popova2022 | — | — | Cross-study synthesis | — | — | — | — |
 
 **Legend:** RCT = randomized trial (or ITT from RCT); QE = quasi-experimental; Association = associational/correlational; Cross-study synthesis = synthesis across multiple studies/programs (not a new single-program causal estimate); Conceptual = conceptual discussion only; — = not examined in that paper.
@@ -62,7 +65,11 @@ Some papers evaluate a **specific PD intervention** (folder 07); others **review
 
 **Citation key:** `kozuka2025`
 
-**Context:** Ethiopia (Oromia Region); government-implemented SMASE-style in-service PD for grade 7–8 mathematics and physics teachers; randomized school-level experiment (2014–2016).
+**Country:** Ethiopia
+
+**Region:** Sub-Saharan Africa
+
+**Setting:** Oromia Region; government-implemented SMASE-style in-service PD for grade 7–8 mathematics and physics teachers; school-level randomized experiment (2014–2016); 335 schools planned with randomization into control, Regular PD, or PD-plus-Workbook (PDF pp. 8–9).
 
 **Paper type:** Discussion paper (not peer-reviewed; assessed by the JICA Ogata Research Institute review committee, PDF p. 2).
 
@@ -94,13 +101,55 @@ Randomized evaluation in Ethiopia shows government **SMASE-style PD** substantia
 
 **Source summary:** `academic-papers/07_teacher-pd-interventions/kozuka_2025_ethiopia-teacher-pd.md`
 
+#### Loyalka et al. (2019) — Does Teacher Training Actually Work? (China NTTP)
+
+**Citation key:** `loyalka2019`
+
+**Country:** China
+
+**Region:** East Asia and Pacific
+
+**Setting:** Randomized evaluation of the government **National Teacher Training Program (NTTP)**; **300 rural junior high schools** in **94 counties** in **one large province** (province name not stated in main text, PDF p. 7); grades 7–9 **mathematics** teachers; academic year **2015–2016**.
+
+**Paper type:** Large-scale cluster randomized evaluation
+
+**Primary role:** Individual PD intervention study
+
+**Main contribution**
+
+**Cluster RCT** of China’s **National Teacher Training Program** shows **precise null ITTs** on **student math achievement**, **teacher math knowledge for teaching**, and **student-reported teaching behaviors**, with qualitative evidence that PD was **too theoretical** and **passively delivered**.
+
+**Key findings**
+
+- **Cluster RCT** of China’s **National Teacher Training Program** shows **precise null ITTs** on **student math achievement**, **teacher math knowledge for teaching**, and **student-reported teaching behaviors**, with qualitative evidence that PD was **too theoretical** and **passively delivered**.
+
+**Evidence Mapping**
+
+- **PD → Teacher Knowledge:** RCT
+- **PD → Teaching Practice:** RCT
+- **PD → Student Achievement:** RCT
+- **Teacher Knowledge → Teaching Practice:** Not examined
+- **Teaching Practice → Student Achievement:** Not examined
+- **Teacher Knowledge → Student Achievement:** Not examined
+- **Knowledge → Practice → Achievement:** Not examined
+
+**Relevance to SB-CPD**
+
+- Not recorded
+
+**Source summary:** `academic-papers/07_teacher-pd-interventions/loyalka2019_china-national-teacher-training.md`
+
 ### 08 — Reviews and Synthesis
 
 #### Popova et al. (2022) — Teacher Professional Development around the World: The Gap between Evidence and Practice
 
 **Citation key:** `popova2022`
 
-**Context:** Synthesis focused on **low- and middle-income countries**; at-scale sample from **14 countries** (e.g., Burkina Faso, Cambodia, El Salvador, The Gambia, Guinea, India [Bihar], Jordan, Kazakhstan, Kyrgyz Republic, Mauritania, Mexico, Moldova, Niger, Russian Federation—PDF pp. 15–16). Evaluated-program search: LMIC impact evaluations with student test scores in math, language, or science (PDF pp. 8–9).
+**Country:** Multi-country
+
+**Region:** Multi-region
+
+**Setting:** Cross-study synthesis focused on **low- and middle-income countries**; **33** rigorously evaluated LMIC PD programs with student test-score impacts in math, language, or science (PDF pp. 8–9); **139** government-funded at-scale programs coded with ITTSI/BITTSI from **14 countries** (e.g., Burkina Faso, Cambodia, El Salvador, The Gambia, Guinea, India [Bihar], Jordan, Kazakhstan, Kyrgyz Republic, Mauritania, Mexico, Moldova, Niger, Russian Federation—PDF pp. 15–16).
 
 **Paper type:** Cross-study synthesis + descriptive survey + exploratory correlational analysis.
 
@@ -140,14 +189,17 @@ Randomized evaluation in Ethiopia shows government **SMASE-style PD** substantia
 ### PD → Teacher Knowledge
 
 - **`kozuka2025`** (RCT): Teacher **content knowledge** tests; midline/endline only (Table 3, PDF pp. 18–19).
+- **`loyalka2019`** (RCT): **Teacher math knowledge** test (Michigan MKT-based instrument); **null** average effects at endline (Table 5, PDF p. 18).
 
 ### PD → Teaching Practice
 
 - **`kozuka2025`** (RCT): 14-criterion lesson observations; mean practice index (Table 2, PDF pp. 15–17).
+- **`loyalka2019`** (RCT): **Student-reported** teacher practice, care, management, communication; **null** average effects (Table 4, PDF pp. 16–17).
 
 ### PD → Student Achievement
 
 - **`kozuka2025`** (RCT): Curriculum-aligned student tests. **Regular PD:** no significant endline gains (Table 5). **PD-plus-Workbook:** significant endline physics (+0.250 SD, main spec); math n.s.; workbook arm includes su…
+- **`loyalka2019`** (RCT): **Student math achievement** tests; **null** average effects at endline (Table 2, PDF pp. 14–15).
 - **`popova2022`** (Cross-study synthesis): Cross-program associations across evaluated PD studies; not causal estimates of PD features. **33 evaluated programs**: standardized **student test score** impacts as outcome; bivariate regressions of PD characteristics on those impacts (Tabl…
 
 ### Teacher Knowledge → Teaching Practice
@@ -178,6 +230,7 @@ Randomized evaluation in Ethiopia shows government **SMASE-style PD** substantia
 
 Full verified bibliographic metadata is maintained in `literature-review/references.bib`.
 
+- `loyalka2019` — Loyalka (2019)
 - `popova2022` — Popova (2022)
 - `kozuka2025` — Kozuka (2025)
 

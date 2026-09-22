@@ -18,9 +18,13 @@
 
 **Journal / Series:**
 
-**Country / Context:**
+**Country:**
 
-All bibliographic information must be verified against the original paper or another explicitly verified bibliographic source. Do not infer missing metadata.
+**Region:**
+
+**Setting:**
+
+All bibliographic information must be verified against the original paper or another explicitly verified bibliographic source. Do not infer missing metadata. Use broad **Region** labels only when unambiguous (e.g., Sub-Saharan Africa, East Asia and Pacific). For multi-country reviews: **Country:** Multi-country; **Region:** Multi-region; describe coverage under **Setting**.
 
 ## 2. Research Question
 Briefly state the main research question(s).
@@ -54,11 +58,11 @@ Indicate which constructs or relationships the paper is **primarily about** (for
 - Other:
 
 ## 5. Data and Sample
-- Country:
+- Geographic metadata: see **Country**, **Region**, and **Setting** in §1 Citation.
 - Education level:
 - Subject:
 - Sample:
-- Study setting:
+- Study design / sample frame: (e.g., randomization unit, waves—if not already in **Setting**)
 
 ## 6. Methods
 Brief description of:

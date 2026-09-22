@@ -34,7 +34,11 @@
 
 **Journal / Series:** JICA Ogata Research Institute Discussion Paper, No. 43 (October 2025, PDF pp. 1–2).
 
-**Country / Context:** Ethiopia (Oromia Region); government-implemented SMASE-style in-service PD for grade 7–8 mathematics and physics teachers; randomized school-level experiment (2014–2016).
+**Country:** Ethiopia
+
+**Region:** Sub-Saharan Africa
+
+**Setting:** Oromia Region; government-implemented SMASE-style in-service PD for grade 7–8 mathematics and physics teachers; school-level randomized experiment (2014–2016); 335 schools planned with randomization into control, Regular PD, or PD-plus-Workbook (PDF pp. 8–9).
 
 ---
 
