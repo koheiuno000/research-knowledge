@@ -16,13 +16,11 @@ from .dashboard_config import (
     all_research_areas,
 )
 from .detail_sections import build_expandable_sections, parse_doi_url
-from .engine import MATRIX_RELATIONSHIPS, PaperSummary, discover_summaries, parse_summary
+from .engine import PaperSummary, discover_summaries, parse_summary
+from .metrics import relationships_with_evidence
 from .hub_root import ROOT_HUB_STYLES, build_root_body
 from .hub_visuals import AREA_ACCENTS, area_icon_svg
 from .metrics import (
-    count_intervention_studies,
-    count_rct_causal_papers,
-    count_reviews_syntheses,
     evidence_cell_label,
     filter_values,
     unique_countries,
@@ -30,14 +28,24 @@ from .metrics import (
 
 HUB_STYLES = """
 :root {
-  --bg: #f4f3f0;
-  --bg-hero: #faf9f7;
-  --surface: #ffffff;
-  --text: #1a2420;
-  --muted: #5c6560;
+  --forest: #254735;
+  --forest-dark: #193729;
+  --sage: #A8B99B;
+  --sage-light: #DCE5D5;
+  --earth: #795A42;
+  --sand: #E7D8BE;
+  --ivory: #F7F4EB;
+  --paper: #FFFCF6;
+  --stone: #E9E5DA;
+  --ink: #26342B;
+  --bg: #F7F4EB;
+  --bg-hero: #FFFCF6;
+  --surface: #FFFCF6;
+  --text: #26342B;
+  --muted: #687368;
   --muted-light: #8a928c;
-  --line: rgba(30, 61, 50, 0.08);
-  --accent: #2a5245;
+  --line: rgba(37, 71, 53, 0.1);
+  --accent: #254735;
   --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-serif: ui-serif, "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
   --radius: 14px;
@@ -376,6 +384,8 @@ def _badge_class(label: str) -> str:
         return "badge-rct"
     if s == "qe" or "quasi" in s:
         return "badge-qe"
+    if "cross-study assoc" in s:
+        return "badge-assoc"
     if "association" in s or "associational" in s:
         return "badge-assoc"
     if "synthesis" in s or "cross-study" in s:
@@ -419,6 +429,7 @@ def _paper_payload(p: PaperSummary) -> dict:
         "region": p.region,
         "setting": p.setting,
         "paper_type": p.paper_type,
+        "journal_series": p.journal_series,
         "primary_category": p.primary_category,
         "category_folder": p.category_folder,
         "category_label": p.category_label,
@@ -427,6 +438,7 @@ def _paper_payload(p: PaperSummary) -> dict:
         "key_findings": p.key_findings,
         "relevance": p.relevance_sb_cpd,
         "evidence_mapping": em,
+        "relationships_with_evidence": relationships_with_evidence(p),
         "effect_summary": [
             {
                 "relationship": r.relationship,

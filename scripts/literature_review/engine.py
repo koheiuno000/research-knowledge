@@ -43,16 +43,6 @@ RELATIONSHIP_ALIASES = {
     "teacher knowledge → teaching practice → student achievement": "Knowledge → Practice → Achievement",
 }
 
-EVIDENCE_BY_RELATIONSHIP_SECTIONS = [
-    ("PD → Teacher Knowledge", "### PD → Teacher Knowledge"),
-    ("PD → Teaching Practice", "### PD → Teaching Practice"),
-    ("PD → Student Achievement", "### PD → Student Achievement"),
-    ("Teacher Knowledge → Teaching Practice", "### Teacher Knowledge → Teaching Practice"),
-    ("Teaching Practice → Student Achievement", "### Teaching Practice → Student Achievement"),
-    ("Teacher Knowledge → Student Achievement", "### Teacher Knowledge → Student Achievement"),
-    ("Knowledge → Practice → Achievement", "### Knowledge → Practice → Achievement"),
-]
-
 CATEGORY_TITLES = {
     "01_teacher-knowledge": "01 — Teacher Knowledge",
     "02_teaching-practice": "02 — Teaching Practice",
@@ -88,6 +78,7 @@ class PaperSummary:
     region: str = "Not recorded"
     setting: str = "Not recorded"
     paper_type: str = "Not recorded"
+    journal_series: str = "Not recorded"
     primary_category: str = "Not recorded"
     research_question: str = "Not recorded"
     evidence_sample: str = "Not recorded"
@@ -358,6 +349,12 @@ def parse_summary(path: Path, area: ResearchAreaConfig) -> PaperSummary:
     if pc:
         paper.primary_category = pc
 
+    js = extract_bold_field(text, "Journal / Series")
+    if js:
+        paper.journal_series = js
+    else:
+        paper.warnings.append("Journal / Series")
+
     pt = parse_paper_type(text)
     if pt:
         paper.paper_type = pt
@@ -461,6 +458,36 @@ def truncate(s: str, n: int = 120) -> str:
     return s if len(s) <= n else s[: n - 1] + "…"
 
 
+def _relationship_section_note(paper: PaperSummary, relationship: str, badge: str) -> str:
+    """Narrative line for §5 from Evidence Mapping and/or Effect Summary (no new findings)."""
+    mapping_row = next(
+        (r for r in paper.evidence_rows if r.relationship == relationship),
+        None,
+    )
+    if mapping_row and mapping_row.examined.strip().lower() in ("yes", "y"):
+        note = truncate(mapping_row.notes, 200) if mapping_row.notes else paper.core_contribution
+        if paper.category_folder == "08_reviews-and-synthesis" and badge == "Cross-study synthesis":
+            note = (
+                "Cross-program associations across evaluated PD studies; "
+                "not causal estimates of PD features. " + truncate(mapping_row.notes or "", 150)
+            )
+        return note
+
+    effect_rows = [r for r in paper.effect_rows if r.relationship == relationship]
+    if effect_rows:
+        n = len(effect_rows)
+        parts = [
+            f"Effect Summary: {n} row(s) with Identification cross-study association; "
+            "associations across evaluated programs, not causal ITT effects in a single trial."
+        ]
+        first_note = (effect_rows[0].notes or "").strip()
+        if first_note:
+            parts.append(truncate(first_note, 180))
+        return " ".join(parts)
+
+    return paper.core_contribution or "Not recorded"
+
+
 def build_markdown(papers: list[PaperSummary], area: ResearchAreaConfig) -> str:
     generated = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     categories = sorted({p.category_folder for p in papers})
@@ -533,13 +560,17 @@ def build_markdown(papers: list[PaperSummary], area: ResearchAreaConfig) -> str:
     lines.append("")
     lines.append("## 3. Evidence Map")
     lines.append("")
-    header = "| Paper | " + " | ".join(MATRIX_RELATIONSHIPS) + " |"
-    sep = "|-------|" + "|".join(["---"] * len(MATRIX_RELATIONSHIPS)) + "|"
+    from .metrics import evidence_cell_label
+    from .relationship_taxonomy import approved_relationship_labels
+
+    rel_labels = approved_relationship_labels(area)
+    header = "| Paper | " + " | ".join(rel_labels) + " |"
+    sep = "|-------|" + "|".join(["---"] * len(rel_labels)) + "|"
     lines.append(header)
     lines.append(sep)
     for p in sorted(papers, key=lambda x: x.citation_key):
         label = p.citation_key if p.citation_key != "Not recorded" else p.author_label
-        cells = [matrix_cell(p, rel) for rel in MATRIX_RELATIONSHIPS]
+        cells = [evidence_cell_label(p, rel) for rel in rel_labels]
         lines.append("| " + label + " | " + " | ".join(cells) + " |")
     lines.append("")
     lines.append(
@@ -619,24 +650,21 @@ def build_markdown(papers: list[PaperSummary], area: ResearchAreaConfig) -> str:
     lines.append("## 5. Evidence by Relationship")
     lines.append("")
 
-    for rel, heading in EVIDENCE_BY_RELATIONSHIP_SECTIONS:
-        lines.append(heading)
+    from .metrics import evidence_cell_label, paper_has_relationship_examined
+    from .relationship_taxonomy import approved_relationship_labels
+
+    for rel in approved_relationship_labels(area):
+        lines.append(f"### {rel}")
         lines.append("")
-        contributors = [p for p in papers if examined_yes(p, rel)]
+        contributors = [p for p in papers if paper_has_relationship_examined(p, rel)]
         if not contributors:
             lines.append("**No directly reviewed evidence yet.**")
             lines.append("")
             continue
-        for p in contributors:
-            row = next(r for r in p.evidence_rows if r.relationship == rel)
-            ab = abbrev_evidence_type(row.evidence_type, row.examined)
-            note = truncate(row.notes, 200) if row.notes else p.core_contribution
-            if p.category_folder == "08_reviews-and-synthesis" and ab == "Cross-study synthesis":
-                note = (
-                    "Cross-program associations across evaluated PD studies; "
-                    "not causal estimates of PD features. " + truncate(row.notes or "", 150)
-                )
-            lines.append(f"- **`{p.citation_key}`** ({ab}): {note}")
+        for p in sorted(contributors, key=lambda x: x.citation_key):
+            badge = evidence_cell_label(p, rel)
+            note = _relationship_section_note(p, rel, badge)
+            lines.append(f"- **`{p.citation_key}`** ({badge}): {note}")
         lines.append("")
 
     lines.append("---")

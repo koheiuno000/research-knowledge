@@ -9,10 +9,17 @@ from pathlib import Path
 from .config import sb_cpd_config
 from .dashboard_config import HubDisplayConfig, ResearchAreaDisplay
 from .engine import PaperSummary
-from .hub_visuals import area_icon_svg, hero_knowledge_portal_svg
+from .botanical_visuals import (
+    area_botanical_mini,
+    featured_module_botanical_svg,
+    footer_acorn_svg,
+    hero_botanical_svg,
+    hover_leaf_svg,
+    section_title_leaf_svg,
+)
 from .metrics import (
-    count_intervention_studies,
-    count_reviews_syntheses,
+    count_empirical_studies,
+    count_review_synthesis,
     unique_countries,
 )
 from .relationship_taxonomy import load_taxonomy
@@ -28,26 +35,41 @@ def _hub_meta(hub: HubDisplayConfig) -> str:
 
 ROOT_HUB_STYLES = """
 .hub-root {
-  --bg: #f7f4ee;
-  --bg-hero: #faf8f3;
-  --surface: #f0ebe3;
-  --surface-light: #faf8f3;
-  --text: #1a2420;
-  --muted: #5c6560;
+  --forest: #254735;
+  --forest-dark: #193729;
+  --sage: #A8B99B;
+  --sage-light: #DCE5D5;
+  --earth: #795A42;
+  --earth-dark: #59412F;
+  --sand: #E7D8BE;
+  --ivory: #F7F4EB;
+  --paper: #FFFCF6;
+  --stone: #E9E5DA;
+  --ink: #26342B;
+  --muted: #687368;
+  --white: #FFFFFF;
+  --bg: var(--ivory);
+  --bg-hero: var(--paper);
+  --surface: var(--stone);
+  --surface-light: var(--paper);
+  --text: var(--ink);
   --muted-light: #8a928c;
-  --line: rgba(30, 61, 50, 0.1);
-  --forest: #1e3d32;
-  --forest-deep: #162e26;
-  --sage: #6b7f6e;
-  --earth: #6b5344;
-  --sand: #e8e0d4;
-  --accent: #2a5245;
-  --accent-soft: rgba(42, 82, 69, 0.08);
-  --radius: 12px;
+  --line: rgba(37, 71, 53, 0.12);
+  --forest-deep: var(--forest-dark);
+  --accent: var(--forest);
+  --accent-soft: rgba(37, 71, 53, 0.08);
+  --radius: 10px;
   --shadow: none;
+  --km-ease: 0.22s ease;
 }
-.hub-root a { color: var(--accent); }
-.hub-root a:hover { color: var(--forest-deep); }
+.hub-root { background: var(--ivory); color: var(--ink); }
+.hub-root a { color: var(--forest); }
+@media (prefers-reduced-motion: reduce) {
+  .hub-root *, .hub-root *::before, .hub-root *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
 
 .hub-sitehead {
   max-width: 1120px;
@@ -127,12 +149,30 @@ ROOT_HUB_STYLES = """
   margin: 0;
   line-height: 1.55;
 }
-.hub-root .hero-root .tagline {
-  margin: 1.15rem 0 0;
-  font-size: 0.75rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--muted-light);
+.hero-cta {
+  display: inline-block;
+  margin-top: 1.35rem;
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--forest);
+  text-decoration: none;
+  padding: 0.35rem 0;
+  border-bottom: 1px solid var(--sage);
+  transition: color var(--km-ease), border-color var(--km-ease);
+}
+.hero-cta:hover,
+.hero-cta:focus-visible {
+  color: var(--forest-dark);
+  border-bottom-color: var(--forest);
+  outline: none;
+}
+.hero-cta:focus-visible { box-shadow: 0 2px 0 var(--sage-light); }
+.hero-visual {
+  background: var(--paper);
+  padding: 0.65rem;
+  border: 1px solid var(--line);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.75);
 }
 .hero-visual svg { width: 100%; height: auto; display: block; }
 
@@ -173,8 +213,12 @@ ROOT_HUB_STYLES = """
   font-weight: 500;
   letter-spacing: -0.02em;
   margin: 0 0 1.35rem;
-  color: var(--forest-deep);
+  color: var(--forest-dark);
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
 }
+.section-leaf { width: 1.25rem; height: auto; flex-shrink: 0; opacity: 0.85; }
 
 .knowledge-grid {
   display: grid;
@@ -196,50 +240,112 @@ ROOT_HUB_STYLES = """
   border: 1px solid var(--line);
   min-height: 7.5rem;
   transition:
-    background 0.2s ease,
-    color 0.2s ease,
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
+    background var(--km-ease),
+    color var(--km-ease),
+    border-color var(--km-ease),
+    box-shadow var(--km-ease);
+  position: relative;
+  overflow: hidden;
 }
-a.km:hover,
-a.km:focus-visible {
+a.km:not(.km--featured):hover,
+a.km:not(.km--featured):focus-visible {
   text-decoration: none;
   background: var(--forest);
   border-color: var(--forest);
-  color: #f7f4ee;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.32);
+  color: var(--ivory);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.34);
   outline: none;
 }
-a.km:focus-visible {
+a.km:not(.km--featured):focus-visible {
   outline: 2px solid var(--sage);
   outline-offset: 3px;
 }
 @media (hover: hover) {
-  a.km:hover {
-    background: var(--forest-deep);
-    border-color: var(--forest-deep);
+  a.km:not(.km--featured):hover {
+    background: var(--forest-dark);
+    border-color: var(--forest-dark);
   }
+}
+a.km--featured:hover,
+a.km--featured:focus-visible {
+  text-decoration: none;
+  background: var(--forest-dark);
+  border-color: var(--forest-dark);
+  color: var(--ivory);
+  box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.42);
+  outline: none;
+}
+a.km--featured:focus-visible {
+  outline: 2px solid var(--sage-light);
+  outline-offset: 3px;
 }
 .km--featured {
   grid-column: 1;
   grid-row: 1 / span 4;
-  padding: 2rem 1.75rem;
-  background: var(--sand);
-  border-color: rgba(30, 61, 50, 0.14);
+  padding: 2rem 1.65rem 1.75rem;
+  background: var(--forest);
+  border: 1px solid var(--forest-dark);
+  color: var(--ivory);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.28);
 }
 @media (max-width: 820px) {
   .km--featured { grid-row: auto; }
 }
-.km--secondary.km--quiet {
-  background: var(--bg-hero);
+.km--surface-sand { background: var(--sand); border-color: rgba(121, 90, 66, 0.15); }
+.km--surface-sage { background: var(--sage-light); border-color: rgba(37, 71, 53, 0.12); }
+.km--surface-stone { background: var(--stone); border-color: var(--line); }
+.km--surface-olive { background: #e2e8dc; border-color: rgba(37, 71, 53, 0.14); }
+.km-eyebrow {
+  margin: 0 0 0.5rem;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(247, 244, 235, 0.72);
 }
 .km--featured .km-title {
   font-family: var(--font-serif);
-  font-size: 1.35rem;
+  font-size: 1.4rem;
   font-weight: 500;
   letter-spacing: -0.02em;
   margin: 0 0 0.5rem;
-  color: var(--forest-deep);
+  color: var(--white);
+  line-height: 1.25;
+}
+.km-title-sub {
+  display: block;
+  font-size: 0.92em;
+  font-weight: 400;
+  opacity: 0.92;
+  margin-top: 0.15rem;
+}
+.km-botanical-wrap {
+  position: absolute;
+  right: 0.75rem;
+  top: 0.5rem;
+  width: 5.5rem;
+  color: rgba(255, 255, 255, 0.35);
+  pointer-events: none;
+}
+.km-botanical-art { width: 100%; height: auto; }
+.km-hover-leaf {
+  position: absolute;
+  right: 0.5rem;
+  bottom: 0.35rem;
+  width: 3rem;
+  opacity: 0;
+  transition: opacity var(--km-ease);
+  pointer-events: none;
+  color: rgba(255, 255, 255, 0.35);
+}
+a.km:not(.km--featured):hover .km-hover-leaf,
+a.km:not(.km--featured):focus-visible .km-hover-leaf { opacity: 1; }
+.km-mini-botanical {
+  width: 1.35rem;
+  height: 1.35rem;
+  margin-bottom: 0.55rem;
+  color: var(--earth);
+  opacity: 0.75;
 }
 .km--secondary .km-title {
   font-size: 0.92rem;
@@ -259,16 +365,24 @@ a.km:focus-visible {
   margin: 0 0 0.65rem;
   transition: color 0.2s ease;
 }
-a.km:hover .km-title,
-a.km:focus-visible .km-title,
-a.km:hover .km-count,
-a.km:focus-visible .km-count {
-  color: #f7f4ee;
+a.km:not(.km--featured):hover .km-title,
+a.km:not(.km--featured):focus-visible .km-title,
+a.km:not(.km--featured):hover .km-count,
+a.km:not(.km--featured):focus-visible .km-count {
+  color: var(--ivory);
 }
-a.km:hover .km-count,
-a.km:focus-visible .km-count {
-  color: rgba(247, 244, 238, 0.78);
+a.km:not(.km--featured):hover .km-count,
+a.km:not(.km--featured):focus-visible .km-count {
+  color: rgba(247, 244, 235, 0.78);
 }
+.km--featured .km-count { color: rgba(255, 255, 255, 0.78); }
+.km--featured .km-tags span {
+  color: rgba(255, 255, 255, 0.62);
+  border-bottom-color: rgba(255, 255, 255, 0.2);
+}
+.km--featured .km-arrow { color: rgba(255, 255, 255, 0.55); }
+a.km--featured:hover .km-arrow,
+a.km--featured:focus-visible .km-arrow { color: rgba(255, 255, 255, 0.85); }
 .km-arrow {
   margin-top: auto;
   padding-top: 0.85rem;
@@ -280,9 +394,9 @@ a.km:focus-visible .km-count {
   transition: transform 0.2s ease, color 0.2s ease;
 }
 .km--featured .km-arrow { padding-top: 1.25rem; }
-a.km:hover .km-arrow,
-a.km:focus-visible .km-arrow {
-  color: rgba(247, 244, 238, 0.72);
+a.km:not(.km--featured):hover .km-arrow,
+a.km:not(.km--featured):focus-visible .km-arrow {
+  color: rgba(247, 244, 235, 0.72);
 }
 @media (hover: hover) {
   a.km:hover .km-arrow,
@@ -290,14 +404,15 @@ a.km:focus-visible .km-arrow {
     transform: translateX(4px);
   }
 }
-a.km:hover .km-tags span,
-a.km:focus-visible .km-tags span {
-  color: rgba(247, 244, 238, 0.65);
+a.km:not(.km--featured):hover .km-tags span,
+a.km:not(.km--featured):focus-visible .km-tags span {
+  color: rgba(247, 244, 235, 0.65);
   border-bottom-color: rgba(255, 255, 255, 0.22);
 }
-a.km:hover .km-icon,
-a.km:focus-visible .km-icon {
-  color: #f7f4ee;
+a.km:not(.km--featured):hover .km-mini-botanical,
+a.km:not(.km--featured):focus-visible .km-mini-botanical {
+  color: var(--ivory);
+  opacity: 0.85;
 }
 .km-tags {
   display: flex;
@@ -312,19 +427,10 @@ a.km:focus-visible .km-icon {
   padding: 0.15rem 0;
   border-bottom: 1px solid var(--sand);
 }
-.km-icon {
-  width: 1.25rem;
-  height: 1.25rem;
-  margin-bottom: 0.65rem;
-  color: var(--earth);
-  transition: color 0.2s ease;
-}
-.km--featured .km-icon { color: var(--forest); }
-.km--featured .km-icon .area-icon-svg { width: 1.5rem; height: 1.5rem; }
-
 .browse-block {
   padding: 2.5rem 0 3rem;
   border-top: 1px solid var(--line);
+  background: linear-gradient(180deg, transparent 0%, rgba(220, 229, 213, 0.25) 100%);
 }
 .browse-grid {
   display: grid;
@@ -413,6 +519,12 @@ a.km:focus-visible .km-icon {
   color: var(--muted-light);
   max-width: 28rem;
 }
+.footer-botanical-wrap {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+}
+.footer-botanical { width: 1.1rem; height: auto; margin-top: 0.1rem; opacity: 0.7; }
 """
 
 
@@ -426,6 +538,34 @@ def _paper_countries(papers: list[PaperSummary]) -> list[tuple[str, int]]:
             c = "Multi-country"
         counts[c] += 1
     return sorted(counts.items(), key=lambda x: (-x[1], x[0]))
+
+
+_KM_SURFACE: dict[str, str] = {
+    "preschool-impact": "km--surface-sand",
+    "edtech-ai": "km--surface-sage",
+    "skills-tvet": "km--surface-stone",
+    "climate-education": "km--surface-olive",
+}
+
+
+def _featured_title_html(display: ResearchAreaDisplay) -> str:
+    if display.slug == "sb-cpd":
+        return (
+            "Teacher Development"
+            '<span class="km-title-sub">&amp; School-Based CPD</span>'
+        )
+    if " / " in display.card_title:
+        head, sub = display.card_title.split(" / ", 1)
+        return (
+            f"{_esc(head.strip())}"
+            f'<span class="km-title-sub">{_esc(sub.strip())}</span>'
+        )
+    return _esc(display.card_title)
+
+
+def _featured_eyebrow(display: ResearchAreaDisplay) -> str:
+    head = display.card_title.split("/")[0].strip()
+    return _esc(head.upper())
 
 
 def _relationship_browse_count(repo_root: Path) -> int | None:
@@ -444,12 +584,13 @@ def _knowledge_module(
 ) -> str:
     count_label = f"{paper_count} paper{'s' if paper_count != 1 else ''}"
     tags = "".join(f"<span>{_esc(t)}</span>" for t in display.topic_tags)
-    icon = area_icon_svg(display.icon_id, "currentColor")
-    arrow = '<span class="km-arrow">Open area →</span>'
+    leaf = hover_leaf_svg()
     if featured:
+        arrow = '<span class="km-arrow">Explore evidence →</span>'
         inner = (
-            f'<div class="km-icon">{icon}</div>'
-            f'<p class="km-title">{_esc(display.card_title)}</p>'
+            f'<div class="km-botanical-wrap">{featured_module_botanical_svg()}</div>'
+            f'<p class="km-eyebrow">{_featured_eyebrow(display)}</p>'
+            f'<p class="km-title">{_featured_title_html(display)}</p>'
             f'<p class="km-count">{count_label}</p>'
             f'<div class="km-tags">{tags}</div>'
             f"{arrow if href else ''}"
@@ -458,17 +599,23 @@ def _knowledge_module(
             return f'<a class="km km--featured" href="{_esc(href)}">{inner}</a>'
         return f'<div class="km km--featured">{inner}</div>'
 
-    quiet = " km--quiet" if paper_count == 0 else ""
+    surface = _KM_SURFACE.get(display.slug, "km--surface-stone")
+    arrow = '<span class="km-arrow">Explore →</span>'
     inner = (
-        f'<div class="km-icon">{icon}</div>'
+        f"{area_botanical_mini(display.slug)}"
         f'<p class="km-title">{_esc(display.card_title)}</p>'
         f'<p class="km-count">{count_label}</p>'
         f'<div class="km-tags">{tags}</div>'
         f"{arrow if href else ''}"
+        f"{leaf if href else ''}"
     )
     if href:
-        return f'<a class="km km--secondary{quiet}" href="{_esc(href)}">{inner}</a>'
-    return f'<div class="km km--secondary{quiet}" aria-disabled="true">{inner}</div>'
+        return (
+            f'<a class="km km--secondary {surface}" href="{_esc(href)}">{inner}</a>'
+        )
+    return (
+        f'<div class="km km--secondary {surface}" aria-disabled="true">{inner}</div>'
+    )
 
 
 def build_root_body(
@@ -481,19 +628,19 @@ def build_root_body(
     n_areas = len(area_rows)
     n_papers = len(all_papers)
     n_countries = len(unique_countries(all_papers))
-    n_interventions = count_intervention_studies(all_papers)
-    n_reviews = count_reviews_syntheses(all_papers)
+    n_empirical = count_empirical_studies(all_papers)
+    n_reviews = count_review_synthesis(all_papers)
 
     scope_items = (
-        f"<li><strong>{n_papers}</strong> reviewed papers</li>"
+        f"<li><strong>{n_papers}</strong> papers</li>"
         f'<li class="sep" aria-hidden="true">·</li>'
         f"<li><strong>{n_countries}</strong> countries</li>"
         f'<li class="sep" aria-hidden="true">·</li>'
         f"<li><strong>{n_areas}</strong> research areas</li>"
         f'<li class="sep" aria-hidden="true">·</li>'
-        f"<li><strong>{n_interventions}</strong> intervention studies</li>"
+        f"<li><strong>{n_empirical}</strong> empirical studies</li>"
         f'<li class="sep" aria-hidden="true">·</li>'
-        f"<li><strong>{n_reviews}</strong> review/synthesis</li>"
+        f"<li><strong>{n_reviews}</strong> review / synthesis</li>"
     )
 
     max_count = max((c for _, c, _ in area_rows), default=0)
@@ -540,8 +687,8 @@ def build_root_body(
         country_browse.append("<li><span class=\"count\">No papers yet</span></li>")
 
     type_browse = []
-    if n_interventions:
-        line = f"Intervention studies · {n_interventions}"
+    if n_empirical:
+        line = f"Empirical studies · {n_empirical}"
         if sb_cpd_href:
             type_browse.append(
                 f'<li><a class="browse-link" href="{_esc(sb_cpd_href)}">{line}'
@@ -550,7 +697,7 @@ def build_root_body(
         else:
             type_browse.append(f"<li>{line}</li>")
     if n_reviews:
-        line = f"Reviews &amp; synthesis · {n_reviews}"
+        line = f"Review / synthesis · {n_reviews}"
         if sb_cpd_href:
             type_browse.append(
                 f'<li><a class="browse-link" href="{_esc(sb_cpd_href)}">{line}'
@@ -574,16 +721,17 @@ def build_root_body(
     else:
         rel_browse.append("<li><span class=\"count\">Available with area evidence</span></li>")
 
+    leaf = section_title_leaf_svg()
     return f"""
 <section class="hero-root">
 <div class="hero-copy">
 <p class="hero-eyebrow">Research Knowledge Base</p>
 <h1>Evidence for Education &amp; Development</h1>
-<p class="lead">A personal evidence library for education and development research.</p>
-<p class="tagline">Explore · Compare · Synthesize</p>
+<p class="lead">A personal research knowledge base connecting evidence across education and international development.</p>
+<a class="hero-cta" href="#explore">Explore knowledge →</a>
 </div>
 <div class="hero-visual" aria-hidden="true">
-{hero_knowledge_portal_svg()}
+{hero_botanical_svg()}
 </div>
 </section>
 
@@ -595,14 +743,14 @@ def build_root_body(
 </div>
 
 <section class="explore-block" id="explore" aria-labelledby="explore-title">
-<h2 class="section-title" id="explore-title">Explore research areas</h2>
+<h2 class="section-title" id="explore-title">{leaf} Explore knowledge</h2>
 <div class="knowledge-grid">
 {"".join(modules)}
 </div>
 </section>
 
 <section class="browse-block" id="browse" aria-labelledby="browse-title">
-<h2 class="section-title" id="browse-title">Browse evidence</h2>
+<h2 class="section-title" id="browse-title">{leaf} Browse evidence</h2>
 <div class="browse-grid">
 <div class="browse-col"><h3>Research areas</h3><ul>{"".join(area_browse)}</ul></div>
 <div class="browse-col"><h3>Countries</h3><ul>{"".join(country_browse)}</ul></div>
@@ -612,7 +760,12 @@ def build_root_body(
 </section>
 
 <footer class="hub-footer">
+<div class="footer-botanical-wrap">
+{footer_acorn_svg()}
+<div>
 <p class="footer-meta">{_hub_meta(hub)}</p>
 <p class="footer-note">Personal research knowledge hub — evidence summaries maintained from structured paper reviews.</p>
+</div>
+</div>
 </footer>
 """

@@ -4,7 +4,7 @@
 
 > **Sources of truth:** substantive content → paper summaries; bibliographic metadata → `sb-cpd/literature-review/references.bib`.
 
-*Generated: 2026-09-22 11:35 UTC*
+*Generated: 2026-09-22 11:46 UTC*
 
 ---
 
@@ -45,11 +45,11 @@ Some papers evaluate a **specific PD intervention** (folder 07); others **review
 
 ## 3. Evidence Map
 
-| Paper | PD → Teacher Knowledge | PD → Teaching Practice | PD → Student Achievement | Teacher Knowledge → Teaching Practice | Teaching Practice → Student Achievement | Teacher Knowledge → Student Achievement | Knowledge → Practice → Achievement |
-|-------|---|---|---|---|---|---|---|
-| kozuka2025 | RCT | RCT | RCT | — | — | — | — |
-| loyalka2019 | RCT | RCT | RCT | — | — | — | — |
-| popova2022 | — | — | Cross-study synthesis | — | — | — | — |
+| Paper | PD → Teacher Knowledge | PD → Teaching Practice | PD → Student Achievement | Teacher Knowledge → Teaching Practice | Teaching Practice → Student Achievement | Teacher Knowledge → Student Achievement | Knowledge → Practice → Achievement | PD design characteristic → Program impact |
+|-------|---|---|---|---|---|---|---|---|
+| kozuka2025 | RCT | RCT | RCT | No direct evidence | No direct evidence | No direct evidence | No direct evidence | No direct evidence |
+| loyalka2019 | RCT | RCT | RCT | No direct evidence | No direct evidence | No direct evidence | No direct evidence | No direct evidence |
+| popova2022 | No direct evidence | No direct evidence | Cross-study synthesis | No direct evidence | No direct evidence | No direct evidence | No direct evidence | Cross-study assoc. |
 
 **Legend:** RCT = randomized trial (or ITT from RCT); QE = quasi-experimental; Association = associational/correlational; Cross-study synthesis = synthesis across multiple studies/programs (not a new single-program causal estimate); Conceptual = conceptual discussion only; — = not examined in that paper.
 
@@ -217,6 +217,10 @@ Randomized evaluation in Ethiopia shows government **SMASE-style PD** substantia
 ### Knowledge → Practice → Achievement
 
 **No directly reviewed evidence yet.**
+
+### PD design characteristic → Program impact
+
+- **`popova2022`** (Cross-study assoc.): Effect Summary: 4 row(s) with Identification cross-study association; associations across evaluated programs, not causal ITT effects in a single trial. Outcome = design characteristic; dependent variable = standardized program-level student test score impact; Organization; robust across ≥2 methods (Table 2 note)
 
 ---
 

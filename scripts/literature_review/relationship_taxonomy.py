@@ -118,3 +118,13 @@ def validate_effect_relationships(
 def get_taxonomy(area: ResearchAreaConfig) -> RelationshipTaxonomy | None:
     """Load taxonomy for a research area, or None if not defined yet."""
     return load_taxonomy(area)
+
+
+def approved_relationship_labels(area: ResearchAreaConfig) -> list[str]:
+    """Ordered relationship labels for Evidence Map, filters, and matrices."""
+    tax = load_taxonomy(area)
+    if tax and tax.relationships:
+        return [e.label for e in tax.relationships]
+    from .engine import MATRIX_RELATIONSHIPS
+
+    return list(MATRIX_RELATIONSHIPS)

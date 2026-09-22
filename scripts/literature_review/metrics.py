@@ -4,6 +4,25 @@ from __future__ import annotations
 
 from .engine import PaperSummary, abbrev_evidence_type, examined_yes
 
+# Mutually exclusive primary roles for hub summary counts (see **Primary category:** in summaries).
+PRIMARY_EMPIRICAL_FOLDER = "07_teacher-pd-interventions"
+PRIMARY_REVIEW_FOLDER = "08_reviews-and-synthesis"
+
+
+def primary_summary_classification(paper: PaperSummary) -> str:
+    """
+    Single primary class per paper for aggregate dashboard counts.
+
+    Source of truth: primary category folder in each paper summary (not publication-type
+    keywords, study design, or evidence-mapping labels).
+    """
+    folder = paper.category_folder
+    if folder == PRIMARY_REVIEW_FOLDER:
+        return "review_synthesis"
+    if folder == PRIMARY_EMPIRICAL_FOLDER:
+        return "empirical_study"
+    return "other"
+
 
 def unique_countries(papers: list[PaperSummary]) -> set[str]:
     out: set[str] = set()
@@ -38,18 +57,26 @@ def count_rct_causal_papers(papers: list[PaperSummary]) -> int:
     return n
 
 
-def count_reviews_syntheses(papers: list[PaperSummary]) -> int:
+def count_empirical_studies(papers: list[PaperSummary]) -> int:
     return sum(
-        1
-        for p in papers
-        if p.category_folder == "08_reviews-and-synthesis"
-        or "review" in p.paper_type.lower()
-        or "synthesis" in p.paper_type.lower()
+        1 for p in papers if primary_summary_classification(p) == "empirical_study"
+    )
+
+
+def count_review_synthesis(papers: list[PaperSummary]) -> int:
+    return sum(
+        1 for p in papers if primary_summary_classification(p) == "review_synthesis"
     )
 
 
 def count_intervention_studies(papers: list[PaperSummary]) -> int:
-    return sum(1 for p in papers if p.category_folder == "07_teacher-pd-interventions")
+    """Alias for empirical primary-role count (folder 07). Prefer count_empirical_studies."""
+    return count_empirical_studies(papers)
+
+
+def count_reviews_syntheses(papers: list[PaperSummary]) -> int:
+    """Review / synthesis primary-role count (folder 08 only; no keyword overlap)."""
+    return count_review_synthesis(papers)
 
 
 def evidence_cell_label(paper: PaperSummary, relationship: str) -> str:
@@ -65,11 +92,34 @@ def evidence_cell_label(paper: PaperSummary, relationship: str) -> str:
         if ex in ("no", "n"):
             return "No direct evidence"
         return "No direct evidence"
+    effect_for_rel = [r for r in paper.effect_rows if r.relationship == relationship]
+    if effect_for_rel:
+        for r in effect_for_rel:
+            ident = (r.identification or "").lower()
+            if "cross-study association" in ident:
+                return "Cross-study assoc."
+            if "association" in ident:
+                return "Association"
+        return "Effect estimate"
     return "No direct evidence"
 
 
+def relationships_with_evidence(paper: PaperSummary) -> list[str]:
+    """Relationships with examined mapping and/or Effect Summary rows (for filters)."""
+    rels: set[str] = set()
+    for row in paper.evidence_rows:
+        if row.examined.strip().lower() in ("yes", "y"):
+            rels.add(row.relationship)
+    for row in paper.effect_rows:
+        if row.relationship:
+            rels.add(row.relationship)
+    return sorted(rels)
+
+
 def paper_has_relationship_examined(paper: PaperSummary, relationship: str) -> bool:
-    return examined_yes(paper, relationship)
+    if examined_yes(paper, relationship):
+        return True
+    return any(r.relationship == relationship for r in paper.effect_rows)
 
 
 def filter_values(papers: list[PaperSummary]) -> dict[str, list[str]]:

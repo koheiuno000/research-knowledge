@@ -8,7 +8,8 @@ import re
 from .config import ResearchAreaConfig
 from .dashboard_config import DEFAULT_HUB_DISPLAY, HubDisplayConfig
 from .effect_display import paper_effect_filter_keys, paper_level1_summaries
-from .engine import MATRIX_RELATIONSHIPS, PaperSummary
+from .engine import PaperSummary
+from .relationship_taxonomy import approved_relationship_labels
 from .hub_visuals import AREA_ACCENTS, area_icon_svg
 from .html_renderer import (
     HUB_STYLES,
@@ -18,9 +19,10 @@ from .html_renderer import (
     truncate_setting,
 )
 from .markdown_safe import markdown_to_html
+from .publication_display import publication_kind_short, venue_recorded
 from .metrics import (
-    count_rct_causal_papers,
-    count_reviews_syntheses,
+    count_empirical_studies,
+    count_review_synthesis,
     evidence_cell_label,
     filter_values,
     unique_countries,
@@ -73,23 +75,50 @@ AREA_EXTRA_STYLES = """
 }
 .paper-card.hidden { display: none; }
 .paper-head {
+  margin-bottom: 0.85rem;
+}
+.paper-head-top {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 0.35rem 1rem;
-  margin-bottom: 0.85rem;
-  align-items: baseline;
+  align-items: flex-start;
 }
 .paper-head h3 {
   margin: 0;
   font-size: 1rem;
   font-weight: 600;
   letter-spacing: -0.02em;
+  line-height: 1.35;
+  flex: 1 1 12rem;
+}
+.paper-venue {
+  margin: 0.35rem 0 0.4rem;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  font-weight: 500;
+  color: var(--forest, #254735);
+  max-width: 42rem;
+}
+.paper-venue em { font-style: italic; font-weight: inherit; color: inherit; }
+.paper-byline {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--muted);
+  line-height: 1.4;
 }
 .paper-meta {
   font-size: 0.78rem;
   color: var(--muted);
-  white-space: nowrap;
+}
+.paper-l3 .pub-block {
+  margin-bottom: 1.25rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--line);
+}
+.paper-l3 .pub-block .paper-venue {
+  margin-top: 0.15rem;
+  font-size: 0.875rem;
 }
 
 .rel-block { margin-bottom: 0.55rem; }
@@ -232,13 +261,15 @@ AREA_DASHBOARD_JS = """
 
   function paperSearchBlob(p) {
     return [
-      p.citation_key, p.author_label, p.full_citation, p.country, p.region,
-      p.setting, p.paper_type, p.core_contribution, p.research_question
+      p.citation_key, p.author_label, p.short_title, p.full_citation, p.country, p.region,
+      p.setting, p.paper_type, p.journal_series, p.core_contribution, p.research_question
     ].concat(p.key_findings || []).join(' ').toLowerCase();
   }
 
   function matchesRelationship(p, relName) {
     if (!relName) return true;
+    const withEv = p.relationships_with_evidence || [];
+    if (withEv.includes(relName)) return true;
     const row = (p.evidence_mapping || []).find(r => r.relationship === relName);
     if (!row) return false;
     const ex = norm(row.examined);
@@ -416,14 +447,49 @@ def _render_rel_block(summary: dict, idx: int, pid: str) -> str:
     )
 
 
+def _paper_title(data: dict) -> str:
+    st = (data.get("short_title") or "").strip()
+    if st and st != "Not recorded":
+        return st
+    return data.get("author_label") or ""
+
+
+def _paper_byline(data: dict) -> str:
+    parts: list[str] = []
+    author = (data.get("author_label") or "").strip()
+    if author and author != "Not recorded":
+        parts.append(author)
+    kind = publication_kind_short(data.get("paper_type") or "")
+    if kind:
+        parts.append(kind)
+    country = (data.get("country") or "").strip()
+    if country and country != "Not recorded":
+        parts.append(country)
+    design = (data.get("study_design_short") or "").strip()
+    if design:
+        parts.append(design)
+    return " · ".join(parts)
+
+
+def _venue_html(data: dict, *, css_class: str = "paper-venue") -> str:
+    js = (data.get("journal_series") or "").strip()
+    if not venue_recorded(js):
+        return ""
+    inner = markdown_to_html(js).strip()
+    if inner.startswith("<p>") and inner.endswith("</p>") and inner.count("<p>") == 1:
+        inner = inner[3:-4]
+    return f'<p class="{css_class}">{inner}</p>'
+
+
 def _render_paper_card(data: dict) -> str:
     pid = data["id"]
-    title = data["author_label"]
-    meta = f'{_esc(data["country"])} · {_esc(data["study_design_short"])}'
+    title = _paper_title(data)
+    byline = _paper_byline(data)
+    venue_block = _venue_html(data)
     doi = ""
     if data.get("doi_url"):
         doi = (
-            f' <a href="{_esc(data["doi_url"])}" target="_blank" rel="noopener">DOI</a>'
+            f'<a class="paper-doi" href="{_esc(data["doi_url"])}" target="_blank" rel="noopener">DOI</a>'
         )
 
     rel_html = ""
@@ -431,6 +497,18 @@ def _render_paper_card(data: dict) -> str:
         rel_html += _render_rel_block(summary, i, pid)
 
     l3_parts = []
+    pub_inner = _venue_html(data, css_class="paper-venue")
+    pt = (data.get("paper_type") or "").strip()
+    if pub_inner or (pt and pt != "Not recorded"):
+        type_html = ""
+        if pt and pt != "Not recorded":
+            type_html = (
+                f'<p class="paper-byline"><span class="paper-pub-type">'
+                f"{markdown_to_html(pt)}</span></p>"
+            )
+        l3_parts.append(
+            f'<div class="pub-block"><h4>Publication</h4>{pub_inner}{type_html}</div>'
+        )
     if data.get("research_question") and data["research_question"] != "Not recorded":
         l3_parts.append(
             f"<h4>Research Question</h4>"
@@ -462,8 +540,9 @@ def _render_paper_card(data: dict) -> str:
     return (
         f'<article class="paper-card" data-paper-id="{_esc(pid)}">'
         f'<div class="paper-head">'
-        f"<h3>{_esc(title)}{doi}</h3>"
-        f'<span class="paper-meta">{meta}</span>'
+        f'<div class="paper-head-top"><h3>{_esc(title)}</h3>{doi}</div>'
+        f"{venue_block}"
+        f'<p class="paper-byline">{_esc(byline)}</p>'
         f"</div>"
         f"{rel_html}"
         f'<button type="button" class="btn-text paper-details-toggle">View paper details</button>'
@@ -480,6 +559,7 @@ def _paper_payload_enriched(p: PaperSummary) -> dict:
     data["level1_summaries"] = summaries
     data["effect_filter_keys"] = paper_effect_filter_keys(summaries)
     data["study_design_short"] = _study_design_short(p, data.get("paper_type", ""))
+    data["publication_kind"] = publication_kind_short(p.paper_type)
     return data
 
 
@@ -501,12 +581,14 @@ def build_area_html(
         '<span>→</span> Student Achievement'
     )
 
+    rel_labels = approved_relationship_labels(area)
+
     map_rows = []
     for p in papers_sorted:
         pid = p.citation_key if p.citation_key != "Not recorded" else p.path.stem
         label = p.citation_key if p.citation_key != "Not recorded" else p.author_label
         cells = []
-        for rel in MATRIX_RELATIONSHIPS:
+        for rel in rel_labels:
             disp = evidence_cell_label(p, rel)
             cls = _badge_class(disp)
             cells.append(f'<td><span class="badge {cls}">{_esc(disp)}</span></td>')
@@ -517,7 +599,7 @@ def build_area_html(
             + "</tr>"
         )
 
-    th_rel = "".join(f'<th class="rel">{_esc(r)}</th>' for r in MATRIX_RELATIONSHIPS)
+    th_rel = "".join(f'<th class="rel">{_esc(r)}</th>' for r in rel_labels)
 
     def opts(values: list[str]) -> str:
         return "".join(f'<option value="{_esc(v)}">{_esc(v)}</option>' for v in values)
@@ -529,8 +611,8 @@ def build_area_html(
     stat = (
         f"<strong>{len(papers)}</strong> papers"
         f'<span class="dot">·</span><strong>{n_countries}</strong> countries'
-        f'<span class="dot">·</span><strong>{count_rct_causal_papers(papers)}</strong> interventions'
-        f'<span class="dot">·</span><strong>{count_reviews_syntheses(papers)}</strong> reviews'
+        f'<span class="dot">·</span><strong>{count_empirical_studies(papers)}</strong> empirical studies'
+        f'<span class="dot">·</span><strong>{count_review_synthesis(papers)}</strong> review / synthesis'
     )
 
     styles = HUB_STYLES + AREA_EXTRA_STYLES
@@ -566,7 +648,7 @@ def build_area_html(
 <select id="filter-region" aria-label="Region"><option value="">Region</option>{opts(fv["regions"])}</select>
 <select id="filter-category" aria-label="Category"><option value="">Category</option>{opts(fv["primary_categories"])}</select>
 <select id="filter-paper-type" aria-label="Type"><option value="">Type</option>{opts(fv["paper_types"])}</select>
-<select id="filter-relationship" aria-label="Evidence relationship"><option value="">Relationship</option>{opts(MATRIX_RELATIONSHIPS)}</select>
+<select id="filter-relationship" aria-label="Evidence relationship"><option value="">Relationship</option>{opts(rel_labels)}</select>
 <select id="filter-effect-status" aria-label="Effect status"><option value="">Effect status</option>
 <option value="positive">Positive</option>
 <option value="negative">Negative</option>

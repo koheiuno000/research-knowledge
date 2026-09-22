@@ -3,11 +3,11 @@
 from __future__ import annotations
 
 AREA_ACCENTS: dict[str, dict[str, str]] = {
-    "sb-cpd": {"fg": "#1e3d32", "soft": "#e8ebe6", "glow": "#c5d4c8"},
-    "preschool-impact": {"fg": "#5a4a42", "soft": "#f0ebe6", "glow": "#ddd4c8"},
-    "edtech-ai": {"fg": "#3d5248", "soft": "#eceee9", "glow": "#cdd8cf"},
-    "skills-tvet": {"fg": "#4a5540", "soft": "#eeede8", "glow": "#d4dcc8"},
-    "climate-education": {"fg": "#2f5a52", "soft": "#e9efec", "glow": "#c8ddd6"},
+    "sb-cpd": {"fg": "#254735", "soft": "#DCE5D5", "glow": "#A8B99B"},
+    "preschool-impact": {"fg": "#59412F", "soft": "#E7D8BE", "glow": "#d4c8b8"},
+    "edtech-ai": {"fg": "#254735", "soft": "#DCE5D5", "glow": "#c5d4c8"},
+    "skills-tvet": {"fg": "#59412F", "soft": "#E9E5DA", "glow": "#d4dcc8"},
+    "climate-education": {"fg": "#254735", "soft": "#e2e8dc", "glow": "#A8B99B"},
 }
 
 
