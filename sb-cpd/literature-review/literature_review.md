@@ -4,7 +4,7 @@
 
 > **Sources of truth:** substantive content → paper summaries; bibliographic metadata → `sb-cpd/literature-review/references.bib`.
 
-*Generated: 2026-09-22 10:37 UTC*
+*Generated: 2026-09-22 11:11 UTC*
 
 ---
 

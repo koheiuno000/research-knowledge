@@ -15,6 +15,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from .config import ResearchAreaConfig, sb_cpd_config
+from .effect_summary import EffectRow, parse_effect_summary_table
+from .relationship_taxonomy import get_taxonomy, validate_effect_relationships
 
 EXCLUDE_FILES = {"README.md", "paper_summary_template.md"}
 EXCLUDE_DIRS = {"pdf"}
@@ -92,6 +94,7 @@ class PaperSummary:
     core_contribution: str = "Not recorded"
     key_findings: list[str] = field(default_factory=list)
     evidence_rows: list[EvidenceRow] = field(default_factory=list)
+    effect_rows: list[EffectRow] = field(default_factory=list)
     relevance_sb_cpd: list[str] = field(default_factory=list)
     primary_role: str = "Not recorded"
     warnings: list[str] = field(default_factory=list)
@@ -389,6 +392,13 @@ def parse_summary(path: Path, area: ResearchAreaConfig) -> PaperSummary:
     if not paper.evidence_rows:
         paper.warnings.append("Evidence Mapping table")
 
+    paper.effect_rows = parse_effect_summary_table(text)
+    taxonomy = get_taxonomy(area)
+    for issue in validate_effect_relationships(paper.effect_rows, taxonomy):
+        paper.warnings.append(
+            f"Effect Summary taxonomy [{issue.relationship}]: {issue.message}"
+        )
+
     paper.relevance_sb_cpd = parse_relevance(text)
 
     return paper
@@ -664,7 +674,11 @@ def build_markdown(papers: list[PaperSummary], area: ResearchAreaConfig) -> str:
     return "\n".join(lines)
 
 
-def run_build(area: ResearchAreaConfig, write_html: bool = False) -> int:
+def run_build(
+    area: ResearchAreaConfig,
+    write_html: bool = True,
+    hub=None,
+) -> int:
     paths = discover_summaries(area)
     if not paths:
         print(
@@ -684,15 +698,15 @@ def run_build(area: ResearchAreaConfig, write_html: bool = False) -> int:
     output_md.write_text(md, encoding="utf-8")
     print(f"Wrote {output_md.relative_to(area.repo_root)} ({len(papers)} papers)")
 
-    if write_html and area.output_html.exists():
-        print(
-            f"Note: {area.output_html.relative_to(area.repo_root)} exists; "
-            "HTML regeneration not implemented yet.",
-            file=sys.stderr,
-        )
+    if write_html:
+        from .dashboard_config import DEFAULT_HUB_DISPLAY
+        from .html_renderer import write_area_html
+
+        write_area_html(papers, area, hub=hub or DEFAULT_HUB_DISPLAY)
+        print(f"Wrote {area.output_html.relative_to(area.repo_root)}")
 
     return 0
 
 
-def main(area: ResearchAreaConfig | None = None) -> int:
-    return run_build(area or sb_cpd_config())
+def main(area: ResearchAreaConfig | None = None, hub=None) -> int:
+    return run_build(area or sb_cpd_config(), hub=hub)

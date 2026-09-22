@@ -46,6 +46,11 @@ class ResearchAreaConfig:
     def references_bib_display(self) -> str:
         return f"{self.slug}/literature-review/references.bib"
 
+    @property
+    def relationship_taxonomy_json(self) -> Path:
+        """Optional approved Effect Summary relationship labels for this area."""
+        return self.literature_review_dir / "relationship_taxonomy.json"
+
 
 def sb_cpd_config(repo_root: Path | None = None) -> ResearchAreaConfig:
     root = repo_root or Path(__file__).resolve().parents[2]

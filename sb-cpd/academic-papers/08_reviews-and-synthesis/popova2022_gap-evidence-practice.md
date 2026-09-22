@@ -62,6 +62,19 @@ How do **design and implementation characteristics** of in-service teacher PD re
 
 ---
 
+## Effect Summary
+
+Bivariate associations between **program design indicators** and **standardized student test-score impacts** across **33 evaluated LMIC PD programs** (N ≈ 33 per regression). These are **not** causal ITT effects of PD on achievement in a single trial; identification is cross-program association.
+
+| Relationship | Outcome | Direction | Estimate | Unit | SE | p-value | Significance | Comparison / Arm | Time Point | Sample | Identification | Source | Notes |
+|---|---|---:|---|---:|---|---|---|---|---|---|---|---|
+| PD design characteristic → Program impact | No career incentives for PD participation | Negative | -0.120 | SD | 0.056 | Not reported | p < 0.05 | Programs without career incentives vs with (indicator) | Not applicable | 33 | Cross-study association | Table 2, p. 118 | Outcome = design characteristic; dependent variable = standardized program-level student test score impact; Organization; robust across ≥2 methods (Table 2 note) |
+| PD design characteristic → Program impact | Lesson enactment in training | Positive | 0.102 | SD | 0.055 | Not reported | p < 0.10 | Programs with lesson enactment in training vs without | Not applicable | 20 | Cross-study association | Table 3, p. 119 | Outcome = design characteristic; dependent variable = standardized program-level student test score impact; Content; robust marker in Table 3 |
+| PD design characteristic → Program impact | Initial multi-day face-to-face training block | Positive | 0.140 | SD | 0.041 | Not reported | p < 0.01 | Programs with initial intensive face-to-face start vs without | Not applicable | 32 | Cross-study association | Table 4, p. 120 | Outcome = design characteristic; dependent variable = standardized program-level student test score impact; Delivery; robust across ≥2 methods |
+| PD design characteristic → Program impact | Training held at central/hotel location | Negative | -0.126 | SD | 0.064 | Not reported | p < 0.10 | Central/hotel training location vs other locations | Not applicable | 33 | Cross-study association | Table 4, p. 120 | Outcome = design characteristic; dependent variable = standardized program-level student test score impact; Delivery; exploratory bivariate regression |
+
+---
+
 ## 4. Conceptual Focus
 
 - Teacher PD / CPD **design taxonomy** (ITTSI: Organization, Content, Delivery, Perceptions)

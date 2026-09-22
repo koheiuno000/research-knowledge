@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Research Knowledge Base</title>
+<style>
+:root {
+  --bg: #f4f3f0;
+  --bg-hero: #faf9f7;
+  --surface: #ffffff;
+  --text: #1c1c1c;
+  --muted: #6b6b6b;
+  --muted-light: #949494;
+  --line: rgba(0,0,0,0.06);
+  --accent: #2d4a6f;
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-serif: ui-serif, "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  --radius: 14px;
+  --shadow: 0 1px 2px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.04);
+}
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.hub-shell { min-height: 100vh; display: flex; flex-direction: column; }
+.hub-top {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 1.25rem 1.5rem 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+.hub-top .hub-meta { font-size: 0.8rem; color: var(--muted-light); letter-spacing: 0.01em; }
+.hub-top .hub-nav-link { font-size: 0.85rem; color: var(--muted); }
+.hub-top .hub-nav-link:hover { color: var(--accent); }
+.hub-main { flex: 1; max-width: 1120px; margin: 0 auto; padding: 0 1.5rem 3rem; width: 100%; }
+
+/* Hero */
+.hero {
+  position: relative;
+  padding: 2.5rem 0 2rem;
+  overflow: hidden;
+}
+.hero-deco-wrap {
+  position: absolute;
+  right: -2rem;
+  top: -1rem;
+  width: min(420px, 55vw);
+  opacity: 1;
+  pointer-events: none;
+}
+.hero-deco-wrap svg { width: 100%; height: auto; display: block; }
+.hero h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  margin: 0 0 0.5rem;
+  line-height: 1.15;
+  max-width: 14ch;
+}
+.hero .lead {
+  font-size: 1.05rem;
+  color: var(--muted);
+  margin: 0;
+  max-width: 36rem;
+  line-height: 1.5;
+}
+.hero .tagline {
+  margin: 1.25rem 0 0;
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted-light);
+}
+
+/* Compact stats */
+.stat-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+  padding: 0.75rem 0 2.5rem;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+.stat-strip strong { color: var(--text); font-weight: 600; }
+.stat-strip .dot { color: var(--line); user-select: none; }
+
+/* Area tiles */
+.areas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.25rem;
+}
+@media (min-width: 900px) {
+  .areas-grid { grid-template-columns: repeat(5, 1fr); }
+}
+@media (max-width: 640px) {
+  .areas-grid { grid-template-columns: 1fr 1fr; }
+}
+.area-tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 1.35rem 1.25rem 1.25rem;
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--line);
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  min-height: 11rem;
+}
+a.area-tile:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05), 0 12px 32px rgba(0,0,0,0.07);
+  text-decoration: none;
+}
+.area-tile.is-empty { cursor: default; opacity: 0.92; }
+.area-tile.is-empty:hover { transform: none; box-shadow: var(--shadow); }
+.area-tile-visual {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+.area-icon-svg { width: 2rem; height: 2rem; }
+.area-tile h2 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 0 0 0.35rem;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+.area-count {
+  margin: 0 0 0.75rem;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+.area-count b { color: var(--text); font-weight: 600; }
+.tags { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: auto; }
+.tags span {
+  font-size: 0.68rem;
+  padding: 0.2rem 0.45rem;
+  border-radius: 4px;
+  background: var(--tag-bg, #f0f0f0);
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}
+
+.hub-footer {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  font-size: 0.72rem;
+  color: var(--muted-light);
+  text-align: center;
+}
+
+/* ——— Area (evidence) dashboard ——— */
+.area-page .hero { padding: 1.5rem 0 1rem; }
+.area-page .hero h1 { font-size: clamp(1.5rem, 3vw, 2rem); max-width: none; }
+.area-page .hero .lead { font-size: 0.95rem; }
+.area-page .stat-strip { padding-bottom: 1.75rem; }
+
+.section { margin-top: 2.5rem; }
+.section-head {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted-light);
+  margin: 0 0 0.85rem;
+  font-weight: 600;
+}
+
+.filters {
+  display: grid;
+  grid-template-columns: 1.2fr repeat(5, minmax(0, 1fr));
+  gap: 0.65rem;
+  align-items: end;
+  padding: 1rem 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+@media (max-width: 960px) { .filters { grid-template-columns: 1fr 1fr; } }
+.filters label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted-light);
+}
+.filters input, .filters select {
+  font: inherit;
+  font-size: 0.85rem;
+  padding: 0.45rem 0.55rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+}
+.filter-hint { grid-column: 1 / -1; font-size: 0.78rem; color: var(--muted-light); margin: 0; }
+
+.evidence-map-wrap {
+  overflow-x: auto;
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--line);
+}
+table.evidence-map {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.76rem;
+  min-width: 880px;
+}
+table.evidence-map th, table.evidence-map td {
+  padding: 0.55rem 0.5rem;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+table.evidence-map th {
+  font-weight: 600;
+  text-align: left;
+  background: var(--bg-hero);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  color: var(--muted);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+table.evidence-map th.rel { min-width: 7rem; max-width: 9rem; line-height: 1.25; white-space: normal; }
+table.evidence-map td.paper-col { font-weight: 600; white-space: nowrap; font-size: 0.8rem; }
+
+.badge {
+  display: inline-block;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.65rem;
+  font-weight: 500;
+  line-height: 1.25;
+  white-space: normal;
+}
+.badge-rct { background: #e8f2ed; color: #1e4d3a; }
+.badge-qe { background: #eef3e8; color: #2d5016; }
+.badge-assoc { background: #f5f0e8; color: #6b4c1e; }
+.badge-synth { background: #eeedf5; color: #3d3d6b; }
+.badge-desc { background: #f2f2f2; color: #4a4a4a; }
+.badge-other { background: #f5f5f5; color: #333; }
+.badge-none { background: transparent; color: var(--muted-light); font-style: italic; }
+
+.map-legend { font-size: 0.75rem; color: var(--muted-light); margin-top: 0.65rem; line-height: 1.45; max-width: 42rem; }
+
+.paper-list { display: flex; flex-direction: column; gap: 0.5rem; }
+.paper-card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  overflow: hidden;
+}
+.paper-card.hidden { display: none; }
+.paper-summary-row {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) repeat(6, minmax(0, 1fr));
+  gap: 0.5rem;
+  padding: 0.85rem 1rem;
+  cursor: pointer;
+  align-items: start;
+  font-size: 0.82rem;
+}
+@media (max-width: 800px) { .paper-summary-row { grid-template-columns: 1fr; } }
+.paper-summary-row:hover { background: var(--bg-hero); }
+.paper-summary-row .cite { font-weight: 500; line-height: 1.35; }
+.paper-summary-row .meta { color: var(--muted); font-size: 0.78rem; }
+.paper-details {
+  display: none;
+  border-top: 1px solid var(--line);
+  padding: 1rem 1.25rem 1.35rem;
+  background: var(--bg-hero);
+  font-size: 0.875rem;
+  line-height: 1.55;
+}
+.paper-card.open .paper-details { display: block; }
+.paper-details h4 {
+  margin: 1.1rem 0 0.35rem;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted-light);
+  font-weight: 600;
+}
+.paper-details h4:first-child { margin-top: 0; }
+.paper-details .block { white-space: pre-wrap; margin: 0; }
+.paper-details ul { margin: 0.25rem 0 0; padding-left: 1.2rem; }
+.evidence-map-row.hidden { display: none; }
+</style>
+</head>
+<body class="hub-shell hub-root">
+<header class="hub-top">
+<span class="hub-meta">Dr. Kohei Uno · Updated September 22, 2026</span>
+</header>
+<main class="hub-main">
+<section class="hero">
+<div class="hero-deco-wrap">
+<svg class="hero-deco" viewBox="0 0 400 200" preserveAspectRatio="xMaxYMid slice" aria-hidden="true">
+  <defs>
+    <linearGradient id="hg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2d4a6f" stop-opacity="0.06"/>
+      <stop offset="100%" stop-color="#2f5a52" stop-opacity="0.02"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="200" fill="url(#hg)"/>
+  <circle cx="320" cy="60" r="48" fill="#2d4a6f" fill-opacity="0.04"/>
+  <circle cx="280" cy="120" r="72" fill="#2f5a52" fill-opacity="0.03"/>
+  <path d="M0 160 Q120 120 240 150 T400 140 L400 200 L0 200 Z" fill="#2d4a6f" fill-opacity="0.03"/>
+</svg></div>
+<h1>Research Knowledge Base</h1>
+<p class="lead">Personal evidence library for education and development research</p>
+<p class="tagline">Explore · Connect · Build Knowledge</p>
+</section>
+
+<div class="stat-strip"><strong>3</strong> Reviewed Papers<span class="dot">·</span><strong>3</strong> Countries<span class="dot">·</span><strong>5</strong> Research Areas<span class="dot">·</span><strong>2</strong> Intervention<span class="dot">·</span><strong>2</strong> Review/Synthesis</div>
+
+<section class="areas-section" aria-label="Research areas">
+<div class="areas-grid">
+<a class="area-tile" href="../sb-cpd/literature-review/literature_review.html"><div class="area-tile-visual" style="background:#e8eef5">
+<svg viewBox="0 0 48 48" aria-hidden="true" class="area-icon-svg">
+  <rect x="8" y="14" width="32" height="22" rx="2" fill="none" stroke="#2d4a6f" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M16 14V11a8 8 0 0 1 16 0v3" fill="none" stroke="#2d4a6f" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M24 22v6M21 25h6" fill="none" stroke="#2d4a6f" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M14 36h20" fill="none" stroke="#2d4a6f" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"/>
+</svg></div><h2>Teacher Development / SB-CPD</h2><p class="area-count"><b>3</b> papers</p><div class="tags" style="--tag-bg:#e8eef5"><span>Teachers</span><span>Classroom</span><span>Learning</span></div></a><div class="area-tile is-empty" aria-disabled="true"><div class="area-tile-visual" style="background:#f3ecf1">
+<svg viewBox="0 0 48 48" aria-hidden="true" class="area-icon-svg">
+  <rect x="10" y="26" width="10" height="10" rx="1" fill="none" stroke="#6b4a62" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="22" y="20" width="10" height="16" rx="1" fill="none" stroke="#6b4a62" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="34" y="24" width="8" height="12" rx="1" fill="none" stroke="#6b4a62" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="24" cy="14" r="5" fill="none" stroke="#6b4a62" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></div><h2>Preschool / Early Childhood</h2><p class="area-count"><b>0</b> papers</p><div class="tags" style="--tag-bg:#f3ecf1"><span>Early Learning</span><span>Child Development</span></div></div><div class="area-tile is-empty" aria-disabled="true"><div class="area-tile-visual" style="background:#eceef5">
+<svg viewBox="0 0 48 48" aria-hidden="true" class="area-icon-svg">
+  <rect x="10" y="12" width="28" height="20" rx="2" fill="none" stroke="#3d4a6b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M18 32h12l-2 4H20l-2-4z" fill="none" stroke="#3d4a6b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M30 18l4-4M32 14h3v3" fill="none" stroke="#3d4a6b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="22" cy="22" r="2" fill="#3d4a6b" stroke="none"/>
+</svg></div><h2>EdTech / AI</h2><p class="area-count"><b>0</b> papers</p><div class="tags" style="--tag-bg:#eceef5"><span>Technology</span><span>AI</span><span>Innovation</span></div></div><div class="area-tile is-empty" aria-disabled="true"><div class="area-tile-visual" style="background:#eef0ea">
+<svg viewBox="0 0 48 48" aria-hidden="true" class="area-icon-svg">
+  <path d="M12 34l12-20 12 20H12z" fill="none" stroke="#4a5540" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="20" y="8" width="8" height="6" rx="1" fill="none" stroke="#4a5540" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M18 38h12" fill="none" stroke="#4a5540" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></div><h2>Skills / TVET</h2><p class="area-count"><b>0</b> papers</p><div class="tags" style="--tag-bg:#eef0ea"><span>Skills</span><span>Employment</span><span>Training</span></div></div><div class="area-tile is-empty" aria-disabled="true"><div class="area-tile-visual" style="background:#e9f2ef">
+<svg viewBox="0 0 48 48" aria-hidden="true" class="area-icon-svg">
+  <circle cx="24" cy="24" r="14" fill="none" stroke="#2f5a52" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M24 10v4M24 34v4M10 24h4M34 24h4" fill="none" stroke="#2f5a52" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"/>
+  <path d="M24 18c-4 0-6 3-6 6s2 6 6 6 4 2 4 4-2 4-4 4" fill="none" stroke="#2f5a52" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></div><h2>Climate &amp; Education</h2><p class="area-count"><b>0</b> papers</p><div class="tags" style="--tag-bg:#e9f2ef"><span>Climate</span><span>Resilience</span><span>Sustainability</span></div></div>
+</div>
+</section>
+</main>
+<footer class="hub-footer">Dr. Kohei Uno · Updated September 22, 2026</footer>
+</body>
+</html>

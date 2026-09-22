@@ -31,6 +31,18 @@
 
 ---
 
+## Effect Summary
+
+Primary endline ITT estimates, covariate-adjusted specification (authors’ main discussion focus; Table 2, 4, 5).
+
+| Relationship | Outcome | Direction | Estimate | Unit | SE | p-value | Significance | Comparison / Arm | Time Point | Sample | Identification | Source | Notes |
+|---|---|---:|---|---:|---|---|---|---|---|---|---|---|
+| PD → Student Achievement | Student mathematics achievement (normalized test score) | Insignificant | -0.006 | SD | 0.034 | Not reported | Not significant | PD vs Control | Endline | 14599 | Cluster RCT / ITT | Table 2, p. 141 | Panel A, row (1), column (2); cluster-robust SEs |
+| PD → Teaching Practice | Student-reported teacher practice index | Insignificant | 0.043 | SD | 0.045 | Not reported | Not significant | PD vs Control | Endline | 14405 | Cluster RCT / ITT | Table 4, p. 144 | Panel A, row (1), column (1); student-reported practice |
+| PD → Teacher Knowledge | Teacher math knowledge (MKT-based test summary index) | Insignificant | 0.153 | SD | 0.138 | Not reported | Not significant | PD vs Control | Endline | 293 | Cluster RCT / ITT | Table 5, p. 145 | Panel A, row (1), column (1); heteroskedastic-robust SEs; null after multiple-testing adjustment per table note |
+
+---
+
 ## 1. Citation
 
 **Citation key:** `loyalka2019`

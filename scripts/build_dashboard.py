@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""CLI: generate the SB-CPD literature review dashboard (default research area)."""
+"""Generate the root Research Knowledge Base dashboard (dashboard/index.html)."""
 
 from __future__ import annotations
 
@@ -9,22 +9,25 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from literature_review.config import sb_cpd_config  # noqa: E402
 from literature_review.dashboard_config import DEFAULT_HUB_DISPLAY, HubDisplayConfig  # noqa: E402
-from literature_review.engine import main  # noqa: E402
+from literature_review.html_renderer import write_root_html  # noqa: E402
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Build SB-CPD literature review (Markdown + HTML).")
+    parser = argparse.ArgumentParser(description="Build the Research Knowledge Base hub dashboard.")
     parser.add_argument(
         "--updated",
         default=DEFAULT_HUB_DISPLAY.updated_label,
-        help="Hub display date shown on the HTML dashboard",
+        help="Display date for the hub (e.g. 'September 22, 2026')",
     )
     parser.add_argument(
         "--author",
         default=DEFAULT_HUB_DISPLAY.author,
-        help="Author line shown on the HTML dashboard",
+        help="Author line for the hub (e.g. 'Dr. Kohei Uno')",
     )
     args = parser.parse_args()
+
+    repo_root = Path(__file__).resolve().parents[1]
+    out = repo_root / "dashboard" / "index.html"
     hub = HubDisplayConfig(author=args.author, updated_label=args.updated)
-    sys.exit(main(sb_cpd_config(), hub=hub))
+    write_root_html(repo_root, out, hub=hub)
+    print(f"Wrote {out.relative_to(repo_root)}")

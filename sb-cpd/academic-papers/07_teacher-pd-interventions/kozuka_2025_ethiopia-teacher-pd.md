@@ -20,6 +20,27 @@
 
 ---
 
+## Effect Summary
+
+Main-specification ITT estimates (Table 2–3, 5; endline columns). Standard errors as reported; significance from table stars only.
+
+| Relationship | Outcome | Direction | Estimate | Unit | SE | p-value | Significance | Comparison / Arm | Time Point | Sample | Identification | Source | Notes |
+|---|---|---:|---|---:|---|---|---|---|---|---|---|---|
+| PD → Teaching Practice | Mathematics teaching practice (14-item observation mean index) | Positive | 0.582 | SD | 0.118 | Not reported | p < 0.01 | Regular PD vs Control | Endline | 165 | RCT / ITT | Table 2, PDF p. 17 | Main specification; robust SEs |
+| PD → Teaching Practice | Physics teaching practice (14-item observation mean index) | Positive | 0.494 | SD | 0.111 | Not reported | p < 0.01 | Regular PD vs Control | Endline | 141 | RCT / ITT | Table 2, PDF p. 17 | Main specification; robust SEs |
+| PD → Teaching Practice | Mathematics teaching practice (14-item observation mean index) | Positive | 0.637 | SD | 0.117 | Not reported | p < 0.01 | PD-plus-Workbook vs Control | Endline | 165 | RCT / ITT | Table 2, PDF p. 17 | Workbook arm includes supplemental classes (PDF pp. 7–8) |
+| PD → Teaching Practice | Physics teaching practice (14-item observation mean index) | Positive | 0.771 | SD | 0.128 | Not reported | p < 0.01 | PD-plus-Workbook vs Control | Endline | 141 | RCT / ITT | Table 2, PDF p. 17 | Workbook arm includes supplemental classes (PDF pp. 7–8) |
+| PD → Teacher Knowledge | Mathematics teacher content knowledge test | Positive | 0.383 | SD | 0.201 | Not reported | p < 0.05 | Regular PD vs Control | Endline | 165 | RCT / ITT | Table 3, PDF p. 19 | Main specification; no baseline teacher knowledge test |
+| PD → Teacher Knowledge | Physics teacher content knowledge test | Positive | 0.381 | SD | 0.228 | Not reported | p < 0.10 | Regular PD vs Control | Endline | 141 | RCT / ITT | Table 3, PDF p. 19 | Main specification; no baseline teacher knowledge test |
+| PD → Teacher Knowledge | Mathematics teacher content knowledge test | Positive | 0.479 | SD | 0.181 | Not reported | p < 0.05 | PD-plus-Workbook vs Control | Endline | 165 | RCT / ITT | Table 3, PDF p. 19 | Workbook arm includes supplemental classes |
+| PD → Teacher Knowledge | Physics teacher content knowledge test | Positive | 0.626 | SD | 0.215 | Not reported | p < 0.01 | PD-plus-Workbook vs Control | Endline | 141 | RCT / ITT | Table 3, PDF p. 19 | Workbook arm includes supplemental classes |
+| PD → Student Achievement | Mathematics student test score (normalized) | Insignificant | 0.004 | SD | 0.102 | Not reported | Not significant | Regular PD vs Control | Endline | 1589 | RCT / ITT | Table 5, PDF p. 23 | Main specification; SEs clustered at school |
+| PD → Student Achievement | Physics student test score (normalized) | Insignificant | -0.064 | SD | 0.127 | Not reported | Not significant | Regular PD vs Control | Endline | 1356 | RCT / ITT | Table 5, PDF p. 23 | Main specification; SEs clustered at school |
+| PD → Student Achievement | Mathematics student test score (normalized) | Insignificant | 0.143 | SD | 0.103 | Not reported | Not significant | PD-plus-Workbook vs Control | Endline | 1589 | RCT / ITT | Table 5, PDF p. 23 | Workbook + supplemental instructional time confounds pure PD interpretation |
+| PD → Student Achievement | Physics student test score (normalized) | Positive | 0.250 | SD | 0.124 | Not reported | p < 0.05 | PD-plus-Workbook vs Control | Endline | 1356 | RCT / ITT | Table 5, PDF p. 23 | Workbook + supplemental instructional time confounds pure PD interpretation |
+
+---
+
 ## 1. Citation
 
 **Citation key:** `kozuka2025`

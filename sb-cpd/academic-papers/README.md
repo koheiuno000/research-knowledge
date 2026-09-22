@@ -99,6 +99,8 @@ Structured paper summary (academic-papers/<category>/*.md)
   ↓
 Evidence Mapping
   ↓
+Effect Summary (quantitative estimates, when applicable)
+  ↓
 Primary category (folder)
   ↓
 BibTeX entry (literature-review/references.bib)
@@ -110,7 +112,16 @@ Generate integrated literature review
 Commit
 ```
 
-1. **Individual paper summaries** under `academic-papers/` are the **substantive source of truth** (findings, Evidence Mapping, interpretation).
+1. **Individual paper summaries** under `academic-papers/` are the **substantive source of truth** (findings, Evidence Mapping, Effect Summary, interpretation).
+
+### Evidence Mapping vs Effect Summary
+
+- **Evidence Mapping** records whether each conceptual relationship was **examined** and what **type of evidence** applies (RCT, association, synthesis, etc.). It does not store point estimates.
+- **Effect Summary** records **structured quantitative results** for estimated relationships: direction (using the controlled vocabulary below), estimate, unit, reported SE/p-value/significance, comparison/arm, time point, effect-specific sample, identification, and source (table/page).
+- **Direction rule:** statistically insignificant coefficients are **`Insignificant`**, not Positive/Negative, regardless of sign. **Direction does not imply causality**—interpret with **Identification** (e.g. RCT/ITT vs cross-study association).
+- **p-value vs Significance:** **p-value** = exact numerical p-value if reported, else `Not reported` (never calculated from SEs/CIs/stars). **Significance** = reported conclusion or threshold (including stars/notes). Example: `Not reported` + `p < 0.05` is valid when only stars are given.
+- **Relationship labels:** use the estimand the row represents (e.g. Popova bivariate regressions → `PD design characteristic → Program impact`, distinct from intervention ITT rows under `PD → Student Achievement`).
+- **Approved taxonomy (SB-CPD):** `../literature-review/relationship_taxonomy.json` (documented in `relationship_taxonomy.md`). Build tools flag Effect Summary relationships not in that list; unknown labels are **not** auto-approved.
 2. **`literature-review/references.bib`** is the **bibliographic source of truth**.
 3. **`literature-review/literature_review.md`** is a **generated, derived** evidence dashboard—do **not** manually maintain paper-level findings there.
 4. **`literature-review/literature_synthesis.md`** is a separate, **researcher-written** narrative synthesis (not generated).

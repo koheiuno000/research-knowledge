@@ -45,6 +45,49 @@ Mark **Examined = Yes** only if the paper **empirically examines that relationsh
 
 **Example (PD intervention, not pathway evidence):** PD increases teaching practice and does not significantly increase student achievement → **PD → Practice = Yes**, **PD → Achievement = Yes/No as estimated**, **Teaching Practice → Student Achievement = No** unless that relationship is directly estimated.
 
+## Effect Summary
+
+Structured **quantitative** results for relationships that were **estimated** in the paper. Complements Evidence Mapping (which records whether a relationship was examined and the evidence type—not the point estimate).
+
+**Evidence Mapping** = examined? + evidence type. **Effect Summary** = direction, magnitude, uncertainty, comparison, design, and source for each reported estimate.
+
+| Relationship | Outcome | Direction | Estimate | Unit | SE | p-value | Significance | Comparison / Arm | Time Point | Sample | Identification | Source | Notes |
+|---|---|---:|---|---:|---|---|---|---|---|---|---|---|
+
+**Direction** (controlled vocabulary): `Positive` | `Negative` | `Insignificant` | `Mixed` | `Not applicable`
+
+- **Positive** / **Negative** = statistically significant association or effect in that direction **as reported**—interpret together with **Identification** (Direction alone does not imply causality).
+- **Insignificant** = not statistically significant (even if the point estimate is above or below zero).
+- **Mixed** = reserve for display-level aggregation across rows; prefer separate rows for different outcomes, arms, or time points.
+- **Not applicable** = e.g. some review-level or non-directional results.
+
+**Future display (not stored in Direction):** e.g. Identification `RCT / ITT` + Direction `Positive` → “positive effect”; Identification `Cross-study association` + Direction `Positive` → “positive association”.
+
+**p-value** vs **Significance** (different fields):
+
+- **p-value** = the exact numerical p-value reported by the source. If not explicitly reported, use `Not reported` (do not derive from SEs, test statistics, confidence intervals, or stars).
+- **Significance** = the statistical conclusion or threshold reported by the source, including table stars and table notes (e.g. `p < 0.05`, `Not significant`).
+
+Valid example: `p-value: Not reported` and `Significance: p < 0.05` when the source uses stars/thresholds only.
+
+Use relationship labels that match the **estimand** (e.g. cross-program design associations → `PD design characteristic → Program impact`, not `PD → Student Achievement`).
+
+### Relationship taxonomy (research-area specific)
+
+**Relationship** is not free text. Map effects to an **approved label** for that research area (see `<area>/literature-review/relationship_taxonomy.json` when present).
+
+- **Relationship** = broad conceptual pathway (e.g. `PD → Student Achievement`).
+- **Outcome** = specific measured construct (e.g. mathematics achievement, lesson enactment as a design characteristic).
+- **Effect row** = one estimate (outcome × comparison × time point × specification).
+
+Do **not** create a new Relationship because terminology differs—normalize to the approved taxonomy when conceptually the same. If no approved label fits, use **Proposed new relationship** in Notes and flag for researcher approval; do not add the label to the taxonomy without approval.
+
+Other research areas (preschool, edtech, climate, etc.) will define **their own** taxonomies later; SB-CPD labels do not apply globally.
+
+Do **not** label a positive but insignificant coefficient as Positive. Do **not** calculate p-values, SEs, or sample sizes that the source does not report. Use `Not reported`, `Not applicable`, or `Not reported for this estimate` as appropriate.
+
+One row per distinct estimate (outcome × arm × time point). Verify numbers against the local PDF.
+
 ## 4. Conceptual Focus
 Indicate which constructs or relationships the paper is **primarily about** (for quick scanning):
 

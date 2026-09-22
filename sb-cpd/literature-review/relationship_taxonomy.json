@@ -1,0 +1,48 @@
+{
+  "research_area": "sb-cpd",
+  "version": 1,
+  "description": "Approved Relationship labels for Effect Summary rows in the SB-CPD research area. Evidence Mapping uses the seven core pathways; Effect Summary may additionally use cross-program design associations.",
+  "relationships": [
+    {
+      "label": "PD → Teacher Knowledge",
+      "kind": "core_pathway",
+      "summary": "Effect of PD/intervention on teacher knowledge measures."
+    },
+    {
+      "label": "PD → Teaching Practice",
+      "kind": "core_pathway",
+      "summary": "Effect of PD/intervention on teaching practice measures."
+    },
+    {
+      "label": "PD → Student Achievement",
+      "kind": "core_pathway",
+      "summary": "Effect of PD/intervention on student achievement or learning outcomes."
+    },
+    {
+      "label": "Teacher Knowledge → Teaching Practice",
+      "kind": "core_pathway",
+      "summary": "Direct estimate linking teacher knowledge to teaching practice."
+    },
+    {
+      "label": "Teaching Practice → Student Achievement",
+      "kind": "core_pathway",
+      "summary": "Direct estimate linking teaching practice to student achievement."
+    },
+    {
+      "label": "Teacher Knowledge → Student Achievement",
+      "kind": "core_pathway",
+      "summary": "Direct estimate linking teacher knowledge to student achievement."
+    },
+    {
+      "label": "Knowledge → Practice → Achievement",
+      "kind": "core_pathway",
+      "summary": "Mediation or pathway analysis across knowledge, practice, and achievement."
+    },
+    {
+      "label": "PD design characteristic → Program impact",
+      "kind": "cross_program_association",
+      "summary": "Cross-study association between a PD program design characteristic and standardized program-level student achievement impacts across evaluated programs (not an ITT effect of receiving PD on student achievement)."
+    }
+  ],
+  "relationship_aliases": {}
+}
