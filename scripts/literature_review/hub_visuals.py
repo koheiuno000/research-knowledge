@@ -3,17 +3,17 @@
 from __future__ import annotations
 
 AREA_ACCENTS: dict[str, dict[str, str]] = {
-    "sb-cpd": {"fg": "#2d4a6f", "soft": "#e8eef5", "glow": "#c5d4e8"},
-    "preschool-impact": {"fg": "#6b4a62", "soft": "#f3ecf1", "glow": "#e0cdd8"},
-    "edtech-ai": {"fg": "#3d4a6b", "soft": "#eceef5", "glow": "#cdd4e8"},
-    "skills-tvet": {"fg": "#4a5540", "soft": "#eef0ea", "glow": "#d4dcc8"},
-    "climate-education": {"fg": "#2f5a52", "soft": "#e9f2ef", "glow": "#c8ddd6"},
+    "sb-cpd": {"fg": "#1e3d32", "soft": "#e8ebe6", "glow": "#c5d4c8"},
+    "preschool-impact": {"fg": "#5a4a42", "soft": "#f0ebe6", "glow": "#ddd4c8"},
+    "edtech-ai": {"fg": "#3d5248", "soft": "#eceee9", "glow": "#cdd8cf"},
+    "skills-tvet": {"fg": "#4a5540", "soft": "#eeede8", "glow": "#d4dcc8"},
+    "climate-education": {"fg": "#2f5a52", "soft": "#e9efec", "glow": "#c8ddd6"},
 }
 
 
 def area_icon_svg(icon_id: str, accent_fg: str) -> str:
-    """Simple original line icons (24×24 viewBox)."""
-    stroke = accent_fg
+    """Simple original line icons (24×24 viewBox). Use accent_fg='currentColor' for CSS-driven stroke."""
+    stroke = "currentColor" if accent_fg == "currentColor" else accent_fg
     common = f'fill="none" stroke="{stroke}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"'
     icons = {
         "teachers": f"""
@@ -54,17 +54,65 @@ def area_icon_svg(icon_id: str, accent_fg: str) -> str:
 
 
 def hero_abstract_svg() -> str:
-    """Decorative abstract shapes for hero (CSS-complementary)."""
+    """Legacy alias for area pages."""
+    return hero_knowledge_portal_svg()
+
+
+def hero_knowledge_portal_svg() -> str:
+    """Original abstract: education, evidence networks, global development."""
     return """
-<svg class="hero-deco" viewBox="0 0 400 200" preserveAspectRatio="xMaxYMid slice" aria-hidden="true">
+<svg class="hero-portal" viewBox="0 0 420 320" aria-hidden="true">
   <defs>
-    <linearGradient id="hg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#2d4a6f" stop-opacity="0.06"/>
-      <stop offset="100%" stop-color="#2f5a52" stop-opacity="0.02"/>
-    </linearGradient>
+    <clipPath id="globeClip">
+      <circle cx="210" cy="158" r="118"/>
+    </clipPath>
   </defs>
-  <rect width="400" height="200" fill="url(#hg)"/>
-  <circle cx="320" cy="60" r="48" fill="#2d4a6f" fill-opacity="0.04"/>
-  <circle cx="280" cy="120" r="72" fill="#2f5a52" fill-opacity="0.03"/>
-  <path d="M0 160 Q120 120 240 150 T400 140 L400 200 L0 200 Z" fill="#2d4a6f" fill-opacity="0.03"/>
+  <rect width="420" height="320" fill="#f7f4ee"/>
+  <!-- subtle paper / horizon -->
+  <path d="M0 248 Q105 228 210 238 T420 232 L420 320 L0 320 Z" fill="#e8e0d4" opacity="0.55"/>
+  <path d="M24 252 Q120 242 210 248 T396 244" fill="none" stroke="#6b7f6e" stroke-width="0.75" opacity="0.35"/>
+  <!-- globe -->
+  <circle cx="210" cy="158" r="118" fill="none" stroke="#1e3d32" stroke-width="1.25" opacity="0.22"/>
+  <circle cx="210" cy="158" r="118" fill="#1e3d32" fill-opacity="0.04"/>
+  <g clip-path="url(#globeClip)" stroke="#2a5245" stroke-width="0.85" fill="none" opacity="0.35">
+    <ellipse cx="210" cy="158" rx="118" ry="38"/>
+    <ellipse cx="210" cy="158" rx="118" ry="68"/>
+    <ellipse cx="210" cy="158" rx="48" ry="118"/>
+    <ellipse cx="210" cy="158" rx="88" ry="118"/>
+    <path d="M92 158 H328"/>
+  </g>
+  <!-- evidence nodes -->
+  <g fill="#1e3d32" opacity="0.55">
+    <circle cx="118" cy="112" r="3.5"/>
+    <circle cx="168" cy="88" r="2.5"/>
+    <circle cx="268" cy="96" r="3"/>
+    <circle cx="302" cy="142" r="2.5"/>
+    <circle cx="248" cy="198" r="3.5"/>
+    <circle cx="148" cy="188" r="2.5"/>
+    <circle cx="210" cy="128" r="4"/>
+  </g>
+  <g stroke="#6b5344" stroke-width="0.75" opacity="0.4">
+    <line x1="118" y1="112" x2="168" y2="88"/>
+    <line x1="168" y1="88" x2="210" y2="128"/>
+    <line x1="210" y1="128" x2="268" y2="96"/>
+    <line x1="268" y1="96" x2="302" y2="142"/>
+    <line x1="210" y1="128" x2="248" y2="198"/>
+    <line x1="118" y1="112" x2="148" y2="188"/>
+    <line x1="148" y1="188" x2="248" y2="198"/>
+  </g>
+  <!-- open book (knowledge) -->
+  <g transform="translate(48 218)" fill="none" stroke="#1e3d32" stroke-width="1.1" stroke-linecap="round" opacity="0.5">
+    <path d="M0 8 C16 0 32 0 48 8 V44 C32 36 16 36 0 44 Z"/>
+    <path d="M48 8 C64 0 80 0 96 8 V44 C80 36 64 36 48 44 Z"/>
+    <line x1="48" y1="8" x2="48" y2="44"/>
+  </g>
+  <!-- document stack -->
+  <g transform="translate(318 228)" fill="none" stroke="#6b7f6e" stroke-width="1" opacity="0.45">
+    <rect x="0" y="6" width="52" height="36" rx="2"/>
+    <line x1="8" y1="18" x2="44" y2="18"/>
+    <line x1="8" y1="26" x2="36" y2="26"/>
+    <rect x="6" y="0" width="52" height="36" rx="2" opacity="0.6"/>
+  </g>
+  <!-- learning arc -->
+  <path d="M178 268 Q210 252 242 268" fill="none" stroke="#2a5245" stroke-width="1" opacity="0.3"/>
 </svg>"""

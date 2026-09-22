@@ -17,7 +17,8 @@ from .dashboard_config import (
 )
 from .detail_sections import build_expandable_sections, parse_doi_url
 from .engine import MATRIX_RELATIONSHIPS, PaperSummary, discover_summaries, parse_summary
-from .hub_visuals import AREA_ACCENTS, area_icon_svg, hero_abstract_svg
+from .hub_root import ROOT_HUB_STYLES, build_root_body
+from .hub_visuals import AREA_ACCENTS, area_icon_svg
 from .metrics import (
     count_intervention_studies,
     count_rct_causal_papers,
@@ -32,11 +33,11 @@ HUB_STYLES = """
   --bg: #f4f3f0;
   --bg-hero: #faf9f7;
   --surface: #ffffff;
-  --text: #1c1c1c;
-  --muted: #6b6b6b;
-  --muted-light: #949494;
-  --line: rgba(0,0,0,0.06);
-  --accent: #2d4a6f;
+  --text: #1a2420;
+  --muted: #5c6560;
+  --muted-light: #8a928c;
+  --line: rgba(30, 61, 50, 0.08);
+  --accent: #2a5245;
   --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-serif: ui-serif, "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
   --radius: 14px;
@@ -66,8 +67,27 @@ a:hover { text-decoration: underline; }
   gap: 1rem;
 }
 .hub-top .hub-meta { font-size: 0.8rem; color: var(--muted-light); letter-spacing: 0.01em; }
-.hub-top .hub-nav-link { font-size: 0.85rem; color: var(--muted); }
-.hub-top .hub-nav-link:hover { color: var(--accent); }
+.hub-top .hub-nav-link {
+  font-size: 0.85rem;
+  color: var(--muted);
+  text-decoration: none;
+  border-radius: 4px;
+  padding: 0.2rem 0.35rem;
+  margin: -0.2rem -0.35rem;
+  transition: color 0.18s ease, background 0.18s ease;
+}
+.hub-top .hub-nav-link:hover,
+.hub-top .hub-nav-link:focus-visible {
+  color: var(--accent);
+  background: rgba(42, 82, 69, 0.08);
+  text-decoration: underline;
+  text-decoration-color: var(--muted-light);
+  text-underline-offset: 2px;
+  outline: none;
+}
+.hub-top .hub-nav-link:focus-visible {
+  box-shadow: inset 0 0 0 1px rgba(42, 82, 69, 0.2);
+}
 .hub-main { flex: 1; max-width: 1120px; margin: 0 auto; padding: 0 1.5rem 3rem; width: 100%; }
 
 /* Hero */
@@ -92,8 +112,9 @@ a:hover { text-decoration: underline; }
   letter-spacing: -0.03em;
   margin: 0 0 0.5rem;
   line-height: 1.15;
-  max-width: 14ch;
+  max-width: 22ch;
 }
+.hub-root .hero h1 { max-width: none; }
 .hero .lead {
   font-size: 1.05rem;
   color: var(--muted);
@@ -186,6 +207,14 @@ a.area-tile:hover {
   color: var(--muted);
   letter-spacing: 0.02em;
 }
+.tile-open {
+  display: block;
+  margin-top: 0.65rem;
+  font-size: 0.72rem;
+  color: var(--muted-light);
+  letter-spacing: 0.02em;
+}
+a.area-tile:hover .tile-open { color: var(--accent); }
 
 .hub-footer {
   max-width: 1120px;
@@ -423,265 +452,11 @@ def _paper_payload(p: PaperSummary) -> dict:
     }
 
 
-AREA_DASHBOARD_JS = """
-(function () {
-  const papers = window.RKB_PAPERS || [];
-  const q = document.getElementById('filter-q');
-  const country = document.getElementById('filter-country');
-  const region = document.getElementById('filter-region');
-  const category = document.getElementById('filter-category');
-  const ptype = document.getElementById('filter-paper-type');
-  const rel = document.getElementById('filter-relationship');
-  const countEl = document.getElementById('filter-count');
-
-  function norm(s) { return (s || '').toLowerCase(); }
-
-  function paperSearchBlob(p) {
-    return [
-      p.citation_key, p.author_label, p.full_citation, p.country, p.region,
-      p.setting, p.paper_type, p.primary_category, p.category_folder,
-      p.core_contribution, p.research_question
-    ].concat(p.key_findings || []).join(' ').toLowerCase();
-  }
-
-  function matchesRelationship(p, relName) {
-    if (!relName) return true;
-    const row = (p.evidence_mapping || []).find(r => r.relationship === relName);
-    if (!row) return false;
-    const ex = norm(row.examined);
-    return ex === 'yes' || ex === 'y';
-  }
-
-  function applyFilters() {
-    const term = norm(q.value.trim());
-    const ids = new Set();
-    papers.forEach(p => {
-      let ok = true;
-      if (term && !paperSearchBlob(p).includes(term)) ok = false;
-      if (country.value && p.country !== country.value) ok = false;
-      if (region.value && p.region !== region.value) ok = false;
-      if (category.value) {
-        if (p.primary_category !== category.value && p.category_folder !== category.value
-            && p.category_label !== category.value) ok = false;
-      }
-      if (ptype.value && p.paper_type !== ptype.value) ok = false;
-      if (!matchesRelationship(p, rel.value)) ok = false;
-      if (ok) ids.add(p.id);
-    });
-    document.querySelectorAll('[data-paper-id]').forEach(el => {
-      const pid = el.getAttribute('data-paper-id');
-      el.classList.toggle('hidden', !ids.has(pid));
-    });
-    if (countEl) countEl.textContent = ids.size + ' / ' + papers.length + ' papers';
-  }
-
-  [q, country, region, category, ptype, rel].forEach(el => {
-    if (el) el.addEventListener('input', applyFilters);
-    if (el) el.addEventListener('change', applyFilters);
-  });
-
-  document.querySelectorAll('.paper-card .paper-summary-row').forEach(row => {
-    row.addEventListener('click', () => {
-      const card = row.closest('.paper-card');
-      if (card) card.classList.toggle('open');
-    });
-  });
-
-  applyFilters();
-})();
-"""
-
-
-def build_area_html(
-    papers: list[PaperSummary],
-    area: ResearchAreaConfig,
-    hub: HubDisplayConfig | None = None,
-) -> str:
-    hub = hub or DEFAULT_HUB_DISPLAY
-    papers_sorted = sorted(papers, key=lambda x: x.citation_key)
-    payloads = [_paper_payload(p) for p in papers_sorted]
-    fv = filter_values(papers)
-    n_countries = len(unique_countries(papers))
-    n_rct = count_rct_causal_papers(papers)
-    n_reviews = count_reviews_syntheses(papers)
-
-    title = "Teacher Development / SB-CPD"
-    subtitle = "School-Based Continuing Professional Development"
-    accent = AREA_ACCENTS.get("sb-cpd", AREA_ACCENTS["sb-cpd"])
-
-    map_rows = []
-    for p in papers_sorted:
-        pid = p.citation_key if p.citation_key != "Not recorded" else p.path.stem
-        label = p.citation_key if p.citation_key != "Not recorded" else p.author_label
-        cells = []
-        for rel in MATRIX_RELATIONSHIPS:
-            disp = evidence_cell_label(p, rel)
-            cls = _badge_class(disp)
-            cells.append(f'<td><span class="badge {cls}">{_esc(disp)}</span></td>')
-        map_rows.append(
-            f'<tr class="evidence-map-row" data-paper-id="{_esc(pid)}">'
-            f'<td class="paper-col" title="{_esc(label)}">{_esc(label)}</td>'
-            + "".join(cells)
-            + "</tr>"
-        )
-
-    th_rel = "".join(f'<th class="rel">{_esc(r)}</th>' for r in MATRIX_RELATIONSHIPS)
-
-    def option_list(values: list[str]) -> str:
-        return "".join(f'<option value="{_esc(v)}">{_esc(v)}</option>' for v in values)
-
-    paper_cards = []
-    for _p, data in zip(papers_sorted, payloads):
-        pid = data["id"]
-        cite = data["full_citation"] if data["full_citation"] != "Not recorded" else data["author_label"]
-        doi_link = ""
-        if data.get("doi_url"):
-            doi_link = (
-                f' <a href="{_esc(data["doi_url"])}" target="_blank" rel="noopener" '
-                f'onclick="event.stopPropagation()">DOI</a>'
-            )
-
-        detail_blocks = []
-        if data["research_question"] and data["research_question"] != "Not recorded":
-            detail_blocks.append(
-                f'<h4>Research Question</h4><p class="block">{_esc(data["research_question"])}</p>'
-            )
-        for label, body in data["expandable"].items():
-            if label == "Research Question":
-                continue
-            detail_blocks.append(f'<h4>{_esc(label)}</h4><p class="block">{_esc(body)}</p>')
-        if data["key_findings"]:
-            items = "".join(f"<li>{_esc(f)}</li>" for f in data["key_findings"])
-            detail_blocks.append(f"<h4>Main Findings (summary)</h4><ul>{items}</ul>")
-        if data["evidence_mapping"]:
-            em_items = []
-            for row in data["evidence_mapping"]:
-                em_items.append(
-                    f"<li><strong>{_esc(row['relationship'])}:</strong> "
-                    f"{_esc(row['display'])}</li>"
-                )
-            detail_blocks.append(f"<h4>Evidence Mapping</h4><ul>{''.join(em_items)}</ul>")
-        if data["relevance"]:
-            items = "".join(f"<li>{_esc(r)}</li>" for r in data["relevance"])
-            detail_blocks.append(f"<h4>Relevance to My Study</h4><ul>{items}</ul>")
-        detail_blocks.append(
-            f'<p class="meta">Source: <code>{_esc(data["source_path"])}</code></p>'
-        )
-
-        paper_cards.append(
-            f'<article class="paper-card" data-paper-id="{_esc(pid)}">'
-            f'<div class="paper-summary-row" role="button" tabindex="0">'
-            f'<div><div class="cite">{_esc(cite)}{doi_link}</div>'
-            f'<div class="meta">{_esc(data["author_label"])}</div></div>'
-            f'<div>{_esc(data["country"])}</div>'
-            f'<div>{_esc(data["region"])}</div>'
-            f'<div class="meta">{_esc(truncate_setting(data["setting"], 80))}</div>'
-            f'<div>{_esc(truncate_setting(data["paper_type"], 48))}</div>'
-            f'<div class="meta">{_esc(data["category_label"])}</div>'
-            f'<div class="meta">{_esc(truncate_setting(data["core_contribution"], 120))}</div>'
-            f"</div>"
-            f'<div class="paper-details">{"".join(detail_blocks)}</div>'
-            f"</article>"
-        )
-
-    json_papers = json.dumps(payloads, ensure_ascii=False)
-
-    stat_line = (
-        f"<strong>{len(papers)}</strong> papers"
-        f'<span class="dot">·</span><strong>{n_countries}</strong> countries'
-        f'<span class="dot">·</span><strong>{n_rct}</strong> RCT / causal'
-        f'<span class="dot">·</span><strong>{n_reviews}</strong> reviews'
-    )
-
-    return f"""<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{_esc(title)} — Research Knowledge Base</title>
-<style>{HUB_STYLES}</style>
-</head>
-<body class="hub-shell area-page">
-<header class="hub-top">
-<a class="hub-nav-link" href="../../dashboard/index.html">← Knowledge Base</a>
-<span class="hub-meta">{_hub_meta(hub)}</span>
-</header>
-<main class="hub-main">
-<section class="hero">
-<div class="area-tile-visual" style="width:2.75rem;height:2.75rem;margin-bottom:0.75rem;border-radius:10px;background:{accent["soft"]};">
-{area_icon_svg("teachers", accent["fg"])}
-</div>
-<h1>{_esc(title)}</h1>
-<p class="lead">{_esc(subtitle)}</p>
-</section>
-<div class="stat-strip">{stat_line}</div>
-
-<section class="section">
-<p class="section-head">Search &amp; filter</p>
-<div class="filters">
-<label>Search<input type="search" id="filter-q" placeholder="Search…" autocomplete="off"></label>
-<label>Country<select id="filter-country"><option value="">All</option>{option_list(fv["countries"])}</select></label>
-<label>Region<select id="filter-region"><option value="">All</option>{option_list(fv["regions"])}</select></label>
-<label>Category<select id="filter-category"><option value="">All</option>{option_list(fv["primary_categories"])}</select></label>
-<label>Type<select id="filter-paper-type"><option value="">All</option>{option_list(fv["paper_types"])}</select></label>
-<label>Relationship<select id="filter-relationship"><option value="">Any</option>{option_list(MATRIX_RELATIONSHIPS)}</select></label>
-<p class="filter-hint" id="filter-count">{len(papers)} / {len(papers)} papers</p>
-</div>
-</section>
-
-<section class="section">
-<p class="section-head">Evidence map</p>
-<div class="evidence-map-wrap">
-<table class="evidence-map" aria-label="Evidence map by paper">
-<thead><tr><th>Paper</th>{th_rel}</tr></thead>
-<tbody>
-{"".join(map_rows)}
-</tbody>
-</table>
-</div>
-<p class="map-legend">Examined relationships show evidence type. &ldquo;No direct evidence&rdquo; = not examined in that paper.</p>
-</section>
-
-<section class="section">
-<p class="section-head">Paper library</p>
-<div class="paper-list" id="paper-list">
-{"".join(paper_cards)}
-</div>
-</section>
-</main>
-<footer class="hub-footer">{_hub_meta(hub)}</footer>
-<script>window.RKB_PAPERS = {json_papers};</script>
-<script>{AREA_DASHBOARD_JS}</script>
-</body>
-</html>
-"""
-
-
 def truncate_setting(s: str, n: int) -> str:
     s = re.sub(r"\s+", " ", s).strip()
     if len(s) <= n:
         return s
     return s[: n - 1] + "…"
-
-
-def _area_tile(
-    display: ResearchAreaDisplay,
-    paper_count: int,
-    href: str | None,
-) -> str:
-    accent = AREA_ACCENTS.get(display.slug, AREA_ACCENTS["sb-cpd"])
-    tags = "".join(f"<span>{_esc(t)}</span>" for t in display.topic_tags)
-    count_label = f"<b>{paper_count}</b> paper{'s' if paper_count != 1 else ''}"
-    icon = area_icon_svg(display.icon_id, accent["fg"])
-    inner = (
-        f'<div class="area-tile-visual" style="background:{accent["soft"]}">{icon}</div>'
-        f"<h2>{_esc(display.card_title)}</h2>"
-        f'<p class="area-count">{count_label}</p>'
-        f'<div class="tags" style="--tag-bg:{accent["soft"]}">{tags}</div>'
-    )
-    if href:
-        return f'<a class="area-tile" href="{_esc(href)}">{inner}</a>'
-    return f'<div class="area-tile is-empty" aria-disabled="true">{inner}</div>'
 
 
 def build_root_html(
@@ -691,7 +466,7 @@ def build_root_html(
     hub = hub or DEFAULT_HUB_DISPLAY
     areas = all_research_areas(repo_root)
     all_papers: list[PaperSummary] = []
-    tiles: list[str] = []
+    area_rows: list[tuple[ResearchAreaDisplay, int, str | None]] = []
 
     for display in areas:
         cfg = display.config_factory(repo_root)
@@ -702,51 +477,29 @@ def build_root_html(
         href = None
         if n and display.html_relative_from_dashboard:
             href = display.html_relative_from_dashboard
-        tiles.append(_area_tile(display, n, href))
+        area_rows.append((display, n, href))
 
-    n_areas = len(areas)
-    n_papers = len(all_papers)
-    n_countries = len(unique_countries(all_papers))
-    n_interventions = count_intervention_studies(all_papers)
-    n_reviews = count_reviews_syntheses(all_papers)
-
-    stat_strip = (
-        f"<strong>{n_papers}</strong> Reviewed Papers"
-        f'<span class="dot">·</span><strong>{n_countries}</strong> Countries'
-        f'<span class="dot">·</span><strong>{n_areas}</strong> Research Areas'
-        f'<span class="dot">·</span><strong>{n_interventions}</strong> Intervention'
-        f'<span class="dot">·</span><strong>{n_reviews}</strong> Review/Synthesis'
-    )
+    body = build_root_body(repo_root, hub, area_rows, all_papers)
 
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Research Knowledge Base</title>
-<style>{HUB_STYLES}</style>
+<title>Research Knowledge Base — Evidence for Education &amp; Development</title>
+<style>{HUB_STYLES}{ROOT_HUB_STYLES}</style>
 </head>
 <body class="hub-shell hub-root">
-<header class="hub-top">
-<span class="hub-meta">{_hub_meta(hub)}</span>
+<header class="hub-sitehead">
+<a class="site-id" href="index.html">Research Knowledge Base</a>
+<nav class="site-nav" aria-label="Page sections">
+<a href="#explore">Explore</a>
+<a href="#browse">Browse</a>
+</nav>
 </header>
 <main class="hub-main">
-<section class="hero">
-<div class="hero-deco-wrap">{hero_abstract_svg()}</div>
-<h1>Research Knowledge Base</h1>
-<p class="lead">Personal evidence library for education and development research</p>
-<p class="tagline">Explore · Connect · Build Knowledge</p>
-</section>
-
-<div class="stat-strip">{stat_strip}</div>
-
-<section class="areas-section" aria-label="Research areas">
-<div class="areas-grid">
-{"".join(tiles)}
-</div>
-</section>
+{body}
 </main>
-<footer class="hub-footer">{_hub_meta(hub)}</footer>
 </body>
 </html>
 """
@@ -757,6 +510,8 @@ def write_area_html(
     area: ResearchAreaConfig,
     hub: HubDisplayConfig | None = None,
 ) -> None:
+    from .area_page_html import build_area_html
+
     html_out = build_area_html(papers, area, hub=hub)
     area.output_html.parent.mkdir(parents=True, exist_ok=True)
     area.output_html.write_text(html_out, encoding="utf-8")
