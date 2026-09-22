@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Callable
 
-from .config import ResearchAreaConfig, sb_cpd_config
+from .config import ResearchAreaConfig, climate_education_config, sb_cpd_config
 
 
 @dataclass(frozen=True)
@@ -93,12 +93,8 @@ def all_research_areas(repo_root: Path) -> list[ResearchAreaDisplay]:
             card_title="Climate & Education",
             topic_tags=("Climate", "Resilience", "Sustainability"),
             icon_id="climate",
-            short_description="Climate change and education evidence.",
-            config_factory=lambda root: ResearchAreaConfig(
-                slug="climate-education",
-                title="Climate Education",
-                repo_root=root,
-            ),
-            html_relative_from_dashboard="",
+            short_description="Extreme weather, schooling disruption, and education outcomes.",
+            config_factory=lambda root: climate_education_config(root),
+            html_relative_from_dashboard="../climate-education/literature-review/literature_review.html",
         ),
     ]

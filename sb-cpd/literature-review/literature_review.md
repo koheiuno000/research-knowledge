@@ -4,7 +4,7 @@
 
 > **Sources of truth:** substantive content → paper summaries; bibliographic metadata → `sb-cpd/literature-review/references.bib`.
 
-*Generated: 2026-09-22 22:39 UTC*
+*Generated: 2026-09-22 23:10 UTC*
 
 ---
 
@@ -54,7 +54,7 @@ Some papers evaluate a **specific PD intervention** (folder 07); others **review
 | loyalka2019 | RCT | RCT | RCT | No direct evidence | No direct evidence | No direct evidence | No direct evidence | No direct evidence |
 | popova2022 | No direct evidence | No direct evidence | Cross-study synthesis | No direct evidence | No direct evidence | No direct evidence | No direct evidence | Cross-study assoc. |
 
-**Legend:** RCT = randomized trial (or ITT from RCT); QE = quasi-experimental; Association = associational/correlational; Cross-study synthesis = synthesis across multiple studies/programs (not a new single-program causal estimate); Conceptual = conceptual discussion only; — = not examined in that paper.
+**Legend:** RCT = randomized trial (or ITT from RCT); QE = quasi-experimental; Association = associational/correlational; Cross-study synthesis = synthesis across multiple studies/programs (not a new single-program causal estimate); Review synthesis = narrative/selective review summarizing cited primary studies (Examined = Yes means discussed/synthesized, not independently estimated here); Conceptual = conceptual or policy pathway without direct empirical estimation in that paper; — = not examined in that paper.
 
 *A PD study with separate outcomes on knowledge and practice does **not** count as evidence on Teacher Knowledge → Teaching Practice unless that relationship is directly estimated. Cross-program associations are not causal estimates of PD features.*
 

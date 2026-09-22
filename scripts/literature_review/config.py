@@ -61,4 +61,13 @@ def sb_cpd_config(repo_root: Path | None = None) -> ResearchAreaConfig:
     )
 
 
+def climate_education_config(repo_root: Path | None = None) -> ResearchAreaConfig:
+    root = repo_root or Path(__file__).resolve().parents[2]
+    return ResearchAreaConfig(
+        slug="climate-education",
+        title="Climate Change & Education",
+        repo_root=root,
+    )
+
+
 DEFAULT_RESEARCH_AREA = "sb-cpd"

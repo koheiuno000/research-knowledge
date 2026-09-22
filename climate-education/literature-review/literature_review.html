@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Climate Change &amp; Education — Research Knowledge Base</title>
+<style>
+:root {
+  --forest: #254735;
+  --forest-dark: #193729;
+  --sage: #A8B99B;
+  --sage-light: #DCE5D5;
+  --earth: #795A42;
+  --sand: #E7D8BE;
+  --ivory: #F7F4EB;
+  --paper: #FFFCF6;
+  --stone: #E9E5DA;
+  --ink: #26342B;
+  --bg: #F7F4EB;
+  --bg-hero: #FFFCF6;
+  --surface: #FFFCF6;
+  --text: #26342B;
+  --muted: #687368;
+  --muted-light: #8a928c;
+  --line: rgba(37, 71, 53, 0.1);
+  --accent: #254735;
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-serif: ui-serif, "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  --radius: 14px;
+  --shadow: 0 1px 2px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.04);
+}
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.hub-shell { min-height: 100vh; display: flex; flex-direction: column; }
+.hub-top {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 1.25rem 1.5rem 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+.hub-top .hub-meta { font-size: 0.8rem; color: var(--muted-light); letter-spacing: 0.01em; }
+.hub-top .hub-nav-link {
+  font-size: 0.85rem;
+  color: var(--muted);
+  text-decoration: none;
+  border-radius: 4px;
+  padding: 0.2rem 0.35rem;
+  margin: -0.2rem -0.35rem;
+  transition: color 0.18s ease, background 0.18s ease;
+}
+.hub-top .hub-nav-link:hover,
+.hub-top .hub-nav-link:focus-visible {
+  color: var(--accent);
+  background: rgba(42, 82, 69, 0.08);
+  text-decoration: underline;
+  text-decoration-color: var(--muted-light);
+  text-underline-offset: 2px;
+  outline: none;
+}
+.hub-top .hub-nav-link:focus-visible {
+  box-shadow: inset 0 0 0 1px rgba(42, 82, 69, 0.2);
+}
+.hub-main { flex: 1; max-width: 1120px; margin: 0 auto; padding: 0 1.5rem 3rem; width: 100%; }
+
+/* Hero */
+.hero {
+  position: relative;
+  padding: 2.5rem 0 2rem;
+  overflow: hidden;
+}
+.hero-deco-wrap {
+  position: absolute;
+  right: -2rem;
+  top: -1rem;
+  width: min(420px, 55vw);
+  opacity: 1;
+  pointer-events: none;
+}
+.hero-deco-wrap svg { width: 100%; height: auto; display: block; }
+.hero h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  margin: 0 0 0.5rem;
+  line-height: 1.15;
+  max-width: 22ch;
+}
+.hub-root .hero h1 { max-width: none; }
+.hero .lead {
+  font-size: 1.05rem;
+  color: var(--muted);
+  margin: 0;
+  max-width: 36rem;
+  line-height: 1.5;
+}
+.hero .tagline {
+  margin: 1.25rem 0 0;
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted-light);
+}
+
+/* Compact stats */
+.stat-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+  padding: 0.75rem 0 2.5rem;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+.stat-strip strong { color: var(--text); font-weight: 600; }
+.stat-strip .dot { color: var(--line); user-select: none; }
+
+/* Area tiles */
+.areas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.25rem;
+}
+@media (min-width: 900px) {
+  .areas-grid { grid-template-columns: repeat(5, 1fr); }
+}
+@media (max-width: 640px) {
+  .areas-grid { grid-template-columns: 1fr 1fr; }
+}
+.area-tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 1.35rem 1.25rem 1.25rem;
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--line);
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  min-height: 11rem;
+}
+a.area-tile:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05), 0 12px 32px rgba(0,0,0,0.07);
+  text-decoration: none;
+}
+.area-tile.is-empty { cursor: default; opacity: 0.92; }
+.area-tile.is-empty:hover { transform: none; box-shadow: var(--shadow); }
+.area-tile-visual {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+.area-icon-svg { width: 2rem; height: 2rem; }
+.area-tile h2 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 0 0 0.35rem;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+.area-count {
+  margin: 0 0 0.75rem;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+.area-count b { color: var(--text); font-weight: 600; }
+.tags { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: auto; }
+.tags span {
+  font-size: 0.68rem;
+  padding: 0.2rem 0.45rem;
+  border-radius: 4px;
+  background: var(--tag-bg, #f0f0f0);
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}
+.tile-open {
+  display: block;
+  margin-top: 0.65rem;
+  font-size: 0.72rem;
+  color: var(--muted-light);
+  letter-spacing: 0.02em;
+}
+a.area-tile:hover .tile-open { color: var(--accent); }
+
+.hub-footer {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  font-size: 0.72rem;
+  color: var(--muted-light);
+  text-align: center;
+}
+
+/* ——— Area (evidence) dashboard ——— */
+.area-page .hero { padding: 1.5rem 0 1rem; }
+.area-page .hero h1 { font-size: clamp(1.5rem, 3vw, 2rem); max-width: none; }
+.area-page .hero .lead { font-size: 0.95rem; }
+.area-page .stat-strip { padding-bottom: 1.75rem; }
+
+.section { margin-top: 2.5rem; }
+.section-head {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted-light);
+  margin: 0 0 0.85rem;
+  font-weight: 600;
+}
+
+.filters {
+  display: grid;
+  grid-template-columns: 1.2fr repeat(5, minmax(0, 1fr));
+  gap: 0.65rem;
+  align-items: end;
+  padding: 1rem 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+@media (max-width: 960px) { .filters { grid-template-columns: 1fr 1fr; } }
+.filters label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted-light);
+}
+.filters input, .filters select {
+  font: inherit;
+  font-size: 0.85rem;
+  padding: 0.45rem 0.55rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+}
+.filter-hint { grid-column: 1 / -1; font-size: 0.78rem; color: var(--muted-light); margin: 0; }
+
+.evidence-map-wrap {
+  overflow-x: auto;
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--line);
+}
+table.evidence-map {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.76rem;
+  min-width: 880px;
+}
+table.evidence-map th, table.evidence-map td {
+  padding: 0.55rem 0.5rem;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+table.evidence-map th {
+  font-weight: 600;
+  text-align: left;
+  background: var(--bg-hero);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  color: var(--muted);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+table.evidence-map th.rel { min-width: 7rem; max-width: 9rem; line-height: 1.25; white-space: normal; }
+table.evidence-map td.paper-col { font-weight: 600; white-space: nowrap; font-size: 0.8rem; }
+
+.badge {
+  display: inline-block;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.65rem;
+  font-weight: 500;
+  line-height: 1.25;
+  white-space: normal;
+}
+.badge-rct { background: #e8f2ed; color: #1e4d3a; }
+.badge-qe { background: #eef3e8; color: #2d5016; }
+.badge-assoc { background: #f5f0e8; color: #6b4c1e; }
+.badge-synth { background: #eeedf5; color: #3d3d6b; }
+.badge-review { background: #e8eef2; color: #1a5f6e; }
+.badge-concept { background: #f0ebe3; color: #5c5348; }
+.badge-desc { background: #f2f2f2; color: #4a4a4a; }
+.badge-other { background: #f5f5f5; color: #333; }
+.badge-none { background: transparent; color: var(--muted-light); font-style: italic; }
+
+.map-legend { font-size: 0.75rem; color: var(--muted-light); margin-top: 0.65rem; line-height: 1.45; max-width: 42rem; }
+
+.paper-list { display: flex; flex-direction: column; gap: 0.5rem; }
+.paper-card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  overflow: hidden;
+}
+.paper-card.hidden { display: none; }
+.paper-summary-row {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) repeat(6, minmax(0, 1fr));
+  gap: 0.5rem;
+  padding: 0.85rem 1rem;
+  cursor: pointer;
+  align-items: start;
+  font-size: 0.82rem;
+}
+@media (max-width: 800px) { .paper-summary-row { grid-template-columns: 1fr; } }
+.paper-summary-row:hover { background: var(--bg-hero); }
+.paper-summary-row .cite { font-weight: 500; line-height: 1.35; }
+.paper-summary-row .meta { color: var(--muted); font-size: 0.78rem; }
+.paper-details {
+  display: none;
+  border-top: 1px solid var(--line);
+  padding: 1rem 1.25rem 1.35rem;
+  background: var(--bg-hero);
+  font-size: 0.875rem;
+  line-height: 1.55;
+}
+.paper-card.open .paper-details { display: block; }
+.paper-details h4 {
+  margin: 1.1rem 0 0.35rem;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted-light);
+  font-weight: 600;
+}
+.paper-details h4:first-child { margin-top: 0; }
+.paper-details .block { white-space: pre-wrap; margin: 0; }
+.paper-details ul { margin: 0.25rem 0 0; padding-left: 1.2rem; }
+.evidence-map-row.hidden { display: none; }
+
+.pathway-mini {
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin: 0.5rem 0 0;
+  letter-spacing: 0.02em;
+}
+.pathway-mini span { opacity: 0.45; margin: 0 0.35rem; }
+
+.filters-compact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 0.75rem 0 1rem;
+  border-bottom: 1px solid var(--line);
+}
+.filters-compact input[type=search] {
+  flex: 1 1 200px;
+  min-width: 160px;
+  font: inherit;
+  font-size: 0.88rem;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+}
+.filters-compact select {
+  font: inherit;
+  font-size: 0.78rem;
+  padding: 0.4rem 0.55rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--muted);
+}
+.filter-count { font-size: 0.75rem; color: var(--muted-light); margin-left: auto; }
+
+.paper-card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  padding: 1.1rem 1.2rem 1rem;
+  margin-bottom: 0.65rem;
+}
+.paper-card.hidden { display: none; }
+.paper-head {
+  margin-bottom: 0.85rem;
+}
+.paper-head-top {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.35rem 1rem;
+  align-items: flex-start;
+}
+.paper-head h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.35;
+  flex: 1 1 12rem;
+}
+.paper-venue {
+  margin: 0.35rem 0 0.4rem;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  font-weight: 500;
+  color: var(--forest, #254735);
+  max-width: 42rem;
+}
+.paper-venue em { font-style: italic; font-weight: inherit; color: inherit; }
+.paper-byline {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--muted);
+  line-height: 1.4;
+}
+.paper-meta {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+.paper-l3 .pub-block {
+  margin-bottom: 1.25rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--line);
+}
+.paper-l3 .pub-block .paper-venue {
+  margin-top: 0.15rem;
+  font-size: 0.875rem;
+}
+
+.rel-block { margin-bottom: 0.55rem; }
+.rel-block:last-of-type { margin-bottom: 0.75rem; }
+.rel-header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.5rem 1rem;
+  align-items: start;
+  cursor: pointer;
+  padding: 0.35rem 0;
+  border-radius: 6px;
+}
+.rel-header:hover { background: var(--bg-hero); }
+.rel-name {
+  font-size: 0.82rem;
+  color: var(--text);
+  line-height: 1.35;
+}
+.rel-status-wrap { text-align: right; }
+.rel-status {
+  display: block;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.rel-status.status-pos { color: #1e4d3a; }
+.rel-status.status-neg { color: #6b3030; }
+.rel-status.status-insig { color: var(--muted); }
+.rel-status.status-mixed { color: #5a4a6b; }
+.rel-status.status-assoc { color: #6b4c1e; }
+.rel-magnitude {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--muted);
+  margin-top: 0.15rem;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.rel-view-hint {
+  font-size: 0.72rem;
+  color: var(--accent);
+  margin-top: 0.2rem;
+  display: block;
+}
+
+.rel-panel {
+  display: none;
+  margin: 0.35rem 0 0.5rem 0.75rem;
+  padding-left: 0.75rem;
+  border-left: 2px solid var(--line);
+}
+.rel-block.open .rel-panel { display: block; }
+
+.effect-card {
+  background: var(--bg-hero);
+  border-radius: 10px;
+  padding: 0.75rem 0.85rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.82rem;
+}
+.effect-card h5 {
+  margin: 0 0 0.35rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+.effect-card .effect-status {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
+}
+.effect-card .effect-mag {
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+.effect-meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 0.35rem 0.75rem;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+.effect-meta dt { font-weight: 600; color: var(--muted-light); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.04em; }
+.effect-meta dd { margin: 0 0 0.35rem; color: var(--text); }
+
+.btn-text {
+  background: none;
+  border: none;
+  padding: 0.15rem 0.25rem;
+  margin-left: -0.25rem;
+  font: inherit;
+  font-size: 0.78rem;
+  color: var(--accent);
+  cursor: pointer;
+  margin-top: 0.35rem;
+  border-radius: 4px;
+  transition: color 0.18s ease, background 0.18s ease;
+}
+.btn-text:hover,
+.btn-text:focus-visible {
+  color: var(--forest-deep, #162e26);
+  background: rgba(42, 82, 69, 0.08);
+  text-decoration: underline;
+  text-decoration-color: var(--muted-light);
+  outline: none;
+}
+
+.paper-l3 {
+  display: none;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.875rem;
+  line-height: 1.55;
+}
+.paper-card.l3-open .paper-l3 { display: block; }
+.paper-l3 h4 {
+  margin: 1rem 0 0.35rem;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted-light);
+}
+.paper-l3 h4:first-child { margin-top: 0; }
+.paper-l3 .md-block ul { margin: 0.35rem 0; padding-left: 1.2rem; }
+.paper-l3 .md-block p { margin: 0.35rem 0; }
+
+body.area-climate {
+  --forest: #1a5f6e;
+  --accent: #2a7d8c;
+  --surface: #faf8f4;
+  --bg: #f4f1ea;
+  --line: #c5d8de;
+  --muted: #4a6570;
+}
+body.area-climate .hero {
+  background: linear-gradient(165deg, #faf8f4 0%, #dce8ec 55%, #c5dde4 100%);
+  border-color: #b8ccd4;
+}
+body.area-climate .paper-venue { color: var(--forest); }
+body.area-climate .climate-rain-wrap {
+  margin: -0.5rem 0 0.75rem;
+  max-width: 20rem;
+  opacity: 0.85;
+}
+</style>
+</head>
+<body class="hub-shell area-page area-climate">
+<header class="hub-top">
+<a class="hub-nav-link" href="../../dashboard/index.html">← Knowledge Base</a>
+<span class="hub-meta">Dr. Kohei Uno · Updated September 23, 2026</span>
+</header>
+<main class="hub-main">
+<section class="hero">
+<div class="area-tile-visual" style="width:2.75rem;height:2.75rem;margin-bottom:0.75rem;border-radius:10px;background:#dce8ec;">
+
+<svg viewBox="0 0 48 48" aria-hidden="true" class="area-icon-svg">
+  <circle cx="24" cy="24" r="14" fill="none" stroke="#1a5f6e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M24 10v4M24 34v4M10 24h4M34 24h4" fill="none" stroke="#1a5f6e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"/>
+  <path d="M24 18c-4 0-6 3-6 6s2 6 6 6 4 2 4 4-2 4-4 4" fill="none" stroke="#1a5f6e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+</div>
+<h1>Climate Change &amp; Education</h1>
+<div class="climate-rain-wrap">
+<svg class="climate-rain-accent" viewBox="0 0 320 48" aria-hidden="true" preserveAspectRatio="none">
+  <defs>
+    <linearGradient id="climateRainGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#7eb8c9" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#dce8ec" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect width="320" height="48" fill="url(#climateRainGrad)" opacity="0.9"/>
+  <g stroke="#1a5f6e" stroke-width="1" stroke-linecap="round" opacity="0.22">
+    <path d="M24 8v14M48 4v18M72 10v12M96 6v16M120 9v13M144 5v17M168 11v11M192 7v15M216 9v13M240 4v18M264 8v14M288 6v16"/>
+  </g>
+</svg></div>
+<p class="pathway-mini">Extreme Weather <span>→</span> School Disruption &amp; Environment <span>→</span> Learning &amp; Schooling <span>·</span> Indirect household &amp; health channels</p>
+</section>
+<div class="stat-strip"><strong>1</strong> papers<span class="dot">·</span><strong>1</strong> countries<span class="dot">·</span><strong>0</strong> empirical studies<span class="dot">·</span><strong>1</strong> review / synthesis</div>
+
+<section class="section">
+<p class="section-head">Find evidence</p>
+<div class="filters-compact">
+<input type="search" id="filter-q" placeholder="Search papers…" autocomplete="off">
+<select id="filter-country" aria-label="Country"><option value="">Country</option><option value="Multi-country (synthesis)">Multi-country (synthesis)</option></select>
+<select id="filter-region" aria-label="Region"><option value="">Region</option><option value="Multi-region (emphasis on vulnerable / developing regions in framing)">Multi-region (emphasis on vulnerable / developing regions in framing)</option></select>
+<select id="filter-category" aria-label="Category"><option value="">Category</option><option value="07 — Reviews and Synthesis">07 — Reviews and Synthesis</option><option value="07_reviews-and-synthesis">07_reviews-and-synthesis</option></select>
+<select id="filter-paper-type" aria-label="Type"><option value="">Type</option><option value="Narrative / selective review of evidence">Narrative / selective review of evidence</option></select>
+<select id="filter-relationship" aria-label="Evidence relationship"><option value="">Relationship</option><option value="Weather Shock → Learning">Weather Shock → Learning</option><option value="Weather Shock → Schooling">Weather Shock → Schooling</option><option value="Weather Shock → School Disruption">Weather Shock → School Disruption</option><option value="Weather Shock → Household Vulnerability">Weather Shock → Household Vulnerability</option><option value="Weather Shock → Health &amp; Nutrition">Weather Shock → Health &amp; Nutrition</option><option value="School Disruption → Learning">School Disruption → Learning</option><option value="Adaptation → Educational Outcomes">Adaptation → Educational Outcomes</option></select>
+<select id="filter-effect-status" aria-label="Effect status"><option value="">Effect status</option>
+<option value="positive">Positive</option>
+<option value="negative">Negative</option>
+<option value="insignificant">Insignificant</option>
+<option value="mixed">Mixed</option>
+<option value="association">Association</option>
+</select>
+<span class="filter-count" id="filter-count">1 / 1 papers</span>
+</div>
+</section>
+
+<section class="section" id="evidence-map">
+<p class="section-head">Evidence map</p>
+<div class="evidence-map-wrap">
+<table class="evidence-map" aria-label="Evidence map">
+<thead><tr><th>Paper</th><th class="rel">Weather Shock → Learning</th><th class="rel">Weather Shock → Schooling</th><th class="rel">Weather Shock → School Disruption</th><th class="rel">Weather Shock → Household Vulnerability</th><th class="rel">Weather Shock → Health &amp; Nutrition</th><th class="rel">School Disruption → Learning</th><th class="rel">Adaptation → Educational Outcomes</th></tr></thead>
+<tbody><tr class="evidence-map-row" data-paper-id="venegas2024"><td class="paper-col">venegas2024</td><td><span class="badge badge-review">Review synthesis</span></td><td><span class="badge badge-review">Review synthesis</span></td><td><span class="badge badge-review">Review synthesis</span></td><td><span class="badge badge-review">Review synthesis</span></td><td><span class="badge badge-review">Review synthesis</span></td><td><span class="badge badge-concept">Conceptual</span></td><td><span class="badge badge-none">No direct evidence</span></td></tr></tbody>
+</table>
+</div>
+    <p class="map-legend">Evidence type where examined. &ldquo;Review synthesis&rdquo; = summarized from cited studies, not a new causal estimate in that paper. &ldquo;Conceptual&rdquo; = discussed without direct estimation. &ldquo;No direct evidence&rdquo; = relationship not examined.</p>
+</section>
+
+<section class="section">
+<p class="section-head">Paper library</p>
+<div class="paper-list"><article class="paper-card" data-paper-id="venegas2024"><div class="paper-head"><div class="paper-head-top"><h3>Impacts of Extreme Weather Events on Education Outcomes: A Review of Evidence</h3><a class="paper-doi" href="https://doi.org/10.1093/wbro/lkae001" target="_blank" rel="noopener">DOI</a></div><p class="paper-venue"><em>The World Bank Research Observer</em>, vol. 39, no. 2 (2024), pp. 177–226.</p><p class="paper-byline">Venegas Marin, Schwarz &amp; Sabarwal (2024) · Narrative / selective review of evidence · Multi-country (synthesis) · Narrative / selective review of e…</p></div><button type="button" class="btn-text paper-details-toggle">View paper details</button><div class="paper-l3"><div class="pub-block"><h4>Publication</h4><p class="paper-venue"><em>The World Bank Research Observer</em>, vol. 39, no. 2 (2024), pp. 177–226.</p><p class="paper-byline"><span class="paper-pub-type"><p>Narrative / selective review of evidence</p></span></p></div><h4>Research Question</h4><div class="md-block"><p>What does available evidence show about <strong>how extreme weather events affect education outcomes</strong>, through <strong>direct</strong> channels (access, closures, infrastructure, school environment) and <strong>indirect</strong> channels (household economic shocks, health, nutrition, conflict, displacement), and what are <strong>implications for adaptation</strong> and <strong>evidence gaps</strong>?</p></div><h4>What the Paper Does Not Establish</h4><div class="md-block"><p>Original causal effect sizes; full systematic coverage; verified Adaptation → Educational Outcomes effects; that candidate papers have been independently reviewed in this repository.</p></div><h4>Main Findings (summary)</h4><ul><li><p>World Bank <strong>narrative review</strong> and <strong>Figure 1 framework</strong> mapping <strong>direct/proximate</strong> and <strong>indirect/distal</strong> pathways from <strong>extreme weather</strong> to <strong>learning, schooling, and long-run outcomes</strong>, with hazard-specific synthesis and policy implications.</p></li></ul><h4>Evidence Mapping</h4><ul><li><strong>Weather Shock → Learning:</strong> Review synthesis</li><li><strong>Weather Shock → Schooling:</strong> Review synthesis</li><li><strong>Weather Shock → School Disruption:</strong> Review synthesis</li><li><strong>Weather Shock → Household Vulnerability:</strong> Review synthesis</li><li><strong>Weather Shock → Health &amp; Nutrition:</strong> Review synthesis</li><li><strong>School Disruption → Learning:</strong> Conceptual</li><li><strong>Adaptation → Educational Outcomes:</strong> No direct evidence</li></ul><p class="paper-meta">Source: <code>climate-education/academic-papers/07_reviews-and-synthesis/venegas2024_extreme-weather-education-review.md</code></p></div></article></div>
+</section>
+</main>
+<footer class="hub-footer">Dr. Kohei Uno · Updated September 23, 2026</footer>
+<script>window.RKB_PAPERS = [{"id": "venegas2024", "citation_key": "venegas2024", "author_label": "Venegas Marin, Schwarz & Sabarwal (2024)", "short_title": "Impacts of Extreme Weather Events on Education Outcomes: A Review of Evidence", "full_citation": "Venegas Marin, Sergio, Lara Schwarz, and Shwetlena Sabarwal. 2024. “Impacts of Extreme Weather Events on Education Outcomes: A Review of Evidence.” *The World Bank Research Observer* 39 (2): 177–226.", "country": "Multi-country (synthesis)", "region": "Multi-region (emphasis on vulnerable / developing regions in framing)", "setting": "Review of global empirical literature on **extreme heat**, **tropical cyclones/floods**, **droughts**, and **wildfires** and links to **learning**, **schooling** (enrollment, dropout, attainment), **school disruption**, and **distal** channels (health, nutrition, poverty, fragility, displacement).", "paper_type": "Narrative / selective review of evidence", "journal_series": "*The World Bank Research Observer*, vol. 39, no. 2 (2024), pp. 177–226.", "primary_category": "07_reviews-and-synthesis", "category_folder": "07_reviews-and-synthesis", "category_label": "07 — Reviews and Synthesis", "core_contribution": "World Bank **narrative review** and **Figure 1 framework** mapping **direct/proximate** and **indirect/distal** pathways from **extreme weather** to **learning, schooling, and long-run outcomes**, with hazard-specific synthesis and policy implications.", "research_question": "What does available evidence show about **how extreme weather events affect education outcomes**, through **direct** channels (access, closures, infrastructure, school environment) and **indirect** channels (household economic shocks, health, nutrition, conflict, displacement), and what are **implications for adaptation** and **evidence gaps**?", "key_findings": ["World Bank **narrative review** and **Figure 1 framework** mapping **direct/proximate** and **indirect/distal** pathways from **extreme weather** to **learning, schooling, and long-run outcomes**, with hazard-specific synthesis and policy implications."], "relevance": [], "evidence_mapping": [{"relationship": "Weather Shock → Learning", "examined": "Yes", "evidence_type": "Review synthesis", "display": "Review synthesis"}, {"relationship": "Weather Shock → Schooling", "examined": "Yes", "evidence_type": "Review synthesis", "display": "Review synthesis"}, {"relationship": "Weather Shock → School Disruption", "examined": "Yes", "evidence_type": "Review synthesis", "display": "Review synthesis"}, {"relationship": "Weather Shock → Household Vulnerability", "examined": "Yes", "evidence_type": "Review synthesis", "display": "Review synthesis"}, {"relationship": "Weather Shock → Health & Nutrition", "examined": "Yes", "evidence_type": "Review synthesis", "display": "Review synthesis"}, {"relationship": "School Disruption → Learning", "examined": "Yes", "evidence_type": "Conceptual", "display": "Conceptual"}, {"relationship": "Adaptation → Educational Outcomes", "examined": "No", "evidence_type": "—", "display": "No direct evidence"}], "relationships_with_evidence": ["School Disruption → Learning", "Weather Shock → Health & Nutrition", "Weather Shock → Household Vulnerability", "Weather Shock → Learning", "Weather Shock → School Disruption", "Weather Shock → Schooling"], "effect_summary": [], "expandable": {"Research Question": "What does available evidence show about **how extreme weather events affect education outcomes**, through **direct** channels (access, closures, infrastructure, school environment) and **indirect** channels (household economic shocks, health, nutrition, conflict, displacement), and what are **implications for adaptation** and **evidence gaps**?\n\n---", "What the Paper Does Not Establish": "Original causal effect sizes; full systematic coverage; verified Adaptation → Educational Outcomes effects; that candidate papers have been independently reviewed in this repository."}, "doi_url": "https://doi.org/10.1093/wbro/lkae001", "source_path": "climate-education/academic-papers/07_reviews-and-synthesis/venegas2024_extreme-weather-education-review.md", "level1_summaries": [], "effect_filter_keys": [], "study_design_short": "Narrative / selective review of e…", "publication_kind": "Narrative / selective review of evidence"}];</script>
+<script>
+(function () {
+  const papers = window.RKB_PAPERS || [];
+
+  function norm(s) { return (s || '').toLowerCase(); }
+
+  function paperSearchBlob(p) {
+    return [
+      p.citation_key, p.author_label, p.short_title, p.full_citation, p.country, p.region,
+      p.setting, p.paper_type, p.journal_series, p.core_contribution, p.research_question
+    ].concat(p.key_findings || []).join(' ').toLowerCase();
+  }
+
+  function matchesRelationship(p, relName) {
+    if (!relName) return true;
+    const withEv = p.relationships_with_evidence || [];
+    if (withEv.includes(relName)) return true;
+    const row = (p.evidence_mapping || []).find(r => r.relationship === relName);
+    if (!row) return false;
+    const ex = norm(row.examined);
+    return ex === 'yes' || ex === 'y';
+  }
+
+  function matchesEffectStatus(p, key) {
+    if (!key) return true;
+    const keys = p.effect_filter_keys || [];
+    if (key === 'association') return keys.includes('association');
+    return keys.includes(key);
+  }
+
+  function applyFilters() {
+    const q = document.getElementById('filter-q');
+    const country = document.getElementById('filter-country');
+    const region = document.getElementById('filter-region');
+    const category = document.getElementById('filter-category');
+    const ptype = document.getElementById('filter-paper-type');
+    const rel = document.getElementById('filter-relationship');
+    const estatus = document.getElementById('filter-effect-status');
+    const countEl = document.getElementById('filter-count');
+    const term = norm(q && q.value.trim());
+
+    const ids = new Set();
+    papers.forEach(p => {
+      let ok = true;
+      if (term && !paperSearchBlob(p).includes(term)) ok = false;
+      if (country && country.value && p.country !== country.value) ok = false;
+      if (region && region.value && p.region !== region.value) ok = false;
+      if (category && category.value) {
+        if (p.primary_category !== category.value && p.category_folder !== category.value
+            && p.category_label !== category.value) ok = false;
+      }
+      if (ptype && ptype.value && p.paper_type !== ptype.value) ok = false;
+      if (!matchesRelationship(p, rel && rel.value)) ok = false;
+      if (!matchesEffectStatus(p, estatus && estatus.value)) ok = false;
+      if (ok) ids.add(p.id);
+    });
+
+    document.querySelectorAll('[data-paper-id]').forEach(el => {
+      const pid = el.getAttribute('data-paper-id');
+      if (el.classList.contains('paper-card') || el.classList.contains('evidence-map-row')) {
+        el.classList.toggle('hidden', !ids.has(pid));
+      }
+    });
+    if (countEl) countEl.textContent = ids.size + ' / ' + papers.length + ' papers';
+  }
+
+  ['filter-q','filter-country','filter-region','filter-category',
+   'filter-paper-type','filter-relationship','filter-effect-status'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.addEventListener('input', applyFilters);
+      el.addEventListener('change', applyFilters);
+    }
+  });
+
+  document.querySelectorAll('.rel-header').forEach(hdr => {
+    hdr.addEventListener('click', (e) => {
+      if (e.target.closest('a')) return;
+      const block = hdr.closest('.rel-block');
+      if (block) block.classList.toggle('open');
+    });
+  });
+
+  document.querySelectorAll('.paper-details-toggle').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const card = btn.closest('.paper-card');
+      if (card) card.classList.toggle('l3-open');
+      btn.textContent = card && card.classList.contains('l3-open')
+        ? 'Hide paper details' : 'View paper details';
+    });
+  });
+
+  applyFilters();
+
+  const params = new URLSearchParams(window.location.search);
+  const countryParam = params.get('country');
+  const paperParam = params.get('paper');
+  if (countryParam && country) {
+    const opt = Array.from(country.options).find(o => o.value === countryParam);
+    if (opt) country.value = countryParam;
+  }
+  if (paperParam) {
+    const card = document.querySelector('.paper-card[data-paper-id="' + paperParam + '"]');
+    if (card) {
+      card.classList.remove('hidden');
+      card.classList.add('l3-open');
+      const btn = card.querySelector('.paper-details-toggle');
+      if (btn) btn.textContent = 'Hide paper details';
+      applyFilters();
+      card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  } else if (countryParam) {
+    applyFilters();
+  }
+})();
+</script>
+</body>
+</html>

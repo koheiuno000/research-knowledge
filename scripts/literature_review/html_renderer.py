@@ -325,6 +325,8 @@ table.evidence-map td.paper-col { font-weight: 600; white-space: nowrap; font-si
 .badge-qe { background: #eef3e8; color: #2d5016; }
 .badge-assoc { background: #f5f0e8; color: #6b4c1e; }
 .badge-synth { background: #eeedf5; color: #3d3d6b; }
+.badge-review { background: #e8eef2; color: #1a5f6e; }
+.badge-concept { background: #f0ebe3; color: #5c5348; }
 .badge-desc { background: #f2f2f2; color: #4a4a4a; }
 .badge-other { background: #f5f5f5; color: #333; }
 .badge-none { background: transparent; color: var(--muted-light); font-style: italic; }
@@ -388,8 +390,12 @@ def _badge_class(label: str) -> str:
         return "badge-assoc"
     if "association" in s or "associational" in s:
         return "badge-assoc"
+    if "review synthesis" in s:
+        return "badge-review"
     if "synthesis" in s or "cross-study" in s:
         return "badge-synth"
+    if "conceptual" in s:
+        return "badge-concept"
     if "descriptive" in s:
         return "badge-desc"
     if label == "—":

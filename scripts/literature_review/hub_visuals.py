@@ -7,8 +7,25 @@ AREA_ACCENTS: dict[str, dict[str, str]] = {
     "preschool-impact": {"fg": "#59412F", "soft": "#E7D8BE", "glow": "#d4c8b8"},
     "edtech-ai": {"fg": "#254735", "soft": "#DCE5D5", "glow": "#c5d4c8"},
     "skills-tvet": {"fg": "#59412F", "soft": "#E9E5DA", "glow": "#d4dcc8"},
-    "climate-education": {"fg": "#254735", "soft": "#e2e8dc", "glow": "#A8B99B"},
+    "climate-education": {"fg": "#1a5f6e", "soft": "#dce8ec", "glow": "#7eb8c9"},
 }
+
+
+def climate_rain_accent_svg() -> str:
+    """Subtle rainfall motif for Climate area pages (original SVG)."""
+    return """
+<svg class="climate-rain-accent" viewBox="0 0 320 48" aria-hidden="true" preserveAspectRatio="none">
+  <defs>
+    <linearGradient id="climateRainGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#7eb8c9" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#dce8ec" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect width="320" height="48" fill="url(#climateRainGrad)" opacity="0.9"/>
+  <g stroke="#1a5f6e" stroke-width="1" stroke-linecap="round" opacity="0.22">
+    <path d="M24 8v14M48 4v18M72 10v12M96 6v16M120 9v13M144 5v17M168 11v11M192 7v15M216 9v13M240 4v18M264 8v14M288 6v16"/>
+  </g>
+</svg>"""
 
 
 def area_icon_svg(icon_id: str, accent_fg: str) -> str:

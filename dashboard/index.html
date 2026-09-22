@@ -303,6 +303,8 @@ table.evidence-map td.paper-col { font-weight: 600; white-space: nowrap; font-si
 .badge-qe { background: #eef3e8; color: #2d5016; }
 .badge-assoc { background: #f5f0e8; color: #6b4c1e; }
 .badge-synth { background: #eeedf5; color: #3d3d6b; }
+.badge-review { background: #e8eef2; color: #1a5f6e; }
+.badge-concept { background: #f0ebe3; color: #5c5348; }
 .badge-desc { background: #f2f2f2; color: #4a4a4a; }
 .badge-other { background: #f5f5f5; color: #333; }
 .badge-none { background: transparent; color: var(--muted-light); font-style: italic; }
@@ -431,68 +433,142 @@ table.evidence-map td.paper-col { font-weight: 600; white-space: nowrap; font-si
   .site-nav a:hover { box-shadow: inset 0 -2px 0 var(--accent-soft); }
 }
 
-.hub-root .hero-root {
+.hub-root .hub-main { padding-top: 0; }
+
+.hero-forest {
+  position: relative;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  min-height: min(32rem, 78vh);
+  background: var(--forest-dark);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.hero-forest::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    105deg,
+    rgba(15, 31, 24, 0.78) 0%,
+    rgba(15, 31, 24, 0.42) 38%,
+    rgba(15, 31, 24, 0.12) 58%,
+    transparent 72%
+  );
+}
+.hero-forest-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.hero-forest-bg svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.hero-forest-inner {
+  position: relative;
+  z-index: 2;
+  max-width: 1120px;
+  width: 100%;
+  margin: 0 auto;
+  padding: clamp(2.5rem, 6vw, 4rem) 1.5rem clamp(2.75rem, 7vw, 4.25rem);
   display: grid;
-  grid-template-columns: 1fr min(44%, 400px);
-  gap: 2.5rem 3rem;
-  align-items: center;
-  padding: 2.75rem 0 2.25rem;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: 2rem 3rem;
+  align-items: end;
 }
-@media (max-width: 820px) {
-  .hub-root .hero-root { grid-template-columns: 1fr; }
-  .hub-root .hero-visual { order: -1; max-width: 320px; margin: 0 auto; }
+@media (max-width: 900px) {
+  .hero-forest-inner {
+    grid-template-columns: 1fr;
+    align-items: start;
+    padding-bottom: 2.5rem;
+  }
+  .hero-forest { min-height: min(28rem, 85vh); }
 }
-.hero-copy { max-width: 34rem; }
+.hero-copy { max-width: 36rem; }
 .hero-eyebrow {
   margin: 0 0 0.65rem;
   font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--sage);
+  color: var(--sage-light);
 }
-.hub-root .hero-root h1 {
+.hero-forest h1 {
   font-family: var(--font-serif);
-  font-size: clamp(2.1rem, 4.2vw, 2.85rem);
+  font-size: clamp(2.1rem, 4.5vw, 3rem);
   font-weight: 500;
   letter-spacing: -0.03em;
-  line-height: 1.12;
+  line-height: 1.1;
   margin: 0 0 0.85rem;
-  color: var(--forest-deep);
+  color: var(--ivory);
   max-width: none;
+  text-wrap: balance;
 }
-.hub-root .hero-root .lead {
+.hero-forest .lead {
   font-size: 1.02rem;
-  color: var(--muted);
+  color: rgba(247, 244, 235, 0.82);
   margin: 0;
   line-height: 1.55;
+  max-width: 32rem;
 }
-.hero-cta {
+.hero-forest .hero-cta {
   display: inline-block;
   margin-top: 1.35rem;
   font-size: 0.82rem;
   font-weight: 500;
   letter-spacing: 0.04em;
-  color: var(--forest);
+  color: var(--ivory);
   text-decoration: none;
   padding: 0.35rem 0;
-  border-bottom: 1px solid var(--sage);
+  border-bottom: 1px solid rgba(220, 229, 213, 0.55);
   transition: color var(--km-ease), border-color var(--km-ease);
 }
-.hero-cta:hover,
-.hero-cta:focus-visible {
-  color: var(--forest-dark);
-  border-bottom-color: var(--forest);
+.hero-forest .hero-cta:hover,
+.hero-forest .hero-cta:focus-visible {
+  color: var(--white);
+  border-bottom-color: var(--ivory);
   outline: none;
 }
-.hero-cta:focus-visible { box-shadow: 0 2px 0 var(--sage-light); }
-.hero-visual {
-  background: var(--paper);
-  padding: 0.65rem;
-  border: 1px solid var(--line);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.75);
+.hero-forest .hero-cta:focus-visible {
+  box-shadow: 0 0 0 2px rgba(220, 229, 213, 0.45);
 }
-.hero-visual svg { width: 100%; height: auto; display: block; }
+.hero-forest-aside {
+  min-height: 12rem;
+  pointer-events: none;
+}
+@media (max-width: 900px) {
+  .hero-forest-aside { display: none; }
+}
+.hero-forest-fade {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 5rem;
+  z-index: 1;
+  background: linear-gradient(to bottom, transparent, var(--ivory));
+  pointer-events: none;
+}
+.hero-treeline-wrap {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  line-height: 0;
+  margin-top: -1px;
+  background: var(--ivory);
+}
+.hero-treeline-wrap svg {
+  width: 100%;
+  height: 2rem;
+  display: block;
+}
 
 .hub-divider {
   border: none;
@@ -524,7 +600,26 @@ table.evidence-map td.paper-col { font-weight: 600; white-space: nowrap; font-si
 .scope-strip strong { color: var(--text); font-weight: 600; }
 .scope-strip .sep { color: var(--sand); user-select: none; }
 
-.explore-block { padding: 0.5rem 0 2.75rem; }
+.explore-block {
+  padding: 0.5rem 0 2.75rem;
+  position: relative;
+}
+.explore-block::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(168, 185, 155, 0.35) 20%,
+    rgba(37, 71, 53, 0.12) 50%,
+    rgba(168, 185, 155, 0.35) 80%,
+    transparent
+  );
+}
 .section-title {
   font-family: var(--font-serif);
   font-size: 1.45rem;
@@ -816,6 +911,16 @@ a.km:not(.km--featured):focus-visible .km-mini-botanical {
     color: var(--forest);
   }
 }
+.browse-col ul.browse-sub {
+  margin: 0.35rem 0 0 0.85rem;
+  padding: 0;
+  list-style: none;
+}
+.browse-col ul.browse-sub li {
+  border-bottom: none;
+  padding: 0.2rem 0;
+  font-size: 0.88rem;
+}
 .browse-col .count {
   color: var(--muted-light);
   font-weight: 400;
@@ -855,76 +960,123 @@ a.km:not(.km--featured):focus-visible .km-mini-botanical {
 </header>
 <main class="hub-main">
 
-<section class="hero-root">
+<section class="hero-forest" aria-label="Research Knowledge Base">
+<div class="hero-forest-bg">
+<svg class="hero-forest-scene" viewBox="0 0 1200 520" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+  <defs>
+    <linearGradient id="skyForest" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#193729"/>
+      <stop offset="55%" stop-color="#152a20"/>
+      <stop offset="100%" stop-color="#0f1f18"/>
+    </linearGradient>
+    <linearGradient id="groundFade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#152a20" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#152a20" stop-opacity="0.95"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="520" fill="url(#skyForest)"/>
+  <!-- atmospheric mist bands -->
+  <path d="M0 200 Q300 170 600 195 T1200 180 V260 H0 Z" fill="#A8B99B" opacity="0.06"/>
+  <path d="M0 260 Q400 240 800 255 T1200 245 V320 H0 Z" fill="#A8B99B" opacity="0.05"/>
+  <!-- distant tree line -->
+  <g fill="#254735" opacity="0.35">
+    <path d="M0 340 L0 520 L1200 520 L1200 320 Q900 300 600 318 T0 340 Z"/>
+    <path d="M80 338 L108 268 L136 338 Z"/>
+    <path d="M160 342 L188 278 L216 342 Z"/>
+    <path d="M240 336 L268 260 L296 336 Z"/>
+    <path d="M520 332 L552 250 L584 332 Z"/>
+    <path d="M680 338 L710 270 L740 338 Z"/>
+    <path d="M880 334 L912 255 L944 334 Z"/>
+    <path d="M1020 340 L1048 275 L1076 340 Z"/>
+  </g>
+  <!-- mid-ground grove -->
+  <g opacity="0.55">
+    <ellipse cx="420" cy="300" rx="95" ry="72" fill="#2f4f3d"/>
+    <ellipse cx="520" cy="288" rx="110" ry="80" fill="#3d6b52"/>
+    <ellipse cx="780" cy="295" rx="100" ry="70" fill="#2f4f3d"/>
+    <ellipse cx="900" cy="285" rx="85" ry="65" fill="#3d6b52"/>
+    <ellipse cx="260" cy="305" rx="75" ry="58" fill="#2f4f3d"/>
+  </g>
+  <!-- trunks — mid -->
+  <g stroke="#1a2e24" stroke-width="5" stroke-linecap="round" opacity="0.5">
+    <line x1="410" y1="520" x2="418" y2="340"/>
+    <line x1="530" y1="520" x2="538" y2="320"/>
+    <line x1="770" y1="520" x2="778" y2="335"/>
+    <line x1="890" y1="520" x2="898" y2="345"/>
+    <line x1="255" y1="520" x2="262" y2="355"/>
+  </g>
+  <!-- foreground canopy -->
+  <g opacity="0.72">
+    <ellipse cx="180" cy="360" rx="120" ry="88" fill="#254735"/>
+    <ellipse cx="320" cy="345" rx="130" ry="95" fill="#2f4f3d"/>
+    <ellipse cx="640" cy="355" rx="140" ry="100" fill="#254735"/>
+    <ellipse cx="980" cy="365" rx="125" ry="90" fill="#2f4f3d"/>
+    <ellipse cx="1050" cy="380" rx="90" ry="70" fill="#3d6b52" opacity="0.6"/>
+  </g>
+  <!-- foreground trunks -->
+  <g stroke="#0f1f18" stroke-width="7" stroke-linecap="round" opacity="0.65">
+    <line x1="170" y1="520" x2="182" y2="370"/>
+    <line x1="310" y1="520" x2="322" y2="355"/>
+    <line x1="630" y1="520" x2="642" y2="348"/>
+    <line x1="970" y1="520" x2="982" y2="375"/>
+  </g>
+  <!-- ground contour -->
+  <path d="M0 420 Q200 395 400 408 T800 402 T1200 415 L1200 520 L0 520 Z" fill="#152a20" opacity="0.85"/>
+  <path d="M0 455 Q350 430 600 442 T1200 448 L1200 520 L0 520 Z" fill="#0f1f18" opacity="0.5"/>
+  <!-- branches (evidence pathways) -->
+  <g fill="none" stroke="#A8B99B" stroke-width="1" opacity="0.22" stroke-linecap="round">
+    <path d="M120 280 Q280 250 420 270 T680 258 T920 272"/>
+    <path d="M200 320 Q380 300 520 318 T760 305"/>
+  </g>
+  <g fill="#F7F4EB" opacity="0.35">
+    <circle cx="280" cy="268" r="2.5"/>
+    <circle cx="420" cy="272" r="2"/>
+    <circle cx="560" cy="262" r="2.5"/>
+    <circle cx="720" cy="270" r="2"/>
+  </g>
+  <!-- oak leaves (supporting) -->
+  <g fill="none" stroke="#A8B99B" stroke-width="1.1" stroke-linejoin="round" opacity="0.45">
+    <path d="M95 380 C95 362 108 352 122 356 C136 360 138 376 122 386 C106 396 95 392 95 380 Z"/>
+    <path d="M95 380 L122 356 M95 380 L112 386 M122 386 L122 356"/>
+    <path d="M1080 390 C1080 372 1093 362 1107 366 C1121 370 1123 386 1107 396 C1091 406 1080 402 1080 390 Z"/>
+    <path d="M450 240 C450 226 460 218 472 220 C484 222 486 236 472 244 C458 252 450 250 450 240 Z" opacity="0.7"/>
+    <path d="M720 230 C720 216 730 208 742 210 C754 212 756 226 742 234 C728 242 720 240 720 230 Z" opacity="0.6"/>
+  </g>
+  <!-- acorns on forest floor -->
+  <g fill="#795A42" opacity="0.5">
+    <ellipse cx="140" cy="468" rx="5" ry="7"/>
+    <path d="M136 463 Q140 457 144 463" fill="none" stroke="#795A42" stroke-width="0.8"/>
+    <ellipse cx="890" cy="478" rx="4.5" ry="6"/>
+    <ellipse cx="1020" cy="472" rx="5" ry="6.5"/>
+  </g>
+  <!-- open book in clearing (library) -->
+  <g transform="translate(548 455)" fill="none" stroke="#F7F4EB" stroke-width="0.9" opacity="0.28">
+    <path d="M0 8 C18 0 36 0 54 8 V38 C36 30 18 30 0 38 Z"/>
+    <path d="M54 8 C72 0 90 0 108 8 V38 C90 30 72 30 54 38 Z"/>
+    <line x1="54" y1="8" x2="54" y2="38"/>
+  </g>
+  <rect y="400" width="1200" height="120" fill="url(#groundFade)"/>
+</svg></div>
+<div class="hero-forest-fade" aria-hidden="true"></div>
+<div class="hero-forest-inner">
 <div class="hero-copy">
 <p class="hero-eyebrow">Research Knowledge Base</p>
 <h1>Evidence for Education &amp; Development</h1>
 <p class="lead">A personal research knowledge base connecting evidence across education and international development.</p>
 <a class="hero-cta" href="#explore">Explore knowledge →</a>
 </div>
-<div class="hero-visual" aria-hidden="true">
-
-<svg class="hero-botanical" viewBox="0 0 440 360" aria-hidden="true">
-  <rect width="440" height="360" rx="4" fill="#FFFCF6"/>
-  <rect x="8" y="8" width="424" height="344" rx="2" fill="none" stroke="#F7F4EB" stroke-width="1.5" opacity="0.85"/>
-  <!-- distant forest -->
-  <g fill="#254735" opacity="0.07">
-    <path d="M0 280 L0 360 L440 360 L440 268 Q330 248 220 262 T0 280 Z"/>
-    <path d="M40 292 L68 220 L96 292 Z"/>
-    <path d="M120 298 L148 232 L176 298 Z"/>
-    <path d="M300 290 L328 218 L356 290 Z"/>
-    <path d="M360 296 L382 240 L404 296 Z"/>
-  </g>
-  <!-- central tree silhouette -->
-  <path d="M218 300 L218 168" stroke="#254735" stroke-width="2" opacity="0.35" stroke-linecap="round"/>
-  <path d="M218 168 C218 120 178 98 178 72 C178 52 198 42 218 58 C238 42 258 52 258 72 C258 98 218 120 218 168 Z"
-        fill="#A8B99B" fill-opacity="0.22" stroke="#254735" stroke-width="1.2" opacity="0.5"/>
-  <!-- oak leaves -->
-  <g fill="none" stroke="#254735" stroke-width="1.15" stroke-linejoin="round" opacity="0.72">
-    <path d="M88 142 C88 118 108 102 128 108 C148 114 152 138 128 152 C104 166 88 158 88 142 Z"/>
-    <path d="M88 142 L128 108 M88 142 L118 152 M128 152 L128 108"/>
-    <path d="M312 118 C312 94 332 78 352 84 C372 90 376 114 352 128 C328 142 312 134 312 118 Z"/>
-    <path d="M312 118 L352 84 M312 118 L342 128 M352 128 L352 84"/>
-    <path d="M168 198 C168 178 184 166 200 170 C216 174 218 192 200 204 C182 216 168 210 168 198 Z" opacity="0.55"/>
-    <path d="M268 208 C268 188 284 176 300 180 C316 184 318 202 300 214 C282 226 268 220 268 208 Z" opacity="0.55"/>
-  </g>
-  <!-- acorns -->
-  <g fill="#795A42" opacity="0.65">
-    <ellipse cx="142" cy="178" rx="7" ry="9"/>
-    <path d="M136 172 Q142 164 148 172" fill="none" stroke="#795A42" stroke-width="1"/>
-    <ellipse cx="328" cy="192" rx="6" ry="8"/>
-    <path d="M323 187 Q328 180 333 187" fill="none" stroke="#795A42" stroke-width="1"/>
-  </g>
-  <!-- branch -->
-  <path d="M48 228 Q120 210 168 224 T280 216 T392 232" fill="none" stroke="#795A42" stroke-width="1" opacity="0.4" stroke-linecap="round"/>
-  <!-- evidence connections -->
-  <g stroke="#254735" stroke-width="0.75" opacity="0.35">
-    <line x1="128" y1="130" x2="200" y2="188"/>
-    <line x1="200" y1="188" x2="218" y2="140"/>
-    <line x1="218" y1="140" x2="300" y2="196"/>
-    <line x1="300" y1="196" x2="352" y2="110"/>
-  </g>
-  <g fill="#254735" opacity="0.45">
-    <circle cx="128" cy="130" r="2.5"/>
-    <circle cx="200" cy="188" r="2"/>
-    <circle cx="218" cy="140" r="3"/>
-    <circle cx="300" cy="196" r="2"/>
-    <circle cx="352" cy="110" r="2.5"/>
-  </g>
-  <!-- open book hint -->
-  <g transform="translate(52 248)" fill="none" stroke="#254735" stroke-width="0.9" opacity="0.35">
-    <path d="M0 6 C14 0 28 0 42 6 V32 C28 26 14 26 0 32 Z"/>
-    <path d="M42 6 C56 0 70 0 84 6 V32 C70 26 56 26 42 32 Z"/>
-  </g>
-</svg>
+<div class="hero-forest-aside" aria-hidden="true"></div>
 </div>
 </section>
-
-<hr class="hub-divider">
+<div class="hero-treeline-wrap" aria-hidden="true">
+<svg class="hero-treeline-accent" viewBox="0 0 1200 32" preserveAspectRatio="none" aria-hidden="true">
+  <path d="M0 28 L0 32 L1200 32 L1200 24 Q900 8 600 18 T0 28 Z" fill="#A8B99B" opacity="0.12"/>
+  <path d="M0 26 Q200 14 400 20 T800 16 T1200 22 L1200 32 L0 32 Z" fill="#254735" opacity="0.06"/>
+</svg></div>
 
 <div class="scope-block">
 <p class="scope-label">Knowledge base at a glance</p>
-<ul class="scope-strip"><li><strong>4</strong> papers</li><li class="sep" aria-hidden="true">·</li><li><strong>4</strong> countries</li><li class="sep" aria-hidden="true">·</li><li><strong>5</strong> research areas</li><li class="sep" aria-hidden="true">·</li><li><strong>3</strong> empirical studies</li><li class="sep" aria-hidden="true">·</li><li><strong>1</strong> review / synthesis</li></ul>
+<ul class="scope-strip"><li><strong>5</strong> papers</li><li class="sep" aria-hidden="true">·</li><li><strong>5</strong> countries</li><li class="sep" aria-hidden="true">·</li><li><strong>5</strong> research areas</li><li class="sep" aria-hidden="true">·</li><li><strong>3</strong> empirical studies</li><li class="sep" aria-hidden="true">·</li><li><strong>2</strong> review / synthesis</li></ul>
 </div>
 
 <section class="explore-block" id="explore" aria-labelledby="explore-title">
@@ -942,7 +1094,10 @@ a.km:not(.km--featured):focus-visible .km-mini-botanical {
     <path d="M100 55 L100 78" stroke-linecap="round"/>
     <circle cx="98" cy="82" r="4" fill="currentColor" stroke="none" opacity="0.25"/>
   </g>
-</svg></div><p class="km-eyebrow">TEACHER DEVELOPMENT</p><p class="km-title">Teacher Development<span class="km-title-sub">&amp; School-Based CPD</span></p><p class="km-count">4 papers</p><div class="km-tags"><span>Teachers</span><span>Classroom</span><span>Learning</span></div><span class="km-arrow">Explore evidence →</span></a><div class="km km--secondary km--surface-sand" aria-disabled="true"><svg viewBox="0 0 32 32" class="km-mini-botanical"><circle cx="16" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 26 L16 18 L22 26" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg><p class="km-title">Preschool / Early Childhood</p><p class="km-count">0 papers</p><div class="km-tags"><span>Early Learning</span><span>Child Development</span></div></div><div class="km km--secondary km--surface-sage" aria-disabled="true"><svg viewBox="0 0 32 32" class="km-mini-botanical"><rect x="6" y="8" width="20" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 26h8" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/><circle cx="22" cy="12" r="1.5" fill="currentColor"/></svg><p class="km-title">EdTech / AI</p><p class="km-count">0 papers</p><div class="km-tags"><span>Technology</span><span>AI</span><span>Innovation</span></div></div><div class="km km--secondary km--surface-stone" aria-disabled="true"><svg viewBox="0 0 32 32" class="km-mini-botanical"><path d="M8 26 L16 10 L24 26 Z" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg><p class="km-title">Skills / TVET</p><p class="km-count">0 papers</p><div class="km-tags"><span>Skills</span><span>Employment</span><span>Training</span></div></div><div class="km km--secondary km--surface-olive" aria-disabled="true"><svg viewBox="0 0 32 32" class="km-mini-botanical"><path d="M8 20 Q16 8 24 20" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 24 h20" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"/></svg><p class="km-title">Climate &amp; Education</p><p class="km-count">0 papers</p><div class="km-tags"><span>Climate</span><span>Resilience</span><span>Sustainability</span></div></div>
+</svg></div><p class="km-eyebrow">TEACHER DEVELOPMENT</p><p class="km-title">Teacher Development<span class="km-title-sub">&amp; School-Based CPD</span></p><p class="km-count">4 papers</p><div class="km-tags"><span>Teachers</span><span>Classroom</span><span>Learning</span></div><span class="km-arrow">Explore evidence →</span></a><div class="km km--secondary km--surface-sand" aria-disabled="true"><svg viewBox="0 0 32 32" class="km-mini-botanical"><circle cx="16" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 26 L16 18 L22 26" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg><p class="km-title">Preschool / Early Childhood</p><p class="km-count">0 papers</p><div class="km-tags"><span>Early Learning</span><span>Child Development</span></div></div><div class="km km--secondary km--surface-sage" aria-disabled="true"><svg viewBox="0 0 32 32" class="km-mini-botanical"><rect x="6" y="8" width="20" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 26h8" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/><circle cx="22" cy="12" r="1.5" fill="currentColor"/></svg><p class="km-title">EdTech / AI</p><p class="km-count">0 papers</p><div class="km-tags"><span>Technology</span><span>AI</span><span>Innovation</span></div></div><div class="km km--secondary km--surface-stone" aria-disabled="true"><svg viewBox="0 0 32 32" class="km-mini-botanical"><path d="M8 26 L16 10 L24 26 Z" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg><p class="km-title">Skills / TVET</p><p class="km-count">0 papers</p><div class="km-tags"><span>Skills</span><span>Employment</span><span>Training</span></div></div><a class="km km--secondary km--surface-olive" href="../climate-education/literature-review/literature_review.html"><svg viewBox="0 0 32 32" class="km-mini-botanical"><path d="M8 20 Q16 8 24 20" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 24 h20" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"/></svg><p class="km-title">Climate &amp; Education</p><p class="km-count">1 paper</p><div class="km-tags"><span>Climate</span><span>Resilience</span><span>Sustainability</span></div><span class="km-arrow">Explore →</span>
+<svg class="km-hover-leaf" viewBox="0 0 48 32" aria-hidden="true">
+  <path d="M4 28 C4 14 18 6 32 10 C24 16 16 22 4 28 Z" fill="none" stroke="currentColor" stroke-width="1" opacity="0.25"/>
+</svg></a>
 </div>
 </section>
 
@@ -953,9 +1108,9 @@ a.km:not(.km--featured):focus-visible .km-mini-botanical {
   <path d="M2 14 L18 4" stroke="#A8B99B" stroke-width="0.8" opacity="0.6"/>
 </svg> Browse evidence</h2>
 <div class="browse-grid">
-<div class="browse-col"><h3>Research areas</h3><ul><li><a class="browse-link" href="../sb-cpd/literature-review/literature_review.html">Teacher Development / SB-CPD<span class="browse-arr" aria-hidden="true">→</span></a> <span class="count">· 4 papers</span></li><li>Preschool / Early Childhood <span class="count">· 0 papers</span></li><li>EdTech / AI <span class="count">· 0 papers</span></li><li>Skills / TVET <span class="count">· 0 papers</span></li><li>Climate &amp; Education <span class="count">· 0 papers</span></li></ul></div>
-<div class="browse-col"><h3>Countries</h3><ul><li><a class="browse-link" href="../sb-cpd/literature-review/literature_review.html">China<span class="browse-arr" aria-hidden="true">→</span></a> <span class="count">· 1 paper</span></li><li><a class="browse-link" href="../sb-cpd/literature-review/literature_review.html">Ethiopia<span class="browse-arr" aria-hidden="true">→</span></a> <span class="count">· 1 paper</span></li><li><a class="browse-link" href="../sb-cpd/literature-review/literature_review.html">Multi-country<span class="browse-arr" aria-hidden="true">→</span></a> <span class="count">· 1 paper</span></li><li><a class="browse-link" href="../sb-cpd/literature-review/literature_review.html">Sweden<span class="browse-arr" aria-hidden="true">→</span></a> <span class="count">· 1 paper</span></li></ul></div>
-<div class="browse-col"><h3>Evidence types</h3><ul><li><a class="browse-link" href="../sb-cpd/literature-review/literature_review.html">Empirical studies · 3<span class="browse-arr" aria-hidden="true">→</span></a></li><li><a class="browse-link" href="../sb-cpd/literature-review/literature_review.html">Review / synthesis · 1<span class="browse-arr" aria-hidden="true">→</span></a></li></ul></div>
+<div class="browse-col"><h3>Research areas</h3><ul><li><a class="browse-link" href="../sb-cpd/literature-review/literature_review.html">Teacher Development / SB-CPD<span class="browse-arr" aria-hidden="true">→</span></a> <span class="count">· 4 papers</span></li><li>Preschool / Early Childhood <span class="count">· 0 papers</span></li><li>EdTech / AI <span class="count">· 0 papers</span></li><li>Skills / TVET <span class="count">· 0 papers</span></li><li><a class="browse-link" href="../climate-education/literature-review/literature_review.html">Climate &amp; Education<span class="browse-arr" aria-hidden="true">→</span></a> <span class="count">· 1 paper</span></li></ul></div>
+<div class="browse-col"><h3>Countries</h3><ul><li><a class="browse-link" href="../sb-cpd/literature-review/literature_review.html?country=China&amp;paper=loyalka2019">China<span class="browse-arr" aria-hidden="true">→</span></a> <span class="count">· 1 paper</span></li><li><a class="browse-link" href="../sb-cpd/literature-review/literature_review.html?country=Ethiopia&amp;paper=kozuka2025">Ethiopia<span class="browse-arr" aria-hidden="true">→</span></a> <span class="count">· 1 paper</span></li><li><a class="browse-link" href="../sb-cpd/literature-review/literature_review.html?country=Multi-country&amp;paper=popova2022">Multi-country<span class="browse-arr" aria-hidden="true">→</span></a> <span class="count">· 1 paper</span></li><li><a class="browse-link" href="../climate-education/literature-review/literature_review.html?country=Multi-country%20%28synthesis%29&amp;paper=venegas2024">Multi-country (synthesis)<span class="browse-arr" aria-hidden="true">→</span></a> <span class="count">· 1 paper</span></li><li><a class="browse-link" href="../sb-cpd/literature-review/literature_review.html?country=Sweden&amp;paper=gronqvist2025">Sweden<span class="browse-arr" aria-hidden="true">→</span></a> <span class="count">· 1 paper</span></li></ul></div>
+<div class="browse-col"><h3>Evidence types</h3><ul><li><a class="browse-link" href="../sb-cpd/literature-review/literature_review.html">Empirical studies · 3<span class="browse-arr" aria-hidden="true">→</span></a></li><li><a class="browse-link" href="../sb-cpd/literature-review/literature_review.html">Review / synthesis · 2<span class="browse-arr" aria-hidden="true">→</span></a></li></ul></div>
 <div class="browse-col"><h3>Relationships</h3><ul><li><a class="browse-link" href="../sb-cpd/literature-review/literature_review.html#evidence-map">SB-CPD pathways · 8 relationships<span class="browse-arr" aria-hidden="true">→</span></a></li></ul></div>
 </div>
 </section>
@@ -968,7 +1123,7 @@ a.km:not(.km--featured):focus-visible .km-mini-botanical {
   <path d="M6 8 Q10 4 14 8" fill="none" stroke="#795A42" stroke-width="1" opacity="0.7"/>
 </svg>
 <div>
-<p class="footer-meta">Dr. Kohei Uno · Updated September 22, 2026</p>
+<p class="footer-meta">Dr. Kohei Uno · Updated September 23, 2026</p>
 <p class="footer-note">Personal research knowledge hub — evidence summaries maintained from structured paper reviews.</p>
 </div>
 </div>

@@ -1,0 +1,43 @@
+{
+  "research_area": "climate-education",
+  "version": 1,
+  "description": "Provisional relationship labels for the Climate Change & Education evidence base, aligned with Venegas Marin, Schwarz, and Sabarwal (2024) Figure 1. Evidence Mapping distinguishes review synthesis from original causal estimation; Effect Summary rows require primary-study review.",
+  "relationships": [
+    {
+      "label": "Weather Shock → Learning",
+      "kind": "core_pathway",
+      "summary": "Effect of extreme weather (heat, storms, drought, wildfire/air quality) on short-run learning measures such as test scores or learning progress."
+    },
+    {
+      "label": "Weather Shock → Schooling",
+      "kind": "core_pathway",
+      "summary": "Effect on enrollment, dropout, attendance, grade progression, or longer-term educational attainment."
+    },
+    {
+      "label": "Weather Shock → School Disruption",
+      "kind": "core_pathway",
+      "summary": "Effect on school access, closures, damaged infrastructure, or school environmental conditions that interrupt instruction."
+    },
+    {
+      "label": "Weather Shock → Household Vulnerability",
+      "kind": "distal_pathway",
+      "summary": "Household economic shocks, coping responses, or poverty channels that alter schooling demand or investment."
+    },
+    {
+      "label": "Weather Shock → Health & Nutrition",
+      "kind": "distal_pathway",
+      "summary": "Health or nutritional mechanisms linking weather extremes to student readiness or capacity to learn."
+    },
+    {
+      "label": "School Disruption → Learning",
+      "kind": "mediation_pathway",
+      "summary": "Link from disrupted instruction (e.g., closure days) to learning loss. Distinguish total weather effects from empirically identified mediation in primary studies."
+    },
+    {
+      "label": "Adaptation → Educational Outcomes",
+      "kind": "policy_intervention",
+      "summary": "Causal or quasi-experimental evidence on adaptation/resilience interventions (infrastructure, scheduling, safety nets) improving educational outcomes. Conceptual policy discussion alone does not satisfy this relationship."
+    }
+  ],
+  "relationship_aliases": {}
+}

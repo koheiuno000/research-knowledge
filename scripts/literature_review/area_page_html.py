@@ -10,7 +10,7 @@ from .dashboard_config import DEFAULT_HUB_DISPLAY, HubDisplayConfig
 from .effect_display import paper_effect_filter_keys, paper_level1_summaries
 from .engine import PaperSummary
 from .relationship_taxonomy import approved_relationship_labels
-from .hub_visuals import AREA_ACCENTS, area_icon_svg
+from .hub_visuals import AREA_ACCENTS, area_icon_svg, climate_rain_accent_svg
 from .html_renderer import (
     HUB_STYLES,
     _badge_class,
@@ -27,6 +27,41 @@ from .metrics import (
     filter_values,
     unique_countries,
 )
+
+CLIMATE_AREA_STYLES = """
+body.area-climate {
+  --forest: #1a5f6e;
+  --accent: #2a7d8c;
+  --surface: #faf8f4;
+  --bg: #f4f1ea;
+  --line: #c5d8de;
+  --muted: #4a6570;
+}
+body.area-climate .hero {
+  background: linear-gradient(165deg, #faf8f4 0%, #dce8ec 55%, #c5dde4 100%);
+  border-color: #b8ccd4;
+}
+body.area-climate .paper-venue { color: var(--forest); }
+body.area-climate .climate-rain-wrap {
+  margin: -0.5rem 0 0.75rem;
+  max-width: 20rem;
+  opacity: 0.85;
+}
+"""
+
+AREA_PATHWAY_MINI: dict[str, str] = {
+    "sb-cpd": (
+        "Teacher Professional Knowledge "
+        '<span>→</span> Teaching Practice '
+        '<span>→</span> Student Achievement'
+    ),
+    "climate-education": (
+        "Extreme Weather "
+        '<span>→</span> School Disruption &amp; Environment '
+        '<span>→</span> Learning &amp; Schooling '
+        '<span>·</span> Indirect household &amp; health channels'
+    ),
+}
 
 AREA_EXTRA_STYLES = """
 .pathway-mini {
@@ -347,6 +382,27 @@ AREA_DASHBOARD_JS = """
   });
 
   applyFilters();
+
+  const params = new URLSearchParams(window.location.search);
+  const countryParam = params.get('country');
+  const paperParam = params.get('paper');
+  if (countryParam && country) {
+    const opt = Array.from(country.options).find(o => o.value === countryParam);
+    if (opt) country.value = countryParam;
+  }
+  if (paperParam) {
+    const card = document.querySelector('.paper-card[data-paper-id="' + paperParam + '"]');
+    if (card) {
+      card.classList.remove('hidden');
+      card.classList.add('l3-open');
+      const btn = card.querySelector('.paper-details-toggle');
+      if (btn) btn.textContent = 'Hide paper details';
+      applyFilters();
+      card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  } else if (countryParam) {
+    applyFilters();
+  }
 })();
 """
 
@@ -572,14 +628,18 @@ def build_area_html(
     papers_sorted = sorted(papers, key=lambda x: x.citation_key)
     payloads = [_paper_payload_enriched(p) for p in papers_sorted]
     fv = filter_values(papers)
-    accent = AREA_ACCENTS.get("sb-cpd", AREA_ACCENTS["sb-cpd"])
+    slug = area.slug
+    accent = AREA_ACCENTS.get(slug, AREA_ACCENTS["sb-cpd"])
+    icon_id = "climate" if slug == "climate-education" else "teachers"
 
-    title = "Teacher Development / SB-CPD"
-    pathway = (
-        "Teacher Professional Knowledge "
-        '<span>→</span> Teaching Practice '
-        '<span>→</span> Student Achievement'
-    )
+    title = area.title
+    pathway = AREA_PATHWAY_MINI.get(slug, AREA_PATHWAY_MINI["sb-cpd"])
+    body_class = "hub-shell area-page"
+    if slug == "climate-education":
+        body_class += " area-climate"
+    rain_block = ""
+    if slug == "climate-education":
+        rain_block = f'<div class="climate-rain-wrap">{climate_rain_accent_svg()}</div>'
 
     rel_labels = approved_relationship_labels(area)
 
@@ -615,7 +675,8 @@ def build_area_html(
         f'<span class="dot">·</span><strong>{count_review_synthesis(papers)}</strong> review / synthesis'
     )
 
-    styles = HUB_STYLES + AREA_EXTRA_STYLES
+    extra = CLIMATE_AREA_STYLES if slug == "climate-education" else ""
+    styles = HUB_STYLES + AREA_EXTRA_STYLES + extra
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -625,7 +686,7 @@ def build_area_html(
 <title>{_esc(title)} — Research Knowledge Base</title>
 <style>{styles}</style>
 </head>
-<body class="hub-shell area-page">
+<body class="{body_class}">
 <header class="hub-top">
 <a class="hub-nav-link" href="../../dashboard/index.html">← Knowledge Base</a>
 <span class="hub-meta">{_hub_meta(hub)}</span>
@@ -633,9 +694,10 @@ def build_area_html(
 <main class="hub-main">
 <section class="hero">
 <div class="area-tile-visual" style="width:2.75rem;height:2.75rem;margin-bottom:0.75rem;border-radius:10px;background:{accent["soft"]};">
-{area_icon_svg("teachers", accent["fg"])}
+{area_icon_svg(icon_id, accent["fg"])}
 </div>
 <h1>{_esc(title)}</h1>
+{rain_block}
 <p class="pathway-mini">{pathway}</p>
 </section>
 <div class="stat-strip">{stat}</div>
@@ -668,7 +730,7 @@ def build_area_html(
 <tbody>{"".join(map_rows)}</tbody>
 </table>
 </div>
-<p class="map-legend">Evidence type where examined. &ldquo;No direct evidence&rdquo; = relationship not estimated in that paper.</p>
+    <p class="map-legend">Evidence type where examined. &ldquo;Review synthesis&rdquo; = summarized from cited studies, not a new causal estimate in that paper. &ldquo;Conceptual&rdquo; = discussed without direct estimation. &ldquo;No direct evidence&rdquo; = relationship not examined.</p>
 </section>
 
 <section class="section">

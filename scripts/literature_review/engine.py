@@ -54,6 +54,67 @@ CATEGORY_TITLES = {
     "08_reviews-and-synthesis": "08 — Reviews and Synthesis",
 }
 
+CLIMATE_CATEGORY_TITLES = {
+    "01_extreme-heat-and-learning": "01 — Extreme Heat and Learning",
+    "02_floods-cyclones-and-school-disruption": "02 — Floods, Cyclones & School Disruption",
+    "03_droughts-rainfall-and-human-capital": "03 — Droughts, Rainfall & Human Capital",
+    "04_wildfires-air-quality-and-learning": "04 — Wildfires, Air Quality & Learning",
+    "05_indirect-pathways-and-vulnerability": "05 — Indirect Pathways & Vulnerability",
+    "06_education-adaptation-and-resilience": "06 — Education Adaptation & Resilience",
+    "07_reviews-and-synthesis": "07 — Reviews and Synthesis",
+}
+
+
+def category_titles_for(area: ResearchAreaConfig) -> dict[str, str]:
+    if area.slug == "climate-education":
+        return CLIMATE_CATEGORY_TITLES
+    return CATEGORY_TITLES
+
+
+def relevance_heading(area: ResearchAreaConfig) -> str:
+    if area.slug == "climate-education":
+        return "**Relevance to Climate Change & Education**"
+    return "**Relevance to SB-CPD**"
+
+
+def append_overview_architecture(lines: list[str], area: ResearchAreaConfig) -> None:
+    if area.slug == "climate-education":
+        lines.append("Conceptual architecture (not all papers estimate every arrow):")
+        lines.append("")
+        lines.append("```")
+        lines.append("Extreme Weather / Climate Shock")
+        lines.append("        ↓")
+        lines.append("Direct: access · closures · infrastructure · school environment")
+        lines.append("        ↓")
+        lines.append("Learning · Schooling · Long-run outcomes")
+        lines.append("        ↑")
+        lines.append("Indirect: household shocks · health · nutrition · displacement")
+        lines.append("```")
+        lines.append("")
+        lines.append(
+            "Some papers evaluate a **specific weather shock** (folders 01–06); others "
+            "**review or synthesize** evidence (folder 07). Reviews do not substitute for "
+            "primary-study effect estimates."
+        )
+        return
+    lines.append("Conceptual architecture (not all papers estimate every arrow):")
+    lines.append("")
+    lines.append("```")
+    lines.append("Teacher PD / CPD")
+    lines.append("        ↓")
+    lines.append("Teacher Professional Knowledge")
+    lines.append("        ↓")
+    lines.append("Teaching Practice")
+    lines.append("        ↓")
+    lines.append("Student Achievement")
+    lines.append("```")
+    lines.append("")
+    lines.append(
+        "Some papers evaluate a **specific PD intervention** (folder 07); others "
+        "**review or synthesize** evidence across programs (folder 08); others may "
+        "directly examine single arrows (folders 04–06)."
+    )
+
 
 @dataclass
 class EvidenceRow:
@@ -147,10 +208,13 @@ def abbrev_evidence_type(raw: str, examined: str) -> str:
     if not raw or raw.strip() in ("—", "-", ""):
         return "—"
     s = raw.lower()
-    if "cross-study" in s or ("synthesis" in s and "review" in s):
+    # Conceptual (optionally alongside review text) — not an independent causal estimate.
+    if "conceptual" in s and "cross-study" not in s:
+        return "Conceptual"
+    if "cross-study" in s:
         return "Cross-study synthesis"
-    if "cross-study synthesis" in s:
-        return "Cross-study synthesis"
+    if "review synthesis" in s:
+        return "Review synthesis"
     if "review of causal" in s:
         return "Cross-study synthesis"
     if "rct" in s:
@@ -215,6 +279,9 @@ def parse_research_question(text: str) -> str:
 
 
 def parse_sample_block(text: str) -> str:
+    bold = extract_bold_field(text, "Data and sample")
+    if bold:
+        return bold
     for pat in (
         r"6\.\s+Data and [Ss]ample",
         r"7\.\s+Data and [Ss]ample",
@@ -265,7 +332,12 @@ def parse_key_findings(text: str, max_items: int = 5) -> list[str]:
 
 
 def parse_relevance(text: str, max_items: int = 4) -> list[str]:
-    section = extract_section(text, r"(?:12|10|9)\.\s+Relevance to My Study")
+    section = extract_section(text, r"(?:12|10|9|14)\.\s+Relevance to My Study")
+    if not section:
+        section = extract_section(
+            text,
+            r"(?:12|10|9|14)\.\s+Relevance to the Climate Change",
+        )
     if not section:
         return []
     bullets: list[str] = []
@@ -285,11 +357,13 @@ def parse_relevance(text: str, max_items: int = 4) -> list[str]:
     return bullets[:max_items]
 
 
-def infer_primary_role(category_folder: str) -> str:
+def infer_primary_role(category_folder: str, area_slug: str = "sb-cpd") -> str:
+    if category_folder.endswith("reviews-and-synthesis"):
+        return "Review / cross-study synthesis"
+    if area_slug == "climate-education" and re.match(r"^0[1-6]_", category_folder):
+        return "Individual impact / pathway study"
     if category_folder == "07_teacher-pd-interventions":
         return "Individual PD intervention study"
-    if category_folder == "08_reviews-and-synthesis":
-        return "Review / cross-study synthesis"
     if category_folder.startswith("04_") or category_folder.startswith("05_") or category_folder.startswith("06_"):
         return "Direct relationship evidence"
     return "Construct or descriptive evidence"
@@ -299,7 +373,8 @@ def parse_summary(path: Path, area: ResearchAreaConfig) -> PaperSummary:
     text = path.read_text(encoding="utf-8")
     rel = path.relative_to(area.repo_root)
     category_folder = path.relative_to(area.academic_papers).parts[0]
-    category_label = CATEGORY_TITLES.get(
+    titles = category_titles_for(area)
+    category_label = titles.get(
         category_folder,
         category_folder.replace("_", " ").title(),
     )
@@ -314,7 +389,7 @@ def parse_summary(path: Path, area: ResearchAreaConfig) -> PaperSummary:
         author_label=author_label,
         category_folder=category_folder,
         category_label=category_label,
-        primary_role=infer_primary_role(category_folder),
+        primary_role=infer_primary_role(category_folder, area.slug),
     )
 
     ck = extract_bold_field(text, "Citation key")
@@ -466,7 +541,11 @@ def _relationship_section_note(paper: PaperSummary, relationship: str, badge: st
     )
     if mapping_row and mapping_row.examined.strip().lower() in ("yes", "y"):
         note = truncate(mapping_row.notes, 200) if mapping_row.notes else paper.core_contribution
-        if paper.category_folder == "08_reviews-and-synthesis" and badge == "Cross-study synthesis":
+        if (
+            paper.category_folder.endswith("reviews-and-synthesis")
+            and badge == "Cross-study synthesis"
+            and relationship.startswith("PD ")
+        ):
             note = (
                 "Cross-program associations across evaluated PD studies; "
                 "not causal estimates of PD features. " + truncate(mapping_row.notes or "", 150)
@@ -520,23 +599,7 @@ def build_markdown(papers: list[PaperSummary], area: ResearchAreaConfig) -> str:
         for pt in paper_types:
             lines.append(f"  - {pt}")
     lines.append("")
-    lines.append("Conceptual architecture (not all papers estimate every arrow):")
-    lines.append("")
-    lines.append("```")
-    lines.append("Teacher PD / CPD")
-    lines.append("        ↓")
-    lines.append("Teacher Professional Knowledge")
-    lines.append("        ↓")
-    lines.append("Teaching Practice")
-    lines.append("        ↓")
-    lines.append("Student Achievement")
-    lines.append("```")
-    lines.append("")
-    lines.append(
-        "Some papers evaluate a **specific PD intervention** (folder 07); others "
-        "**review or synthesize** evidence across programs (folder 08); others may "
-        "directly examine single arrows (folders 04–06)."
-    )
+    append_overview_architecture(lines, area)
     lines.append("")
     lines.append("---")
     lines.append("")
@@ -576,16 +639,26 @@ def build_markdown(papers: list[PaperSummary], area: ResearchAreaConfig) -> str:
     lines.append(
         "**Legend:** RCT = randomized trial (or ITT from RCT); QE = quasi-experimental; "
         "Association = associational/correlational; Cross-study synthesis = synthesis across "
-        "multiple studies/programs (not a new single-program causal estimate); Conceptual = "
-        "conceptual discussion only; — = not examined in that paper."
+        "multiple studies/programs (not a new single-program causal estimate); "
+        "Review synthesis = narrative/selective review summarizing cited primary studies "
+        "(Examined = Yes means discussed/synthesized, not independently estimated here); "
+        "Conceptual = conceptual or policy pathway without direct empirical estimation in that "
+        "paper; — = not examined in that paper."
     )
     lines.append("")
-    lines.append(
-        "*A PD study with separate outcomes on knowledge and practice does **not** "
-        "count as evidence on Teacher Knowledge → Teaching Practice unless that "
-        "relationship is directly estimated. Cross-program associations are not causal "
-        "estimates of PD features.*"
-    )
+    if area.slug == "climate-education":
+        lines.append(
+            "*Review papers synthesize primary studies; they do **not** supply new Effect "
+            "Summary rows. Distinguish **total** weather-shock effects from **mediation** "
+            "(e.g., School Disruption → Learning) using primary-study designs.*"
+        )
+    else:
+        lines.append(
+            "*A PD study with separate outcomes on knowledge and practice does **not** "
+            "count as evidence on Teacher Knowledge → Teaching Practice unless that "
+            "relationship is directly estimated. Cross-program associations are not causal "
+            "estimates of PD features.*"
+        )
     lines.append("")
     lines.append("---")
     lines.append("")
@@ -596,8 +669,9 @@ def build_markdown(papers: list[PaperSummary], area: ResearchAreaConfig) -> str:
     for p in papers:
         by_cat.setdefault(p.category_folder, []).append(p)
 
+    cat_titles = category_titles_for(area)
     for cat in sorted(by_cat.keys()):
-        lines.append(f"### {CATEGORY_TITLES.get(cat, cat)}")
+        lines.append(f"### {cat_titles.get(cat, cat)}")
         lines.append("")
         for p in sorted(by_cat[cat], key=lambda x: x.citation_key):
             lines.append(f"#### {p.author_label} — {p.short_title}")
@@ -634,7 +708,7 @@ def build_markdown(papers: list[PaperSummary], area: ResearchAreaConfig) -> str:
             else:
                 lines.append("- Not recorded")
             lines.append("")
-            lines.append("**Relevance to SB-CPD**")
+            lines.append(relevance_heading(area))
             lines.append("")
             if p.relevance_sb_cpd:
                 for r in p.relevance_sb_cpd:
@@ -671,15 +745,22 @@ def build_markdown(papers: list[PaperSummary], area: ResearchAreaConfig) -> str:
     lines.append("")
     lines.append("## 6. Reviews and Conceptual Foundations")
     lines.append("")
-    review_papers = [p for p in papers if p.category_folder == "08_reviews-and-synthesis"]
+    review_papers = [
+        p for p in papers if p.category_folder.endswith("reviews-and-synthesis")
+    ]
     if not review_papers:
-        lines.append("*No papers in category 08 yet.*")
+        lines.append("*No papers in a reviews-and-synthesis category yet.*")
     else:
         for p in review_papers:
+            suffix = (
+                "not an individual weather-shock impact evaluation."
+                if area.slug == "climate-education"
+                else "not an individual PD intervention RCT."
+            )
             lines.append(
                 f"- **`{p.citation_key}`** — {p.short_title}: "
                 f"{truncate(p.core_contribution, 280)} "
-                f"*(Role: {p.primary_role}; not an individual PD intervention RCT.)*"
+                f"*(Role: {p.primary_role}; {suffix})*"
             )
     lines.append("")
     lines.append("---")
@@ -705,6 +786,7 @@ def build_markdown(papers: list[PaperSummary], area: ResearchAreaConfig) -> str:
 def run_build(
     area: ResearchAreaConfig,
     write_html: bool = True,
+    write_root: bool = True,
     hub=None,
 ) -> int:
     paths = discover_summaries(area)
@@ -734,9 +816,10 @@ def run_build(
         write_area_html(papers, area, hub=hub_cfg)
         print(f"Wrote {area.output_html.relative_to(area.repo_root)}")
 
-        root_dashboard = area.repo_root / "dashboard" / "index.html"
-        write_root_html(area.repo_root, root_dashboard, hub=hub_cfg)
-        print(f"Wrote {root_dashboard.relative_to(area.repo_root)}")
+        if write_root:
+            root_dashboard = area.repo_root / "dashboard" / "index.html"
+            write_root_html(area.repo_root, root_dashboard, hub=hub_cfg)
+            print(f"Wrote {root_dashboard.relative_to(area.repo_root)}")
 
     return 0
 

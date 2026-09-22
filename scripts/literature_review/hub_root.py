@@ -3,17 +3,19 @@
 from __future__ import annotations
 
 import html
-from collections import Counter
+from collections import Counter, defaultdict
 from pathlib import Path
+from urllib.parse import quote
 
 from .config import sb_cpd_config
 from .dashboard_config import HubDisplayConfig, ResearchAreaDisplay
-from .engine import PaperSummary
+from .engine import PaperSummary, discover_summaries, parse_summary
 from .botanical_visuals import (
     area_botanical_mini,
     featured_module_botanical_svg,
     footer_acorn_svg,
     hero_botanical_svg,
+    hero_treeline_accent_svg,
     hover_leaf_svg,
     section_title_leaf_svg,
 )
@@ -113,68 +115,142 @@ ROOT_HUB_STYLES = """
   .site-nav a:hover { box-shadow: inset 0 -2px 0 var(--accent-soft); }
 }
 
-.hub-root .hero-root {
+.hub-root .hub-main { padding-top: 0; }
+
+.hero-forest {
+  position: relative;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  min-height: min(32rem, 78vh);
+  background: var(--forest-dark);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.hero-forest::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    105deg,
+    rgba(15, 31, 24, 0.78) 0%,
+    rgba(15, 31, 24, 0.42) 38%,
+    rgba(15, 31, 24, 0.12) 58%,
+    transparent 72%
+  );
+}
+.hero-forest-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.hero-forest-bg svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.hero-forest-inner {
+  position: relative;
+  z-index: 2;
+  max-width: 1120px;
+  width: 100%;
+  margin: 0 auto;
+  padding: clamp(2.5rem, 6vw, 4rem) 1.5rem clamp(2.75rem, 7vw, 4.25rem);
   display: grid;
-  grid-template-columns: 1fr min(44%, 400px);
-  gap: 2.5rem 3rem;
-  align-items: center;
-  padding: 2.75rem 0 2.25rem;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: 2rem 3rem;
+  align-items: end;
 }
-@media (max-width: 820px) {
-  .hub-root .hero-root { grid-template-columns: 1fr; }
-  .hub-root .hero-visual { order: -1; max-width: 320px; margin: 0 auto; }
+@media (max-width: 900px) {
+  .hero-forest-inner {
+    grid-template-columns: 1fr;
+    align-items: start;
+    padding-bottom: 2.5rem;
+  }
+  .hero-forest { min-height: min(28rem, 85vh); }
 }
-.hero-copy { max-width: 34rem; }
+.hero-copy { max-width: 36rem; }
 .hero-eyebrow {
   margin: 0 0 0.65rem;
   font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--sage);
+  color: var(--sage-light);
 }
-.hub-root .hero-root h1 {
+.hero-forest h1 {
   font-family: var(--font-serif);
-  font-size: clamp(2.1rem, 4.2vw, 2.85rem);
+  font-size: clamp(2.1rem, 4.5vw, 3rem);
   font-weight: 500;
   letter-spacing: -0.03em;
-  line-height: 1.12;
+  line-height: 1.1;
   margin: 0 0 0.85rem;
-  color: var(--forest-deep);
+  color: var(--ivory);
   max-width: none;
+  text-wrap: balance;
 }
-.hub-root .hero-root .lead {
+.hero-forest .lead {
   font-size: 1.02rem;
-  color: var(--muted);
+  color: rgba(247, 244, 235, 0.82);
   margin: 0;
   line-height: 1.55;
+  max-width: 32rem;
 }
-.hero-cta {
+.hero-forest .hero-cta {
   display: inline-block;
   margin-top: 1.35rem;
   font-size: 0.82rem;
   font-weight: 500;
   letter-spacing: 0.04em;
-  color: var(--forest);
+  color: var(--ivory);
   text-decoration: none;
   padding: 0.35rem 0;
-  border-bottom: 1px solid var(--sage);
+  border-bottom: 1px solid rgba(220, 229, 213, 0.55);
   transition: color var(--km-ease), border-color var(--km-ease);
 }
-.hero-cta:hover,
-.hero-cta:focus-visible {
-  color: var(--forest-dark);
-  border-bottom-color: var(--forest);
+.hero-forest .hero-cta:hover,
+.hero-forest .hero-cta:focus-visible {
+  color: var(--white);
+  border-bottom-color: var(--ivory);
   outline: none;
 }
-.hero-cta:focus-visible { box-shadow: 0 2px 0 var(--sage-light); }
-.hero-visual {
-  background: var(--paper);
-  padding: 0.65rem;
-  border: 1px solid var(--line);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.75);
+.hero-forest .hero-cta:focus-visible {
+  box-shadow: 0 0 0 2px rgba(220, 229, 213, 0.45);
 }
-.hero-visual svg { width: 100%; height: auto; display: block; }
+.hero-forest-aside {
+  min-height: 12rem;
+  pointer-events: none;
+}
+@media (max-width: 900px) {
+  .hero-forest-aside { display: none; }
+}
+.hero-forest-fade {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 5rem;
+  z-index: 1;
+  background: linear-gradient(to bottom, transparent, var(--ivory));
+  pointer-events: none;
+}
+.hero-treeline-wrap {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  line-height: 0;
+  margin-top: -1px;
+  background: var(--ivory);
+}
+.hero-treeline-wrap svg {
+  width: 100%;
+  height: 2rem;
+  display: block;
+}
 
 .hub-divider {
   border: none;
@@ -206,7 +282,26 @@ ROOT_HUB_STYLES = """
 .scope-strip strong { color: var(--text); font-weight: 600; }
 .scope-strip .sep { color: var(--sand); user-select: none; }
 
-.explore-block { padding: 0.5rem 0 2.75rem; }
+.explore-block {
+  padding: 0.5rem 0 2.75rem;
+  position: relative;
+}
+.explore-block::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(168, 185, 155, 0.35) 20%,
+    rgba(37, 71, 53, 0.12) 50%,
+    rgba(168, 185, 155, 0.35) 80%,
+    transparent
+  );
+}
 .section-title {
   font-family: var(--font-serif);
   font-size: 1.45rem;
@@ -498,6 +593,16 @@ a.km:not(.km--featured):focus-visible .km-mini-botanical {
     color: var(--forest);
   }
 }
+.browse-col ul.browse-sub {
+  margin: 0.35rem 0 0 0.85rem;
+  padding: 0;
+  list-style: none;
+}
+.browse-col ul.browse-sub li {
+  border-bottom: none;
+  padding: 0.2rem 0;
+  font-size: 0.88rem;
+}
 .browse-col .count {
   color: var(--muted-light);
   font-weight: 400;
@@ -538,6 +643,72 @@ def _paper_countries(papers: list[PaperSummary]) -> list[tuple[str, int]]:
             c = "Multi-country"
         counts[c] += 1
     return sorted(counts.items(), key=lambda x: (-x[1], x[0]))
+
+
+def _area_paper_url(area_href: str, country: str, citation_key: str) -> str:
+    q_country = quote(country, safe="")
+    q_paper = quote(citation_key, safe="")
+    return f"{area_href}?country={q_country}&paper={q_paper}"
+
+
+def _country_browse_html(
+    repo_root: Path,
+    area_rows: list[tuple[ResearchAreaDisplay, int, str | None]],
+) -> list[str]:
+    """
+    One browse row per distinct country label; links resolve to the area dashboard
+    with country + paper query params (see area page JS).
+    """
+    refs: list[tuple[str, str, str, str]] = []
+    for display, count, href in area_rows:
+        if not href or count <= 0:
+            continue
+        cfg = display.config_factory(repo_root)
+        papers = [parse_summary(p, cfg) for p in discover_summaries(cfg)]
+        area_label = display.card_title
+        for p in papers:
+            country = p.country.strip()
+            if not country or country == "Not recorded":
+                continue
+            key = p.citation_key if p.citation_key != "Not recorded" else p.path.stem
+            refs.append((country, href, area_label, key))
+
+    if not refs:
+        return ['<li><span class="count">No papers yet</span></li>']
+
+    by_country: dict[str, list[tuple[str, str, str]]] = defaultdict(list)
+    for country, href, area_label, key in refs:
+        by_country[country].append((href, area_label, key))
+
+    items: list[str] = []
+    for country in sorted(by_country.keys(), key=lambda c: (-len(by_country[c]), c)):
+        group = by_country[country]
+        cnt = len(group)
+        cnt_label = f'{cnt} paper{"s" if cnt != 1 else ""}'
+
+        if len(group) == 1:
+            href, _area, key = group[0]
+            url = _area_paper_url(href, country, key)
+            items.append(
+                f'<li><a class="browse-link" href="{_esc(url)}">{_esc(country)}'
+                f'<span class="browse-arr" aria-hidden="true">→</span></a> '
+                f'<span class="count">· {cnt_label}</span></li>'
+            )
+            continue
+
+        sub: list[str] = []
+        for href, area_label, key in sorted(group, key=lambda x: (x[1], x[2])):
+            url = _area_paper_url(href, country, key)
+            sub.append(
+                f'<li><a class="browse-link" href="{_esc(url)}">{_esc(area_label)}'
+                f" · <code>{_esc(key)}</code>"
+                f'<span class="browse-arr" aria-hidden="true">→</span></a></li>'
+            )
+        items.append(
+            f"<li>{_esc(country)} <span class=\"count\">· {cnt_label}</span>"
+            f'<ul class="browse-sub">{"".join(sub)}</ul></li>'
+        )
+    return items
 
 
 _KM_SURFACE: dict[str, str] = {
@@ -671,20 +842,7 @@ def build_root_body(
         else:
             area_browse.append(f"<li>{label} <span class=\"count\">· {cnt}</span></li>")
 
-    country_browse = []
-    for name, cnt in _paper_countries(all_papers):
-        if sb_cpd_href:
-            country_browse.append(
-                f'<li><a class="browse-link" href="{_esc(sb_cpd_href)}">{_esc(name)}'
-                f'<span class="browse-arr" aria-hidden="true">→</span></a> '
-                f'<span class="count">· {cnt} paper{"s" if cnt != 1 else ""}</span></li>'
-            )
-        else:
-            country_browse.append(
-                f"<li>{_esc(name)} <span class=\"count\">· {cnt}</span></li>"
-            )
-    if not country_browse:
-        country_browse.append("<li><span class=\"count\">No papers yet</span></li>")
+    country_browse = _country_browse_html(repo_root, area_rows)
 
     type_browse = []
     if n_empirical:
@@ -723,19 +881,20 @@ def build_root_body(
 
     leaf = section_title_leaf_svg()
     return f"""
-<section class="hero-root">
+<section class="hero-forest" aria-label="Research Knowledge Base">
+<div class="hero-forest-bg">{hero_botanical_svg()}</div>
+<div class="hero-forest-fade" aria-hidden="true"></div>
+<div class="hero-forest-inner">
 <div class="hero-copy">
 <p class="hero-eyebrow">Research Knowledge Base</p>
 <h1>Evidence for Education &amp; Development</h1>
 <p class="lead">A personal research knowledge base connecting evidence across education and international development.</p>
 <a class="hero-cta" href="#explore">Explore knowledge →</a>
 </div>
-<div class="hero-visual" aria-hidden="true">
-{hero_botanical_svg()}
+<div class="hero-forest-aside" aria-hidden="true"></div>
 </div>
 </section>
-
-<hr class="hub-divider">
+<div class="hero-treeline-wrap" aria-hidden="true">{hero_treeline_accent_svg()}</div>
 
 <div class="scope-block">
 <p class="scope-label">Knowledge base at a glance</p>

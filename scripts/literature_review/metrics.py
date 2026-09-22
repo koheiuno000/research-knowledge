@@ -2,11 +2,20 @@
 
 from __future__ import annotations
 
+import re
+
 from .engine import PaperSummary, abbrev_evidence_type, examined_yes
 
 # Mutually exclusive primary roles for hub summary counts (see **Primary category:** in summaries).
 PRIMARY_EMPIRICAL_FOLDER = "07_teacher-pd-interventions"
 PRIMARY_REVIEW_FOLDER = "08_reviews-and-synthesis"
+
+
+def _area_slug_from_paper(paper: PaperSummary) -> str:
+    for slug in ("sb-cpd", "climate-education"):
+        if slug in paper.path.parts:
+            return slug
+    return "sb-cpd"
 
 
 def primary_summary_classification(paper: PaperSummary) -> str:
@@ -17,9 +26,12 @@ def primary_summary_classification(paper: PaperSummary) -> str:
     keywords, study design, or evidence-mapping labels).
     """
     folder = paper.category_folder
-    if folder == PRIMARY_REVIEW_FOLDER:
+    slug = _area_slug_from_paper(paper)
+    if folder.endswith("reviews-and-synthesis"):
         return "review_synthesis"
-    if folder == PRIMARY_EMPIRICAL_FOLDER:
+    if slug == "sb-cpd" and folder == PRIMARY_EMPIRICAL_FOLDER:
+        return "empirical_study"
+    if slug == "climate-education" and re.match(r"^0[1-6]_", folder):
         return "empirical_study"
     return "other"
 

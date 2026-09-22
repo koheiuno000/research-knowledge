@@ -11,60 +11,114 @@ _P = "#FFFCF6"
 
 
 def hero_botanical_svg() -> str:
-    """Hero panel: oak leaves, acorns, branches, forest silhouette, evidence nodes."""
+    """Immersive layered woodland scene for the root hero (full-bleed background)."""
+    d1, d2, d3 = "#152a20", "#193729", "#254735"
+    mid, lift = "#2f4f3d", "#3d6b52"
+    mist = "#A8B99B"
     return f"""
-<svg class="hero-botanical" viewBox="0 0 440 360" aria-hidden="true">
-  <rect width="440" height="360" rx="4" fill="{_P}"/>
-  <rect x="8" y="8" width="424" height="344" rx="2" fill="none" stroke="{_I}" stroke-width="1.5" opacity="0.85"/>
-  <!-- distant forest -->
-  <g fill="{_F}" opacity="0.07">
-    <path d="M0 280 L0 360 L440 360 L440 268 Q330 248 220 262 T0 280 Z"/>
-    <path d="M40 292 L68 220 L96 292 Z"/>
-    <path d="M120 298 L148 232 L176 298 Z"/>
-    <path d="M300 290 L328 218 L356 290 Z"/>
-    <path d="M360 296 L382 240 L404 296 Z"/>
+<svg class="hero-forest-scene" viewBox="0 0 1200 520" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+  <defs>
+    <linearGradient id="skyForest" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="{d2}"/>
+      <stop offset="55%" stop-color="{d1}"/>
+      <stop offset="100%" stop-color="#0f1f18"/>
+    </linearGradient>
+    <linearGradient id="groundFade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="{d1}" stop-opacity="0"/>
+      <stop offset="100%" stop-color="{d1}" stop-opacity="0.95"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="520" fill="url(#skyForest)"/>
+  <!-- atmospheric mist bands -->
+  <path d="M0 200 Q300 170 600 195 T1200 180 V260 H0 Z" fill="{mist}" opacity="0.06"/>
+  <path d="M0 260 Q400 240 800 255 T1200 245 V320 H0 Z" fill="{mist}" opacity="0.05"/>
+  <!-- distant tree line -->
+  <g fill="{d3}" opacity="0.35">
+    <path d="M0 340 L0 520 L1200 520 L1200 320 Q900 300 600 318 T0 340 Z"/>
+    <path d="M80 338 L108 268 L136 338 Z"/>
+    <path d="M160 342 L188 278 L216 342 Z"/>
+    <path d="M240 336 L268 260 L296 336 Z"/>
+    <path d="M520 332 L552 250 L584 332 Z"/>
+    <path d="M680 338 L710 270 L740 338 Z"/>
+    <path d="M880 334 L912 255 L944 334 Z"/>
+    <path d="M1020 340 L1048 275 L1076 340 Z"/>
   </g>
-  <!-- central tree silhouette -->
-  <path d="M218 300 L218 168" stroke="{_F}" stroke-width="2" opacity="0.35" stroke-linecap="round"/>
-  <path d="M218 168 C218 120 178 98 178 72 C178 52 198 42 218 58 C238 42 258 52 258 72 C258 98 218 120 218 168 Z"
-        fill="{_S}" fill-opacity="0.22" stroke="{_F}" stroke-width="1.2" opacity="0.5"/>
-  <!-- oak leaves -->
-  <g fill="none" stroke="{_F}" stroke-width="1.15" stroke-linejoin="round" opacity="0.72">
-    <path d="M88 142 C88 118 108 102 128 108 C148 114 152 138 128 152 C104 166 88 158 88 142 Z"/>
-    <path d="M88 142 L128 108 M88 142 L118 152 M128 152 L128 108"/>
-    <path d="M312 118 C312 94 332 78 352 84 C372 90 376 114 352 128 C328 142 312 134 312 118 Z"/>
-    <path d="M312 118 L352 84 M312 118 L342 128 M352 128 L352 84"/>
-    <path d="M168 198 C168 178 184 166 200 170 C216 174 218 192 200 204 C182 216 168 210 168 198 Z" opacity="0.55"/>
-    <path d="M268 208 C268 188 284 176 300 180 C316 184 318 202 300 214 C282 226 268 220 268 208 Z" opacity="0.55"/>
+  <!-- mid-ground grove -->
+  <g opacity="0.55">
+    <ellipse cx="420" cy="300" rx="95" ry="72" fill="{mid}"/>
+    <ellipse cx="520" cy="288" rx="110" ry="80" fill="{lift}"/>
+    <ellipse cx="780" cy="295" rx="100" ry="70" fill="{mid}"/>
+    <ellipse cx="900" cy="285" rx="85" ry="65" fill="{lift}"/>
+    <ellipse cx="260" cy="305" rx="75" ry="58" fill="{mid}"/>
   </g>
-  <!-- acorns -->
-  <g fill="{_E}" opacity="0.65">
-    <ellipse cx="142" cy="178" rx="7" ry="9"/>
-    <path d="M136 172 Q142 164 148 172" fill="none" stroke="{_E}" stroke-width="1"/>
-    <ellipse cx="328" cy="192" rx="6" ry="8"/>
-    <path d="M323 187 Q328 180 333 187" fill="none" stroke="{_E}" stroke-width="1"/>
+  <!-- trunks — mid -->
+  <g stroke="#1a2e24" stroke-width="5" stroke-linecap="round" opacity="0.5">
+    <line x1="410" y1="520" x2="418" y2="340"/>
+    <line x1="530" y1="520" x2="538" y2="320"/>
+    <line x1="770" y1="520" x2="778" y2="335"/>
+    <line x1="890" y1="520" x2="898" y2="345"/>
+    <line x1="255" y1="520" x2="262" y2="355"/>
   </g>
-  <!-- branch -->
-  <path d="M48 228 Q120 210 168 224 T280 216 T392 232" fill="none" stroke="{_E}" stroke-width="1" opacity="0.4" stroke-linecap="round"/>
-  <!-- evidence connections -->
-  <g stroke="{_F}" stroke-width="0.75" opacity="0.35">
-    <line x1="128" y1="130" x2="200" y2="188"/>
-    <line x1="200" y1="188" x2="218" y2="140"/>
-    <line x1="218" y1="140" x2="300" y2="196"/>
-    <line x1="300" y1="196" x2="352" y2="110"/>
+  <!-- foreground canopy -->
+  <g opacity="0.72">
+    <ellipse cx="180" cy="360" rx="120" ry="88" fill="{d3}"/>
+    <ellipse cx="320" cy="345" rx="130" ry="95" fill="{mid}"/>
+    <ellipse cx="640" cy="355" rx="140" ry="100" fill="{d3}"/>
+    <ellipse cx="980" cy="365" rx="125" ry="90" fill="{mid}"/>
+    <ellipse cx="1050" cy="380" rx="90" ry="70" fill="{lift}" opacity="0.6"/>
   </g>
-  <g fill="{_F}" opacity="0.45">
-    <circle cx="128" cy="130" r="2.5"/>
-    <circle cx="200" cy="188" r="2"/>
-    <circle cx="218" cy="140" r="3"/>
-    <circle cx="300" cy="196" r="2"/>
-    <circle cx="352" cy="110" r="2.5"/>
+  <!-- foreground trunks -->
+  <g stroke="#0f1f18" stroke-width="7" stroke-linecap="round" opacity="0.65">
+    <line x1="170" y1="520" x2="182" y2="370"/>
+    <line x1="310" y1="520" x2="322" y2="355"/>
+    <line x1="630" y1="520" x2="642" y2="348"/>
+    <line x1="970" y1="520" x2="982" y2="375"/>
   </g>
-  <!-- open book hint -->
-  <g transform="translate(52 248)" fill="none" stroke="{_F}" stroke-width="0.9" opacity="0.35">
-    <path d="M0 6 C14 0 28 0 42 6 V32 C28 26 14 26 0 32 Z"/>
-    <path d="M42 6 C56 0 70 0 84 6 V32 C70 26 56 26 42 32 Z"/>
+  <!-- ground contour -->
+  <path d="M0 420 Q200 395 400 408 T800 402 T1200 415 L1200 520 L0 520 Z" fill="{d1}" opacity="0.85"/>
+  <path d="M0 455 Q350 430 600 442 T1200 448 L1200 520 L0 520 Z" fill="#0f1f18" opacity="0.5"/>
+  <!-- branches (evidence pathways) -->
+  <g fill="none" stroke="{mist}" stroke-width="1" opacity="0.22" stroke-linecap="round">
+    <path d="M120 280 Q280 250 420 270 T680 258 T920 272"/>
+    <path d="M200 320 Q380 300 520 318 T760 305"/>
   </g>
+  <g fill="{_I}" opacity="0.35">
+    <circle cx="280" cy="268" r="2.5"/>
+    <circle cx="420" cy="272" r="2"/>
+    <circle cx="560" cy="262" r="2.5"/>
+    <circle cx="720" cy="270" r="2"/>
+  </g>
+  <!-- oak leaves (supporting) -->
+  <g fill="none" stroke="{mist}" stroke-width="1.1" stroke-linejoin="round" opacity="0.45">
+    <path d="M95 380 C95 362 108 352 122 356 C136 360 138 376 122 386 C106 396 95 392 95 380 Z"/>
+    <path d="M95 380 L122 356 M95 380 L112 386 M122 386 L122 356"/>
+    <path d="M1080 390 C1080 372 1093 362 1107 366 C1121 370 1123 386 1107 396 C1091 406 1080 402 1080 390 Z"/>
+    <path d="M450 240 C450 226 460 218 472 220 C484 222 486 236 472 244 C458 252 450 250 450 240 Z" opacity="0.7"/>
+    <path d="M720 230 C720 216 730 208 742 210 C754 212 756 226 742 234 C728 242 720 240 720 230 Z" opacity="0.6"/>
+  </g>
+  <!-- acorns on forest floor -->
+  <g fill="{_E}" opacity="0.5">
+    <ellipse cx="140" cy="468" rx="5" ry="7"/>
+    <path d="M136 463 Q140 457 144 463" fill="none" stroke="{_E}" stroke-width="0.8"/>
+    <ellipse cx="890" cy="478" rx="4.5" ry="6"/>
+    <ellipse cx="1020" cy="472" rx="5" ry="6.5"/>
+  </g>
+  <!-- open book in clearing (library) -->
+  <g transform="translate(548 455)" fill="none" stroke="{_I}" stroke-width="0.9" opacity="0.28">
+    <path d="M0 8 C18 0 36 0 54 8 V38 C36 30 18 30 0 38 Z"/>
+    <path d="M54 8 C72 0 90 0 108 8 V38 C90 30 72 30 54 38 Z"/>
+    <line x1="54" y1="8" x2="54" y2="38"/>
+  </g>
+  <rect y="400" width="1200" height="120" fill="url(#groundFade)"/>
+</svg>"""
+
+
+def hero_treeline_accent_svg() -> str:
+    """Subtle treeline connecting hero to ivory content below."""
+    return f"""
+<svg class="hero-treeline-accent" viewBox="0 0 1200 32" preserveAspectRatio="none" aria-hidden="true">
+  <path d="M0 28 L0 32 L1200 32 L1200 24 Q900 8 600 18 T0 28 Z" fill="{_S}" opacity="0.12"/>
+  <path d="M0 26 Q200 14 400 20 T800 16 T1200 22 L1200 32 L0 32 Z" fill="{_F}" opacity="0.06"/>
 </svg>"""
 
 
