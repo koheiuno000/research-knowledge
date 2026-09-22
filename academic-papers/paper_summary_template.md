@@ -1,5 +1,9 @@
 # [Author(s), Year] — [Short Title]
 
+**Primary category:** `[folder number and name, e.g. 07_teacher-pd-interventions]`
+
+**Secondary themes:** (optional bullet list—constructs, subjects, LMIC, methods, etc.)
+
 ## 1. Citation
 Full citation:
 
@@ -12,36 +16,53 @@ Country / Context:
 ## 2. Research Question
 Briefly state the main research question(s).
 
-## 3. Conceptual Focus
-Indicate which relationship(s) the paper examines:
+## 3. Evidence Mapping
+
+Mark **Examined = Yes** only if the paper **empirically examines that relationship** (not merely because both variables appear).
+
+| Relationship | Examined? | Evidence Type | Notes |
+|---|---|---|---|
+| PD → Teacher Knowledge | Yes / No | RCT / Quasi-experimental / Association / Descriptive / — | |
+| PD → Teaching Practice | Yes / No | RCT / Quasi-experimental / Association / Descriptive / — | |
+| PD → Student Achievement | Yes / No | RCT / Quasi-experimental / Association / Descriptive / — | |
+| Teacher Knowledge → Teaching Practice | Yes / No | Causal / Association / Descriptive / — | |
+| Teaching Practice → Student Achievement | Yes / No | Causal / Association / Descriptive / — | |
+| Teacher Knowledge → Student Achievement | Yes / No | Causal / Association / Descriptive / — | |
+| Knowledge → Practice → Achievement pathway | Yes / No | Mediation / Other / — | |
+
+**Example (PD intervention, not pathway evidence):** PD increases teaching practice and does not significantly increase student achievement → **PD → Practice = Yes**, **PD → Achievement = Yes/No as estimated**, **Teaching Practice → Student Achievement = No** unless that relationship is directly estimated.
+
+## 4. Conceptual Focus
+Indicate which constructs or relationships the paper is **primarily about** (for quick scanning):
 
 - Teacher Knowledge
 - Teaching Practice
 - Student Achievement
+- Teacher PD / CPD intervention
 - Teacher Knowledge → Teaching Practice
 - Teaching Practice → Student Achievement
 - Teacher Knowledge → Student Achievement
 - Other:
 
-## 4. Data and Sample
+## 5. Data and Sample
 - Country:
 - Education level:
 - Subject:
 - Sample:
 - Study setting:
 
-## 5. Methods
+## 6. Methods
 Brief description of:
 - research design
 - key variables
 - empirical strategy
 
-## 6. Main Findings
+## 7. Main Findings
 Summarize only the findings relevant to my literature review.
 
 Use my own words rather than copying sentences from the paper.
 
-## 7. Mechanism / Interpretation
+## 8. Mechanism / Interpretation
 What mechanism do the authors propose?
 
 Clearly distinguish between:
@@ -49,7 +70,7 @@ Clearly distinguish between:
 - interpretations proposed by the authors
 - my own interpretation
 
-## 8. Relevance to My Study
+## 9. Relevance to My Study
 Explain specifically how this paper contributes to my study.
 
 Consider:
@@ -59,26 +80,27 @@ Consider:
 - interpretation of results
 - comparison with my findings
 
-## 9. Limitations
+## 10. Limitations
 Record limitations that matter for interpreting or citing the study.
 
-## 10. Key Takeaway
+## 11. Key Takeaway
 Write 1–3 sentences explaining the single most important reason I may cite this paper.
 
-## 11. Possible Use in Literature Review
+## 12. Possible Use in Literature Review
 Indicate where this paper could be cited:
 
 - Teacher knowledge
 - Teaching practice
 - Student achievement
-- Knowledge → Practice
-- Practice → Achievement
-- Knowledge → Achievement
+- Teacher PD interventions (folder 07)
+- Knowledge → Practice (direct evidence only)
+- Practice → Achievement (direct evidence only)
+- Knowledge → Achievement (direct evidence only)
 - LMIC evidence
 - Mathematics education
 - Discussion / interpretation
 
-## 12. Notes / Quotes
+## 13. Notes / Quotes
 Optional notes.
 
 If recording a direct quote, clearly mark it as a direct quote and include the page number.
