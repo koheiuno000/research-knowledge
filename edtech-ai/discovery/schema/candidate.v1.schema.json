@@ -1,0 +1,130 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://research-knowledge.local/edtech-ai/discovery/schema/candidate.v1.schema.json",
+  "title": "EdTechAI discovery candidate (API metadata + screening overlay)",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "record_id",
+    "review_state",
+    "discovery_track_ids",
+    "retrieved_at",
+    "api",
+    "work"
+  ],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "record_id": {
+      "type": "string",
+      "description": "Stable internal id, e.g. sha256 of normalized DOI or OpenAlex work id."
+    },
+    "review_state": {
+      "enum": ["candidate", "screened", "reviewed"],
+      "description": "candidate = API only; screened = human include/exclude; reviewed = full paper summary exists for synthesis."
+    },
+    "foundational_exception": {
+      "type": "boolean",
+      "description": "True only for manually approved pre-window papers (never set by routine fetch)."
+    },
+    "screening": {
+      "type": "object",
+      "properties": {
+        "decision": { "enum": ["include", "exclude", "undecided"] },
+        "decided_at": { "type": "string", "format": "date-time" },
+        "decided_by": { "type": "string" },
+        "notes": { "type": "string" },
+        "foundational_exception": { "type": "boolean" },
+        "justification": {
+          "type": "string",
+          "description": "Required when foundational_exception is true."
+        }
+      },
+      "additionalProperties": false
+    },
+    "discovery_track_ids": {
+      "type": "array",
+      "items": { "enum": ["teachers_and_ai", "ai_learning_outcomes"] },
+      "minItems": 1
+    },
+    "relevance_flags": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Transparent keyword-based flags from tracks.yaml (not causal claims)."
+    },
+    "retrieved_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When this record was retrieved from the API (distinct from publication dates)."
+    },
+    "api": {
+      "type": "object",
+      "required": ["provider", "query_label"],
+      "properties": {
+        "provider": { "enum": ["openalex", "crossref"] },
+        "query_label": { "type": "string" },
+        "openalex_query_url": { "type": "string" }
+      }
+    },
+    "source_whitelist": {
+      "type": "object",
+      "required": ["user_label", "openalex_source_id", "issn_l"],
+      "properties": {
+        "user_label": { "type": "string" },
+        "openalex_source_id": { "type": "string" },
+        "issn_l": { "type": "string" }
+      }
+    },
+    "work": {
+      "type": "object",
+      "required": ["title", "publication"],
+      "properties": {
+        "openalex_id": { "type": "string" },
+        "doi": { "type": "string" },
+        "title": { "type": "string" },
+        "authors": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "publication_year": { "type": "integer" },
+        "publication": {
+          "type": "object",
+          "required": ["initial_publication_date"],
+          "properties": {
+            "initial_publication_date": {
+              "type": ["string", "null"],
+              "format": "date",
+              "description": "Earliest publication date used for the 10-year window (not revision date)."
+            },
+            "latest_revision_date": {
+              "type": ["string", "null"],
+              "format": "date"
+            },
+            "has_later_revision": { "type": "boolean" },
+            "openalex_publication_date": { "type": ["string", "null"] },
+            "version_note": { "type": ["string", "null"] }
+          }
+        },
+        "venue_display_name": { "type": "string" },
+        "source_type": {
+          "enum": ["peer_reviewed_journal", "working_paper_series", "unknown"]
+        },
+        "abstract_available": { "type": "boolean" },
+        "abstract_text": { "type": ["string", "null"] },
+        "landing_page_url": { "type": ["string", "null"] },
+        "is_open_access": { "type": ["boolean", "null"] },
+        "version_relationships": {
+          "type": "object",
+          "description": "Working-paper vs journal version hints from OpenAlex locations/related_works.",
+          "properties": {
+            "openalex_work_type": { "type": ["string", "null"] },
+            "alternate_locations": { "type": "array" },
+            "related_openalex_work_ids": { "type": "array", "items": { "type": "string" } },
+            "potential_wp_journal_link": { "type": "boolean" },
+            "detection_note": { "type": ["string", "null"] }
+          }
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

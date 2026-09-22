@@ -1,0 +1,186 @@
+# EdTech–AI discovery source whitelist (machine-readable).
+# Verification: OpenAlex Sources API (https://api.openalex.org/sources), retrieved 2026-09-23.
+# Matching rule: candidates MUST match openalex_source_id OR issn_l on primary_location.source.
+# Do not enable title-only substring matching. Do not add journals/series beyond this list.
+
+schema_version: 2
+updated: "2026-09-23"
+
+sources:
+  # --- A. Education, comparative education, and development journals ---
+  - user_label: IJER
+    canonical_name: International Journal of Educational Research
+    source_type: peer_reviewed_journal
+    issn_l: "0883-0355"
+    issn: ["0883-0355", "1873-538X"]
+    openalex_source_id: "https://openalex.org/S156367897"
+    enabled: true
+    api_coverage_notes: >
+      Main IJER only. Exclude IJER Open / similarly named titles unless explicitly authorized.
+
+  - user_label: IJED
+    canonical_name: International Journal of Educational Development
+    source_type: peer_reviewed_journal
+    issn_l: "0738-0593"
+    issn: ["0738-0593", "1873-4871"]
+    openalex_source_id: "https://openalex.org/S20152851"
+    enabled: true
+    api_coverage_notes: ISSN-L verified via OpenAlex (0738-0593).
+
+  - user_label: JREE
+    canonical_name: Journal of Research on Educational Effectiveness
+    source_type: peer_reviewed_journal
+    issn_l: "1934-5739"
+    issn: ["1934-5739", "1934-5747"]
+    openalex_source_id: "https://openalex.org/S163858705"
+    enabled: true
+    api_coverage_notes: >
+      Taylor & Francis journal (verified OpenAlex 2026-09-23). SREE conference presentations
+      and proceedings are NOT whitelisted—this entry is the peer-reviewed journal only.
+
+  - user_label: EER
+    canonical_name: Economics of Education Review
+    source_type: peer_reviewed_journal
+    issn_l: "0272-7757"
+    issn: ["0272-7757", "1873-7382"]
+    openalex_source_id: "https://openalex.org/S4888523"
+    enabled: true
+    api_coverage_notes: >
+      Elsevier. Exclude International Review of Economics Education (different ISSN-L 1477-3880).
+
+  - user_label: Compare
+    canonical_name: "Compare: A Journal of Comparative and International Education"
+    source_type: peer_reviewed_journal
+    issn_l: "0305-7925"
+    issn: ["0305-7925", "1469-3623"]
+    openalex_source_id: "https://openalex.org/S129145296"
+    enabled: true
+    api_coverage_notes: >
+      OpenAlex display name omits colon; ISSN-L 0305-7925 is the match key.
+
+  - user_label: CER
+    canonical_name: Comparative Education Review
+    source_type: peer_reviewed_journal
+    issn_l: "0010-4086"
+    issn: ["0010-4086", "1545-701X"]
+    openalex_source_id: "https://openalex.org/S168329810"
+    enabled: true
+    api_coverage_notes: University of Chicago Press / CIES.
+
+  - user_label: EDCC
+    canonical_name: Economic Development and Cultural Change
+    source_type: peer_reviewed_journal
+    issn_l: "0013-0079"
+    issn: ["0013-0079", "1539-2988"]
+    openalex_source_id: "https://openalex.org/S71670289"
+    enabled: true
+    api_coverage_notes: University of Chicago Press.
+
+  - user_label: World Development
+    canonical_name: World Development
+    source_type: peer_reviewed_journal
+    issn_l: "0305-750X"
+    issn: ["0305-750X", "1873-5991"]
+    openalex_source_id: "https://openalex.org/S85457386"
+    enabled: true
+    api_coverage_notes: Main journal only; not World Development Perspectives / Sustainability.
+
+  # --- B. Economics and policy evaluation journals ---
+  - user_label: AER
+    canonical_name: American Economic Review
+    source_type: peer_reviewed_journal
+    issn_l: "0002-8282"
+    issn: ["0002-8282", "1944-7981"]
+    openalex_source_id: "https://openalex.org/S23254222"
+    enabled: true
+    api_coverage_notes: AEA flagship journal.
+
+  - user_label: "AEJ:Policy"
+    canonical_name: American Economic Journal Economic Policy
+    source_type: peer_reviewed_journal
+    issn_l: "1945-7731"
+    issn: ["1945-7731", "1945-774X", "1945-7812"]
+    openalex_source_id: "https://openalex.org/S158011328"
+    enabled: true
+    api_coverage_notes: >
+      American Economic Journal: Economic Policy (AEA). Distinct from AEJ: Applied (ISSN-L 1945-7782).
+
+  - user_label: "AEJ:Applied"
+    canonical_name: American Economic Journal Applied Economics
+    source_type: peer_reviewed_journal
+    issn_l: "1945-7782"
+    issn: ["1945-7782", "1945-7790"]
+    openalex_source_id: "https://openalex.org/S42893225"
+    enabled: true
+    api_coverage_notes: Distinct from AEJ: Economic Policy (ISSN-L 1945-7731).
+
+  - user_label: JDE
+    canonical_name: Journal of Development Economics
+    source_type: peer_reviewed_journal
+    issn_l: "0304-3878"
+    issn: ["0304-3878", "1872-6089"]
+    openalex_source_id: "https://openalex.org/S101209419"
+    enabled: true
+    api_coverage_notes: Elsevier JDE only.
+
+  - user_label: JPE
+    canonical_name: Journal of Political Economy
+    source_type: peer_reviewed_journal
+    issn_l: "0022-3808"
+    issn: ["0022-3808", "1537-534X"]
+    openalex_source_id: "https://openalex.org/S95323914"
+    enabled: true
+    api_coverage_notes: University of Chicago Press.
+
+  - user_label: QJE
+    canonical_name: The Quarterly Journal of Economics
+    source_type: peer_reviewed_journal
+    issn_l: "0033-5533"
+    issn: ["0033-5533", "1531-4650"]
+    openalex_source_id: "https://openalex.org/S203860005"
+    enabled: true
+    api_coverage_notes: Oxford University Press; not other similarly named economics journals.
+
+  # --- C. General science and medicine (main journals only) ---
+  - user_label: Nature
+    canonical_name: Nature
+    source_type: peer_reviewed_journal
+    issn_l: "0028-0836"
+    issn: ["0028-0836", "1476-4687"]
+    openalex_source_id: "https://openalex.org/S137773608"
+    enabled: true
+    api_coverage_notes: Nature (main) only; not Nature Communications / portfolio siblings.
+
+  - user_label: "The Lancet"
+    canonical_name: The Lancet
+    source_type: peer_reviewed_journal
+    issn_l: "0099-5355"
+    issn: ["0099-5355", "0140-6736", "1474-547X"]
+    openalex_source_id: "https://openalex.org/S49861241"
+    enabled: true
+    api_coverage_notes: The Lancet (main) only; not Lancet Oncology / Neurology / etc.
+
+  # --- D. Working-paper series ---
+  - user_label: NBER
+    canonical_name: NBER working paper series
+    source_type: working_paper_series
+    issn_l: "0898-2937"
+    issn: ["0898-2937"]
+    openalex_source_id: "https://openalex.org/S4393916240"
+    enabled: true
+    api_coverage_notes: >
+      NBER Working Papers (not peer-reviewed journal articles). OpenAlex types as "journal";
+      enforce series via source id. Often DOI prefix 10.3386. Record journal-version links separately.
+
+  - user_label: IZA
+    canonical_name: null
+    source_type: working_paper_series
+    issn_l: null
+    issn: []
+    openalex_source_id: null
+    enabled: false
+    clarification_required: true
+    clarification_notes: >
+      IZA Discussion Papers: no dedicated OpenAlex source or verified ISSN/ISSN-L found (2026-09-23).
+      IZA-branded journals in OpenAlex are not the discussion-paper series. Disabled until a stable
+      identifier (ISSN, Crossref collection id, or OpenAlex source id) is verified for IZA DPs only.

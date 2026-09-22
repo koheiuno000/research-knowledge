@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "updated": "2026-09-23",
+  "_note": "Runtime mirror of tracks.yaml for stdlib-only tooling.",
+  "tracks": [
+    {
+      "id": "teachers_and_ai",
+      "label": "Track A: Teachers and AI",
+      "openalex_search_queries": [
+        "\"generative AI\" teachers",
+        "artificial intelligence teacher professional development",
+        "ChatGPT teacher lesson planning",
+        "AI literacy teachers"
+      ],
+      "relevance_keyword_groups": [
+        {
+          "name": "teacher_ai_use",
+          "terms": ["generative ai", "chatgpt", "large language model", "llm", "copilot", "artificial intelligence"],
+          "context_terms": ["teacher", "teachers", "instructor", "educator", "faculty"]
+        },
+        {
+          "name": "teacher_pd_ai",
+          "terms": ["professional development", "teacher training", "ai literacy", "digital literacy"],
+          "context_terms": ["teacher", "teachers", "educator", "faculty"]
+        },
+        {
+          "name": "ai_instructional_practice",
+          "terms": ["lesson plan", "instructional design", "classroom practice", "pedagogy"],
+          "context_terms": ["ai", "artificial intelligence", "generative"]
+        }
+      ]
+    },
+    {
+      "id": "ai_learning_outcomes",
+      "label": "Track B: AI and learning outcomes",
+      "openalex_search_queries": [
+        "intelligent tutoring system learning outcomes",
+        "adaptive learning randomized",
+        "generative AI student learning",
+        "artificial intelligence test scores education"
+      ],
+      "relevance_keyword_groups": [
+        {
+          "name": "tutoring_adaptive",
+          "terms": ["intelligent tutoring", "adaptive learning", "personalized learning", "intelligent tutor"],
+          "context_terms": ["student", "learning", "achievement", "test", "score"]
+        },
+        {
+          "name": "genai_learning",
+          "terms": ["generative ai", "chatgpt", "large language model", "llm"],
+          "context_terms": ["student", "learning", "achievement", "performance", "exam"]
+        },
+        {
+          "name": "causal_evaluation_hint",
+          "terms": [
+            "randomized",
+            "randomised",
+            "quasi-experimental",
+            "difference-in-differences",
+            "regression discontinuity",
+            "field experiment",
+            "rct",
+            "trial"
+          ],
+          "context_terms": ["effect", "impact", "treatment", "intervention"]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+# EdTech–AI discovery run defaults (publication window + reproducibility).
+
+schema_version: 1
+updated: "2026-09-23"
+
+publication_window:
+  # Rolling default: search execution date minus window_years through execution date (inclusive).
+  window_years: 10
+  # If both fixed dates are set, they override the rolling window for that run (ISO 8601 dates).
+  # Leave null to use rolling window at fetch time.
+  fixed_start_date: null
+  fixed_end_date: null
+
+  # Initial September 2026 reference period (documentation / reproducible dry runs):
+  # approximately 2016-09-23 through 2026-09-23 when search_executed_on is 2026-09-23.
+  example_search_executed_on: "2026-09-23"
+  example_start_date: "2016-09-23"
+  example_end_date: "2026-09-23"
+
+date_policy:
+  # Filter on publication dates (OpenAlex publication_date / from_publication_date), not citation or index dates.
+  use_publication_date: true
+  exclude_citation_dates: true
+  # Routine discovery uses the earliest known publication date for versioned works (e.g. working papers).
+  window_anchors_on: initial_publication_date
+  # Papers outside the window are never auto-fetched; see screening/foundational_exceptions.yaml.
+  allow_foundational_exceptions: true

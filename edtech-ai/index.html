@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EdTech / AI — Research Discovery</title>
+<style>
+:root {
+  --burgundy: #800020;
+  --burgundy-dark: #4B1723;
+  --gold: #B49A68;
+  --ivory: #F8F5EE;
+  --ink: #352D2B;
+  --muted: #6f6461;
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-serif: ui-serif, Palatino, Georgia, serif;
+}
+body { margin: 0; font-family: var(--font); background: var(--ivory); color: var(--ink); line-height: 1.5; }
+header { background: var(--burgundy-dark); color: var(--ivory); padding: 1rem 1.5rem; }
+header a { color: var(--gold); }
+main { max-width: 52rem; margin: 0 auto; padding: 1.5rem; }
+h1 { font-family: var(--font-serif); font-weight: 500; margin: 0 0 0.25rem; }
+.meta-box {
+  border: 1px solid rgba(75, 23, 35, 0.15);
+  background: #fff;
+  padding: 1rem 1.15rem;
+  margin: 1.25rem 0;
+  border-radius: 8px;
+}
+.meta-box dt { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+.meta-box dd { margin: 0 0 0.65rem; font-weight: 500; }
+.lead { color: var(--muted); }
+code { font-size: 0.88em; }
+</style>
+</head>
+<body>
+<header>
+<p style="margin:0;font-size:0.85rem"><a href="../dashboard/index.html">← Research Knowledge Base</a></p>
+<h1>EdTech / AI — Research Discovery</h1>
+</header>
+<main>
+<section class="meta-box" aria-label="Search metadata">
+<h2 style="font-family:var(--font-serif);font-size:1.15rem;margin-top:0">Publication window</h2>
+<dl>
+<dt>Applied range (initial publication dates)</dt>
+<dd>2016-09-23 → 2026-09-23</dd>
+<dt>Window mode</dt>
+<dd>rolling (example)</dd>
+<dt>Last search (retrieval timestamp)</dt>
+<dd>Not run yet</dd>
+<dt>Routine candidates in bundle</dt>
+<dd>0 (outside-window papers excluded unless listed as foundational exceptions)</dd>
+</dl>
+</section>
+
+<p class="lead">No discovery bundle found. Run the fetch script to retrieve candidates (unscreened metadata only).</p>
+<pre>python3 scripts/edtech_ai_discovery/fetch_candidates.py --search-date 2026-09-23 --mailto you@example.com</pre>
+
+
+</main>
+</body>
+</html>

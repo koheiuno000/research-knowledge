@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "updated": "2026-09-23",
+  "_note": "Mirror of discovery.yaml for stdlib-only tooling.",
+  "publication_window": {
+    "window_years": 10,
+    "fixed_start_date": null,
+    "fixed_end_date": null,
+    "example_search_executed_on": "2026-09-23",
+    "example_start_date": "2016-09-23",
+    "example_end_date": "2026-09-23"
+  },
+  "date_policy": {
+    "use_publication_date": true,
+    "exclude_citation_dates": true,
+    "window_anchors_on": "initial_publication_date",
+    "allow_foundational_exceptions": true
+  }
+}

@@ -1,0 +1,14 @@
+# Human screening overlay — NEVER overwritten by discovery refresh scripts.
+# Keys: record_id (see candidate schema). Values: screening decision + notes.
+# Pre-window foundational papers: use foundational_exceptions.yaml (not routine fetch).
+
+schema_version: 1
+updated: "2026-09-23"
+
+decisions: {}
+# Example (commented):
+#   "sha256:abc123...":
+#     decision: exclude
+#     decided_at: "2026-09-23T12:00:00Z"
+#     decided_by: "Kohei Uno"
+#     notes: "Outside scope — health AI, not education."

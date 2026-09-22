@@ -1,0 +1,39 @@
+{
+  "_comment": "SCHEMA EXAMPLE ONLY — not a real paper. Do not cite or import into synthesis.",
+  "schema_version": 1,
+  "record_id": "example:00000000-0000-0000-0000-000000000000",
+  "review_state": "candidate",
+  "discovery_track_ids": ["teachers_and_ai"],
+  "relevance_flags": ["teacher_ai_use"],
+  "retrieved_at": "2026-09-23T00:00:00Z",
+  "api": {
+    "provider": "openalex",
+    "query_label": "EXAMPLE_QUERY",
+    "openalex_query_url": "https://api.openalex.org/works?filter=EXAMPLE"
+  },
+  "source_whitelist": {
+    "user_label": "IJER",
+    "openalex_source_id": "https://openalex.org/S156367897",
+    "issn_l": "0883-0355"
+  },
+  "work": {
+    "openalex_id": "https://openalex.org/W0000000000",
+    "doi": "https://doi.org/10.0000/example.00000",
+    "title": "Example title (schema illustration only)",
+    "authors": ["Author, A."],
+    "publication_year": 2020,
+    "publication": {
+      "initial_publication_date": "2020-03-15",
+      "latest_revision_date": null,
+      "has_later_revision": false,
+      "openalex_publication_date": "2020-03-15",
+      "version_note": null
+    },
+    "venue_display_name": "International Journal of Educational Research",
+    "source_type": "peer_reviewed_journal",
+    "abstract_available": true,
+    "abstract_text": "Example abstract text for schema validation only.",
+    "landing_page_url": "https://example.org/",
+    "is_open_access": false
+  }
+}
