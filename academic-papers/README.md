@@ -49,9 +49,66 @@ Teacher PD ──────┼→ Teaching Practice
 
 Intervention studies belong here when PD is the main empirical focus. They should **not** be filed under 04–06 **unless** the paper’s primary contribution is a direct estimate of knowledge → practice, practice → achievement, or knowledge → achievement (unusual for pure PD RCTs).
 
+### C. Reviews and cross-study synthesis (folder 08)
+
+| Folder | Use when … |
+|--------|------------|
+| `08_reviews-and-synthesis/` | The paper’s **main contribution** is to **review, synthesize, taxonomize, or conceptually organize evidence** across **multiple studies or programs**—not to evaluate **one** specific PD intervention or to **directly estimate one arrow** in the Teacher Knowledge → Teaching Practice → Student Achievement chain. |
+
+Typical examples: structured literature reviews, cross-study comparisons of program design, survey instruments that code many PD programs, associational analyses across impact evaluations, or conceptual frameworks for PD design backed by synthesis of existing studies.
+
+Papers here **may** include the authors’ own empirical cross-study analyses (e.g., regressions across evaluated programs). They should **not** be classified under `07_teacher-pd-interventions` merely because they **summarize or discuss** causal impact evaluations of PD. Folder **07** is for studies whose primary design evaluates **a specific PD program or intervention**; folder **08** is for **evidence about the broader literature or program landscape**.
+
 ## PDFs
 
 PDFs may live under `pdf/` locally. They are not tracked by Git (see repository `.gitignore`).
+
+## Reference management
+
+> **One summarized paper = one verified BibTeX entry.**
+
+Evidence chain:
+
+```
+Original PDF (local only)
+        ↓
+Paper summary (.md)
+        ↓
+BibTeX entry (references.bib)
+        ↓
+Literature synthesis / manuscript
+```
+
+1. Store the original PDF locally in `academic-papers/pdf/`.
+2. Create one Markdown summary using `paper_summary_template.md`.
+3. Assign one stable **citation key:** `firstauthorYEAR` (e.g. `kozuka2025`; use `firstauthorYEARa` / `b` if needed).
+4. Add exactly **one** corresponding BibTeX entry to `literature-review/references.bib` (master database—no per-paper `.bib` files).
+5. Verify bibliographic metadata against the original PDF (or other explicitly verified source) before adding it.
+6. Never invent missing bibliographic information.
+7. If metadata is uncertain, omit the BibTeX field and flag it in the paper summary.
+8. Use the same citation key in the paper summary, `references.bib`, literature synthesis, and manuscript.
+
+`references.bib` should list papers that are part of this literature-review **evidence base**, not every source merely cited inside another paper.
+
+### Future paper processing
+
+```
+PDF
+  ↓
+Read original paper
+  ↓
+Create structured Markdown summary
+  ↓
+Evidence Mapping
+  ↓
+Assign primary category
+  ↓
+Create / verify BibTeX entry
+  ↓
+Researcher verification
+  ↓
+Later synthesis
+```
 
 ## Workflow
 

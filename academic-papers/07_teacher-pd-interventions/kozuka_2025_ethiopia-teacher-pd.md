@@ -22,13 +22,19 @@
 
 ## 1. Citation
 
-**Full citation:** Kozuka, E. 2025. *Can Teacher Training Improve Teacher Competence and Student Learning? Evidence from Ethiopia.* JICA Ogata Research Institute Discussion Paper No. 43. Tokyo: JICA Ogata Research Institute for Peace and Development.
+**Citation key:** `kozuka2025`
 
-**DOI / URL:** Not clearly reported in the paper. (Suggested citation appears on PDF p. 2.)
+**Full citation:** Kozuka, E. 2025. *Can Teacher Training Improve Teacher Competence and Student Learning? Evidence from Ethiopia.* JICA Ogata Research Institute Discussion Paper No. 43. Tokyo: JICA Ogata Research Institute for Peace and Development. (Suggested citation, PDF p. 2.)
 
-**Journal / series:** JICA Ogata Sadako Research Institute Discussion Paper (not peer-reviewed; assessed by the institute’s review committee per PDF p. 2).
+**BibTeX:** `literature-review/references.bib`
 
-**Country / context:** Ethiopia (Oromia Region); government-implemented SMASE-style in-service PD for grade 7–8 mathematics and physics teachers; randomized school-level experiment (2014–2016).
+**Publication type:** Discussion paper (not peer-reviewed; assessed by the JICA Ogata Research Institute review committee, PDF p. 2).
+
+**DOI / URL:** Not reported in the paper.
+
+**Journal / Series:** JICA Ogata Research Institute Discussion Paper, No. 43 (October 2025, PDF pp. 1–2).
+
+**Country / Context:** Ethiopia (Oromia Region); government-implemented SMASE-style in-service PD for grade 7–8 mathematics and physics teachers; randomized school-level experiment (2014–2016).
 
 ---
 

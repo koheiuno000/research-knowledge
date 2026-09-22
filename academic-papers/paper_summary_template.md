@@ -5,13 +5,22 @@
 **Secondary themes:** (optional bullet list—constructs, subjects, LMIC, methods, etc.)
 
 ## 1. Citation
-Full citation:
 
-DOI / URL:
+**Citation key:**
 
-Journal:
+**Full citation:**
 
-Country / Context:
+**BibTeX:** `literature-review/references.bib`
+
+**Publication type:**
+
+**DOI / URL:**
+
+**Journal / Series:**
+
+**Country / Context:**
+
+All bibliographic information must be verified against the original paper or another explicitly verified bibliographic source. Do not infer missing metadata.
 
 ## 2. Research Question
 Briefly state the main research question(s).
