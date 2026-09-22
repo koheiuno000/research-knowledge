@@ -38,7 +38,11 @@
 
 **Setting:** Review of global empirical literature on **extreme heat**, **tropical cyclones/floods**, **droughts**, and **wildfires** and links to **learning**, **schooling** (enrollment, dropout, attainment), **school disruption**, and **distal** channels (health, nutrition, poverty, fragility, displacement).
 
-All bibliographic information verified against the local PDF (OUP/WBR, DOI on p. 1).
+**Data and sample:** **Secondary synthesis**—no original microdata. Draws on **published empirical studies and selected prior reviews** (Table 1 and hazard sections); multi-country coverage; **not** a PRISMA systematic map or meta-analysis with pooled effects.
+
+**Core contribution:** World Bank **narrative review** and **Figure 1 framework** mapping **direct/proximate** and **indirect/distal** pathways from **extreme weather** to **learning, schooling, and long-run outcomes**, with hazard-specific synthesis and policy implications (**publication year 2024**; DOI 10.1093/wbro/lkae001).
+
+All bibliographic information verified against the local PDF (OUP/WBR, DOI on p. 1). Local filename “Marin et al. (2025, WB).pdf” does **not** change bibliographic **2024** year.
 
 ---
 
@@ -166,7 +170,7 @@ Authors tie these to **vulnerability** and **existing inequalities** (children, 
 - **Mediation** (e.g., closure → learning) is discussed conceptually and via cited studies, **not** unified causal mediation analysis in this paper.
 - **Adaptation interventions** lack a consolidated causal evidence base in the review.
 
-**Next primary papers for this knowledge base (candidates, not reviewed here):** Baez, Caruso, and Niu (2020); David et al. (2018); Deuchert and Felfe (2015); Huang and Dong (2025); Palacios and Rojas-Velásquez (2023)—metadata may appear in this review’s tables but **require original-PDF verification** before inclusion as reviewed evidence.
+**Related primary papers now reviewed in this knowledge base (separate summaries):** Baez, de la Fuente, and Santos (**2010** IZA review—not Baez, Caruso & Niu 2020); David et al. (2018); Deuchert and Felfe (2015); Huang and Dong (2025); Palacios and Rojas-Velásquez (2023).
 
 ---
 

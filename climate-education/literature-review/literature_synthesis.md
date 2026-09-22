@@ -1,6 +1,6 @@
 # Literature Synthesis — Climate Change & Education
 
-Initial synthesis grounded in **Venegas Marin, Schwarz, and Sabarwal (2024)**. Claims below are **review-level** unless a primary study summary exists in `academic-papers/`.
+Synthesis combines **Venegas Marin, Schwarz, and Sabarwal (2024)** (review layer) with **verified primary-study summaries** in `academic-papers/`. Review-level claims are labeled as such; **Effect Summary** magnitudes come **only** from primary papers.
 
 ## 1. Extreme weather and educational outcomes
 
@@ -12,29 +12,31 @@ The foundational review documents that **education is underrepresented** in broa
 
 **Proximate/direct** channels include compromised **access**, **closures**, **damaged infrastructure**, and **school environment** (including heat).
 
-- **Heat:** Synthesized evidence points to an **adverse relationship** with **learning**, with **hot days** and **threshold** patterns in primary studies cited by the review.
-- **Cyclones/floods/wildfires:** Often operate through **disruption** (closures, damage, air quality), halting or degrading instruction.
-- **Closure–learning link:** The review reports a **literature pattern** that lost school days map to lost learning in cited work; **mediation** must be established in **primary** papers, not assumed from the review alone.
+- **Heat:** Synthesized evidence (Venegas 2024) points to an **adverse relationship** with **learning** in cited primary studies; no new heat estimates in this repository yet beyond reviews.
+- **Cyclones/floods:** **Deuchert & Felfe (2015)** link **typhoon housing damage** to **lower grades completed** and **IQ** in the Philippines. **Huang & Dong (2025)** estimate large **flood exposure → lower years of education** (especially high-risk **rural** counties) using census microdata.
+- **Descriptive disruption context:** **David et al. (2018)** map **Philippines** school hazard reports to **provincial NAT gain/loss patterns**—**correlational**, not causal weather-shock identification.
 
-## 3. Indirect pathways: household shocks, health, nutrition, and displacement
+## 3. Rainfall shocks, schooling quantity, and test scores
 
-**Distal/indirect** channels include **economic shocks**, **food insecurity**, **conflict/fragility**, **health**, **nutrition**, **migration/displacement**, and **air quality**. These reduce **service delivery**, **demand for schooling**, and student **readiness**. Vulnerable children and communities face compounding risks.
+**Palacios & Rojas-Velásquez (2023)** provide **municipal fixed-effects** evidence from **Colombia**: **excess rainfall** shocks reduce **net coverage** and **math/reading scores** and raise **middle-school dropout** in specifications with controls. **Deficit** shocks show **opposite-signed** patterns for some outcomes; interpret with the paper’s **SPI** definitions and **lag** structure.
 
-## 4. Adaptation and education-system resilience
+**Mediation** in Palacios (income, infant mortality, infrastructure damage) is **suggestive**—distinct from **total-effect** FE coefficients in Tables 2–4.
 
-The review argues for **urgent mitigation and adaptation**, using the education sector to **protect learners** and address **underlying vulnerabilities** that widen disparities. **Causal evidence** on specific **adaptation interventions → educational outcomes** remains a **gap** in this repository until folder `06` and related primary studies are reviewed.
+## 4. Indirect pathways: household shocks, health, nutrition, and displacement
 
-## 5. Evidence gaps and next papers to review
+**Venegas (2024)** and **Baez et al. (2010)** synthesize **distal** channels (economic shocks, health, nutrition, displacement). **Huang & Dong (2025)** analyze **household expenditure** responses to floods (mechanism heterogeneity)—separate from **schooling** Effect Summary rows.
 
-- Geographic imbalance: **high vulnerability**, **low evidence** in many LMIC settings.
-- Need **primary-study** summaries with verified designs and Effect Summary rows where appropriate—not duplicated coefficients from Venegas et al.
+**Deuchert & Felfe (2015)** find largely **null** **weight/height-for-age** impacts alongside education/IQ effects.
 
-**Candidate next reviews (not counted as reviewed):**
+## 5. Reviews vs primary evidence
 
-- Baez, Caruso, and Niu (2020)
-- David et al. (2018)
-- Deuchert and Felfe (2015)
-- Huang and Dong (2025)
-- Palacios and Rojas-Velásquez (2023)
+| Layer | Papers | Use in this KB |
+|-------|--------|----------------|
+| Review synthesis | Venegas (2024); Baez (2010) | Taxonomy, gaps, **no** copied cited-study coefficients |
+| Descriptive | David (2018) | Vulnerability & achievement **patterns** |
+| Quasi-experimental primary | Deuchert (2015); Huang (2025); Palacios (2023) | **Effect Summary** rows with table-verified estimates |
 
-Add synthesis paragraphs here only after each paper has a verified summary under `academic-papers/`.
+## 6. Evidence gaps
+
+- **Heat → learning** and **adaptation interventions → outcomes** still lack dedicated primary summaries in folders **01** and **06**.
+- Geographic coverage remains uneven outside **Philippines, China, Colombia** in the current reviewed set.

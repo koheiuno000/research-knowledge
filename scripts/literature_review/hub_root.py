@@ -711,6 +711,60 @@ def _country_browse_html(
     return items
 
 
+def _evidence_type_browse_html(
+    repo_root: Path,
+    area_rows: list[tuple[ResearchAreaDisplay, int, str | None]],
+    n_empirical: int,
+    n_reviews: int,
+) -> list[str]:
+    """Hub-level evidence-type links, broken out by research area (not SB-CPD-only)."""
+    items: list[str] = []
+
+    def _area_subs(classifier: str) -> list[str]:
+        subs: list[str] = []
+        for display, count, href in area_rows:
+            if not href or count <= 0:
+                continue
+            cfg = display.config_factory(repo_root)
+            papers = [parse_summary(p, cfg) for p in discover_summaries(cfg)]
+            if classifier == "empirical":
+                n = count_empirical_studies(papers)
+            else:
+                n = count_review_synthesis(papers)
+            if n <= 0:
+                continue
+            subs.append(
+                f'<li><a class="browse-link" href="{_esc(href)}">{_esc(display.card_title)}'
+                f" · {n}"
+                f'<span class="browse-arr" aria-hidden="true">→</span></a></li>'
+            )
+        return subs
+
+    if n_empirical:
+        subs = _area_subs("empirical")
+        if subs:
+            items.append(
+                f"<li>Empirical studies · {n_empirical}"
+                f'<ul class="browse-sub">{"".join(subs)}</ul></li>'
+            )
+        else:
+            items.append(f"<li>Empirical studies · {n_empirical}</li>")
+
+    if n_reviews:
+        subs = _area_subs("review")
+        if subs:
+            items.append(
+                f"<li>Review / synthesis · {n_reviews}"
+                f'<ul class="browse-sub">{"".join(subs)}</ul></li>'
+            )
+        else:
+            items.append(f"<li>Review / synthesis · {n_reviews}</li>")
+
+    if not items:
+        items.append('<li><span class="count">No papers yet</span></li>')
+    return items
+
+
 _KM_SURFACE: dict[str, str] = {
     "preschool-impact": "km--surface-sand",
     "edtech-ai": "km--surface-sage",
@@ -844,27 +898,9 @@ def build_root_body(
 
     country_browse = _country_browse_html(repo_root, area_rows)
 
-    type_browse = []
-    if n_empirical:
-        line = f"Empirical studies · {n_empirical}"
-        if sb_cpd_href:
-            type_browse.append(
-                f'<li><a class="browse-link" href="{_esc(sb_cpd_href)}">{line}'
-                f'<span class="browse-arr" aria-hidden="true">→</span></a></li>'
-            )
-        else:
-            type_browse.append(f"<li>{line}</li>")
-    if n_reviews:
-        line = f"Review / synthesis · {n_reviews}"
-        if sb_cpd_href:
-            type_browse.append(
-                f'<li><a class="browse-link" href="{_esc(sb_cpd_href)}">{line}'
-                f'<span class="browse-arr" aria-hidden="true">→</span></a></li>'
-            )
-        else:
-            type_browse.append(f"<li>{line}</li>")
-    if not type_browse:
-        type_browse.append("<li><span class=\"count\">No papers yet</span></li>")
+    type_browse = _evidence_type_browse_html(
+        repo_root, area_rows, n_empirical, n_reviews
+    )
 
     rel_count = _relationship_browse_count(repo_root)
     rel_browse = []
