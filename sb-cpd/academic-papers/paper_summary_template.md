@@ -10,7 +10,7 @@
 
 **Full citation:**
 
-**BibTeX:** `literature-review/references.bib`
+**BibTeX:** `sb-cpd/literature-review/references.bib`
 
 **Publication type:**
 

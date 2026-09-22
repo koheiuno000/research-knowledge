@@ -26,7 +26,7 @@
 
 **Full citation:** Kozuka, E. 2025. *Can Teacher Training Improve Teacher Competence and Student Learning? Evidence from Ethiopia.* JICA Ogata Research Institute Discussion Paper No. 43. Tokyo: JICA Ogata Research Institute for Peace and Development. (Suggested citation, PDF p. 2.)
 
-**BibTeX:** `literature-review/references.bib`
+**BibTeX:** `sb-cpd/literature-review/references.bib`
 
 **Publication type:** Discussion paper (not peer-reviewed; assessed by the JICA Ogata Research Institute review committee, PDF p. 2).
 

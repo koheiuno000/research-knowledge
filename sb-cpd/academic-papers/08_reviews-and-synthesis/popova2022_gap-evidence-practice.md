@@ -24,7 +24,7 @@
 
 **Full citation:** Popova, Anna, David K. Evans, Mary E. Breeding, and Violeta Arancibia. 2022. “Teacher Professional Development around the World: The Gap between Evidence and Practice.” *The World Bank Research Observer* 37 (1): 107–136.
 
-**BibTeX:** `literature-review/references.bib`
+**BibTeX:** `sb-cpd/literature-review/references.bib`
 
 **Publication type:** Peer-reviewed journal article (*The World Bank Research Observer*; Open Access, PDF p. 1).
 

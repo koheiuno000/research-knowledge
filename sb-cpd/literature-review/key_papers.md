@@ -7,4 +7,4 @@ Short reading list for the literature review (not a comprehensive bibliography).
 
 Priority categories: **Core**, **Supporting**, **Optional**.
 
-Add rows as you read and summarize papers in `academic-papers/`.
+Add rows as you read and summarize papers in `sb-cpd/academic-papers/`.

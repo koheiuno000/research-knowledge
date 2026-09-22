@@ -1,10 +1,10 @@
 # Literature Review Evidence Base
 
-> This file is generated from the individual paper summaries under `academic-papers/`. Do not manually edit paper-level evidence here. Update the source summary and regenerate this file.
+> This file is generated from the individual paper summaries under `sb-cpd/academic-papers/`. Do not manually edit paper-level evidence here. Update the source summary and regenerate this file.
 
-> **Sources of truth:** substantive content → paper summaries; bibliographic metadata → `literature-review/references.bib`.
+> **Sources of truth:** substantive content → paper summaries; bibliographic metadata → `sb-cpd/literature-review/references.bib`.
 
-*Generated: 2026-09-22 10:30 UTC*
+*Generated: 2026-09-22 10:37 UTC*
 
 ---
 
@@ -99,7 +99,7 @@ Randomized evaluation in Ethiopia shows government **SMASE-style PD** substantia
 - **PD intervention, multiple outcomes:** Under **Regular PD**, ITT estimates show teacher-side gains (Tables 2–3) but **no significant endline student test gains** (Table 5)—useful when discussing **PD → achievement** in LMIC CPD, not as direct evidence on Practice → Achievement or Knowledge → Achievement.
 - **School-based continuation:** Evidence that treated teachers increased **peer learning/lesson study–type activity** after training (Table 4)—relevant to **sustained CPD** after central training.
 
-**Source summary:** `academic-papers/07_teacher-pd-interventions/kozuka_2025_ethiopia-teacher-pd.md`
+**Source summary:** `sb-cpd/academic-papers/07_teacher-pd-interventions/kozuka_2025_ethiopia-teacher-pd.md`
 
 #### Loyalka et al. (2019) — Does Teacher Training Actually Work? (China NTTP)
 
@@ -137,7 +137,7 @@ Randomized evaluation in Ethiopia shows government **SMASE-style PD** substantia
 
 - Not recorded
 
-**Source summary:** `academic-papers/07_teacher-pd-interventions/loyalka2019_china-national-teacher-training.md`
+**Source summary:** `sb-cpd/academic-papers/07_teacher-pd-interventions/loyalka2019_china-national-teacher-training.md`
 
 ### 08 — Reviews and Synthesis
 
@@ -180,7 +180,7 @@ Randomized evaluation in Ethiopia shows government **SMASE-style PD** substantia
 - **School-based / embedded PD:** authors theorize school-based delivery as effective (PDF p. 4); ITTSI includes location and follow-up indicators; at-scale programs often use **central** venues (PDF p. 22)—relevant to **school-based CPD** design choices.
 - **Pairing with Kozuka (2025):** Popova cites **Loyalka et al. (2019)** null China PD and discusses **lesson enactment**, **face-to-face**, **follow-up**—helps interpret why **government at-scale** PD may improve some inputs yet show **weak achievement effects** in single-program RCTs.
 
-**Source summary:** `academic-papers/08_reviews-and-synthesis/popova2022_gap-evidence-practice.md`
+**Source summary:** `sb-cpd/academic-papers/08_reviews-and-synthesis/popova2022_gap-evidence-practice.md`
 
 ---
 
@@ -228,7 +228,7 @@ Randomized evaluation in Ethiopia shows government **SMASE-style PD** substantia
 
 ## 7. References
 
-Full verified bibliographic metadata is maintained in `literature-review/references.bib`.
+Full verified bibliographic metadata is maintained in `sb-cpd/literature-review/references.bib`.
 
 - `loyalka2019` — Loyalka (2019)
 - `popova2022` — Popova (2022)

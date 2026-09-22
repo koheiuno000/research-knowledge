@@ -37,7 +37,7 @@
 
 **Full citation:** Loyalka, Prashant, Anna Popova, Guirong Li, and Zhaolei Shi. 2019. “Does Teacher Training Actually Work? Evidence from a Large-Scale Randomized Evaluation of a National Teacher Training Program.” *American Economic Journal: Applied Economics* 11 (3): 128–154.
 
-**BibTeX:** `literature-review/references.bib`
+**BibTeX:** `sb-cpd/literature-review/references.bib`
 
 **Publication type:** Peer-reviewed journal article (*American Economic Journal: Applied Economics*).
 

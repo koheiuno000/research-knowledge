@@ -1,1 +1,8 @@
-academic-papers/**/*.pdf
+# Local PDFs (all research areas)
+**/academic-papers/**/*.pdf
+
+# Local Python environments
+.venv*/
+venv/
+__pycache__/
+*.py[cod]
