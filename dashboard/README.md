@@ -1,11 +1,21 @@
 # Dashboard
 
-Placeholder for future **cross-domain** research knowledge views (search, filters, unified evidence maps across research areas).
+**Root hub:** [`index.html`](index.html) — cross-area landing (hero, scope strip, featured SB-CPD module, browse links).
 
-Today, each research area maintains its own generated `literature_review.md` under `<area>/literature-review/`. SB-CPD is built with:
+It is **generated** from paper summaries under each research area (today: SB-CPD counts and links). Do not hand-edit paper counts or evidence in this file.
+
+### Regenerate (SB-CPD area + root hub)
+
+Either command updates **both** the SB-CPD literature review HTML and the root dashboard:
 
 ```bash
 python3 scripts/build_literature_review.py
 ```
 
-HTML or repository-wide dashboards may be added here without changing the per-area summary workflow.
+Root hub only (same output as the second step above):
+
+```bash
+python3 scripts/build_dashboard.py
+```
+
+Per-area Markdown/HTML workflow details: [`sb-cpd/academic-papers/README.md`](../sb-cpd/academic-papers/README.md).

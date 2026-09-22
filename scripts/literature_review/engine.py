@@ -728,10 +728,15 @@ def run_build(
 
     if write_html:
         from .dashboard_config import DEFAULT_HUB_DISPLAY
-        from .html_renderer import write_area_html
+        from .html_renderer import write_area_html, write_root_html
 
-        write_area_html(papers, area, hub=hub or DEFAULT_HUB_DISPLAY)
+        hub_cfg = hub or DEFAULT_HUB_DISPLAY
+        write_area_html(papers, area, hub=hub_cfg)
         print(f"Wrote {area.output_html.relative_to(area.repo_root)}")
+
+        root_dashboard = area.repo_root / "dashboard" / "index.html"
+        write_root_html(area.repo_root, root_dashboard, hub=hub_cfg)
+        print(f"Wrote {root_dashboard.relative_to(area.repo_root)}")
 
     return 0
 

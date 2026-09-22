@@ -30,16 +30,22 @@ Each area follows the same layout:
 
 ## Scripts and dashboard
 
-- **`scripts/`** — build tools (today: SB-CPD literature review generator).
-- **`dashboard/`** — reserved for future cross-domain views and search/filtering.
+- **`scripts/`** — build tools (SB-CPD literature review + root hub dashboard).
+- **`dashboard/`** — generated root hub (`index.html`); links into each area’s literature review.
 
-### Regenerate SB-CPD literature review
+### Regenerate SB-CPD literature review and root dashboard
 
 ```bash
 python3 scripts/build_literature_review.py
 ```
 
-Writes `sb-cpd/literature-review/literature_review.md` from `sb-cpd/academic-papers/`.
+Writes `sb-cpd/literature-review/literature_review.md` and `.html`, and **`dashboard/index.html`** (paper counts, featured module, browse links), from `sb-cpd/academic-papers/`.
+
+Root hub only:
+
+```bash
+python3 scripts/build_dashboard.py
+```
 
 ## Future direction
 

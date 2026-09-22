@@ -4,18 +4,19 @@
 
 > **Sources of truth:** substantive content → paper summaries; bibliographic metadata → `sb-cpd/literature-review/references.bib`.
 
-*Generated: 2026-09-22 11:46 UTC*
+*Generated: 2026-09-22 22:39 UTC*
 
 ---
 
 ## 1. Overview
 
-- **Total reviewed papers:** 3
+- **Total reviewed papers:** 4
 - **Primary categories represented:** 2
-- **Paper types represented:** 3
+- **Paper types represented:** 4
   - Cross-study synthesis + descriptive survey + exploratory correlational analysis.
   - Discussion paper (not peer-reviewed; assessed by the JICA Ogata Research Institute review committee, PDF p. 2).
   - Large-scale cluster randomized evaluation
+  - Large-scale quasi-experimental evaluation
 
 Conceptual architecture (not all papers estimate every arrow):
 
@@ -37,6 +38,7 @@ Some papers evaluate a **specific PD intervention** (folder 07); others **review
 
 | Citation | Country | Region | Setting | Paper Type | Primary Category | Main Contribution |
 |----------|---------|--------|---------|------------|------------------|-------------------|
+| `gronqvist2025` | Sweden | Europe and Central Asia | National **“Boost for Mathematics”** in-service program (20… | Large-scale quasi-experimental evaluati… | `07_teacher-pd-interventions` | Large-scale **staggered DiD** evaluation of Sweden’s **Boost for Mathematics** … |
 | `kozuka2025` | Ethiopia | Sub-Saharan Africa | Oromia Region; government-implemented SMASE-style in-servic… | Discussion paper (not peer-reviewed; as… | `07_teacher-pd-interventions` | Randomized evaluation in Ethiopia shows government **SMASE-style PD** substanti… |
 | `loyalka2019` | China | East Asia and Pacific | Randomized evaluation of the government **National Teacher … | Large-scale cluster randomized evaluati… | `07_teacher-pd-interventions` | **Cluster RCT** of China’s **National Teacher Training Program** shows **precis… |
 | `popova2022` | Multi-country | Multi-region | Cross-study synthesis focused on **low- and middle-income c… | Cross-study synthesis + descriptive sur… | `08_reviews-and-synthesis` | **ITTSI** + **cross-study associational analysis** (33 LMIC PD evaluations) and… |
@@ -47,6 +49,7 @@ Some papers evaluate a **specific PD intervention** (folder 07); others **review
 
 | Paper | PD → Teacher Knowledge | PD → Teaching Practice | PD → Student Achievement | Teacher Knowledge → Teaching Practice | Teaching Practice → Student Achievement | Teacher Knowledge → Student Achievement | Knowledge → Practice → Achievement | PD design characteristic → Program impact |
 |-------|---|---|---|---|---|---|---|---|
+| gronqvist2025 | No direct evidence | QE | QE | No direct evidence | No direct evidence | No direct evidence | No direct evidence | No direct evidence |
 | kozuka2025 | RCT | RCT | RCT | No direct evidence | No direct evidence | No direct evidence | No direct evidence | No direct evidence |
 | loyalka2019 | RCT | RCT | RCT | No direct evidence | No direct evidence | No direct evidence | No direct evidence | No direct evidence |
 | popova2022 | No direct evidence | No direct evidence | Cross-study synthesis | No direct evidence | No direct evidence | No direct evidence | No direct evidence | Cross-study assoc. |
@@ -60,6 +63,44 @@ Some papers evaluate a **specific PD intervention** (folder 07); others **review
 ## 4. Papers by Primary Category
 
 ### 07 — Teacher PD Interventions
+
+#### Grönqvist, Öckert & Rosenqvist (2025) — Does the “Boost for Mathematics” Boost Mathematics? (Sweden)
+
+**Citation key:** `gronqvist2025`
+
+**Country:** Sweden
+
+**Region:** Europe and Central Asia
+
+**Setting:** National **“Boost for Mathematics”** in-service program (2013/14–2015/16 staggered rollout); compulsory school **mathematics** teachers; national exam outcomes at end of stages **grades 3, 6, and 9**; teacher mechanism survey panel **2013–2016**. School participates if ≥50% of mathematics teachers enrolled that year.
+
+**Paper type:** Large-scale quasi-experimental evaluation
+
+**Primary role:** Individual PD intervention study
+
+**Main contribution**
+
+Large-scale **staggered DiD** evaluation of Sweden’s **Boost for Mathematics** (Lesson study–style PD) finds **moderate positive reduced-form effects on national mathematics exam scores** (primary **+0.0263 SD**, SE 0.0085) and **changes in self-reported classroom time use and collaboration** during implementation—**without** teacher knowledge tests or **estimated** practice→achievement pathways.
+
+**Key findings**
+
+- Large-scale **staggered DiD** evaluation of Sweden’s **Boost for Mathematics** (Lesson study–style PD) finds **moderate positive reduced-form effects on national mathematics exam scores** (primary **+0.0263 SD**, SE 0.0085) and **changes in self-reported classroom time use and collaboration** during implementation—**without** teacher knowledge tests or **estimated** practice→achievement pathways.
+
+**Evidence Mapping**
+
+- **PD → Teacher Knowledge:** Not examined
+- **PD → Teaching Practice:** QE
+- **PD → Student Achievement:** QE
+- **Teacher Knowledge → Teaching Practice:** Not examined
+- **Teaching Practice → Student Achievement:** Not examined
+- **Teacher Knowledge → Student Achievement:** Not examined
+- **Knowledge → Practice → Achievement:** Not examined
+
+**Relevance to SB-CPD**
+
+- Not recorded
+
+**Source summary:** `sb-cpd/academic-papers/07_teacher-pd-interventions/gronqvist2025_sweden-boost-for-mathematics.md`
 
 #### Kozuka (2025) — Can Teacher Training Improve Teacher Competence and Student Learning? (Ethiopia)
 
@@ -193,11 +234,13 @@ Randomized evaluation in Ethiopia shows government **SMASE-style PD** substantia
 
 ### PD → Teaching Practice
 
+- **`gronqvist2025`** (QE): **Teacher self-report** only: peer collaboration frequency (Table 6); **share of lesson time** by activity (Table 7). **Not** independent classroom observation (contrast Kozuka 2025).
 - **`kozuka2025`** (RCT): 14-criterion lesson observations; mean practice index (Table 2, PDF pp. 15–17).
 - **`loyalka2019`** (RCT): **Student-reported** teacher practice, care, management, communication; **null** average effects (Table 4, PDF pp. 16–17).
 
 ### PD → Student Achievement
 
+- **`gronqvist2025`** (QE): National **mathematics** exam scores (SD units); reduced-form ITT on expected school exposure (Table 2, Figure 1).
 - **`kozuka2025`** (RCT): Curriculum-aligned student tests. **Regular PD:** no significant endline gains (Table 5). **PD-plus-Workbook:** significant endline physics (+0.250 SD, main spec); math n.s.; workbook arm includes su…
 - **`loyalka2019`** (RCT): **Student math achievement** tests; **null** average effects at endline (Table 2, PDF pp. 14–15).
 - **`popova2022`** (Cross-study synthesis): Cross-program associations across evaluated PD studies; not causal estimates of PD features. **33 evaluated programs**: standardized **student test score** impacts as outcome; bivariate regressions of PD characteristics on those impacts (Tabl…
@@ -236,6 +279,7 @@ Full verified bibliographic metadata is maintained in `sb-cpd/literature-review/
 
 - `loyalka2019` — Loyalka (2019)
 - `popova2022` — Popova (2022)
+- `gronqvist2025` — Grönqvist (2025)
 - `kozuka2025` — Kozuka (2025)
 
 ---
