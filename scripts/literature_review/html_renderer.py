@@ -509,11 +509,15 @@ def build_root_html(
 </head>
 <body class="hub-shell hub-root">
 <header class="hub-sitehead">
-<a class="site-id" href="index.html">Research Knowledge Base</a>
+<div class="hub-sitehead-inner">
+<a class="site-id" href="#top">Research Knowledge Base</a>
 <nav class="site-nav" aria-label="Page sections">
+<a href="#top">Home</a>
+<a href="#about">About</a>
 <a href="#explore">Explore</a>
-<a href="#browse">Browse</a>
+<a href="#resources">Resources</a>
 </nav>
+</div>
 </header>
 <main class="hub-main">
 {body}

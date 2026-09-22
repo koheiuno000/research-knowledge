@@ -355,35 +355,44 @@ table.evidence-map td.paper-col { font-weight: 600; white-space: nowrap; font-si
 .evidence-map-row.hidden { display: none; }
 
 .hub-root {
-  --forest: #254735;
-  --forest-dark: #193729;
-  --sage: #A8B99B;
-  --sage-light: #DCE5D5;
-  --earth: #795A42;
-  --earth-dark: #59412F;
-  --sand: #E7D8BE;
-  --ivory: #F7F4EB;
+  --burgundy: #800020;
+  --burgundy-dark: #4B1723;
+  --gold: #B49A68;
+  --ivory: #F8F5EE;
+  --rose: #F1E2DC;
+  --sage-soft: #E5EEE4;
+  --beige: #E9E0D4;
   --paper: #FFFCF6;
-  --stone: #E9E5DA;
-  --ink: #26342B;
-  --muted: #687368;
+  --ink: #352D2B;
+  --muted: #6f6461;
   --white: #FFFFFF;
   --bg: var(--ivory);
   --bg-hero: var(--paper);
-  --surface: var(--stone);
+  --surface: var(--beige);
   --surface-light: var(--paper);
   --text: var(--ink);
-  --muted-light: #8a928c;
-  --line: rgba(37, 71, 53, 0.12);
-  --forest-deep: var(--forest-dark);
-  --accent: var(--forest);
-  --accent-soft: rgba(37, 71, 53, 0.08);
+  --muted-light: #9a8f8c;
+  --line: rgba(75, 23, 35, 0.12);
+  --forest-deep: var(--burgundy-dark);
+  --accent: var(--burgundy);
+  --accent-soft: rgba(128, 0, 32, 0.08);
   --radius: 10px;
   --shadow: none;
   --km-ease: 0.22s ease;
 }
 .hub-root { background: var(--ivory); color: var(--ink); }
-.hub-root a { color: var(--forest); }
+.hub-root .hub-main a { color: var(--burgundy); }
+.hub-root .visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
 @media (prefers-reduced-motion: reduce) {
   .hub-root *, .hub-root *::before, .hub-root *::after {
     transition-duration: 0.01ms !important;
@@ -391,7 +400,14 @@ table.evidence-map td.paper-col { font-weight: 600; white-space: nowrap; font-si
   }
 }
 
-.hub-sitehead {
+.hub-root .hub-sitehead {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  background: var(--burgundy-dark);
+  border-bottom: 1px solid rgba(180, 154, 104, 0.28);
+}
+.hub-sitehead-inner {
   max-width: 1120px;
   margin: 0 auto;
   padding: 1rem 1.5rem;
@@ -400,17 +416,16 @@ table.evidence-map td.paper-col { font-weight: 600; white-space: nowrap; font-si
   align-items: center;
   justify-content: space-between;
   gap: 1.5rem;
-  border-bottom: 1px solid var(--line);
 }
 .site-id {
   font-family: var(--font-serif);
   font-size: 0.95rem;
   font-weight: 500;
   letter-spacing: -0.02em;
-  color: var(--forest);
+  color: var(--ivory);
   text-decoration: none;
 }
-.site-id:hover { text-decoration: none; color: var(--forest-deep); }
+.site-id:hover { text-decoration: none; color: var(--white); }
 .site-nav {
   display: flex;
   gap: 1.25rem;
@@ -419,18 +434,19 @@ table.evidence-map td.paper-col { font-weight: 600; white-space: nowrap; font-si
   text-transform: uppercase;
 }
 .site-nav a {
-  color: var(--muted);
+  color: rgba(248, 245, 238, 0.78);
   text-decoration: none;
+  transition: color var(--km-ease), box-shadow var(--km-ease);
 }
-.site-nav a:hover { color: var(--forest); text-decoration: none; }
+.site-nav a:hover { color: var(--gold); text-decoration: none; }
 .site-nav a:focus-visible {
-  color: var(--forest);
+  color: var(--gold);
   outline: none;
-  box-shadow: inset 0 -2px 0 var(--sage);
+  box-shadow: inset 0 -2px 0 var(--gold);
 }
 
 @media (hover: hover) {
-  .site-nav a:hover { box-shadow: inset 0 -2px 0 var(--accent-soft); }
+  .site-nav a:hover { box-shadow: inset 0 -2px 0 rgba(180, 154, 104, 0.65); }
 }
 
 .hub-root .hub-main { padding-top: 0; }
@@ -441,7 +457,7 @@ table.evidence-map td.paper-col { font-weight: 600; white-space: nowrap; font-si
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
   min-height: min(32rem, 78vh);
-  background: var(--forest-dark);
+  background: var(--burgundy-dark);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -455,9 +471,9 @@ table.evidence-map td.paper-col { font-weight: 600; white-space: nowrap; font-si
   pointer-events: none;
   background: linear-gradient(
     105deg,
-    rgba(15, 31, 24, 0.78) 0%,
-    rgba(15, 31, 24, 0.42) 38%,
-    rgba(15, 31, 24, 0.12) 58%,
+    rgba(58, 18, 25, 0.82) 0%,
+    rgba(75, 23, 35, 0.48) 38%,
+    rgba(75, 23, 35, 0.14) 58%,
     transparent 72%
   );
 }
@@ -498,7 +514,7 @@ table.evidence-map td.paper-col { font-weight: 600; white-space: nowrap; font-si
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--sage-light);
+  color: rgba(180, 154, 104, 0.92);
 }
 .hero-forest h1 {
   font-family: var(--font-serif);
@@ -513,7 +529,7 @@ table.evidence-map td.paper-col { font-weight: 600; white-space: nowrap; font-si
 }
 .hero-forest .lead {
   font-size: 1.02rem;
-  color: rgba(247, 244, 235, 0.82);
+  color: rgba(248, 245, 238, 0.85);
   margin: 0;
   line-height: 1.55;
   max-width: 32rem;
@@ -527,17 +543,17 @@ table.evidence-map td.paper-col { font-weight: 600; white-space: nowrap; font-si
   color: var(--ivory);
   text-decoration: none;
   padding: 0.35rem 0;
-  border-bottom: 1px solid rgba(220, 229, 213, 0.55);
+  border-bottom: 1px solid rgba(180, 154, 104, 0.55);
   transition: color var(--km-ease), border-color var(--km-ease);
 }
 .hero-forest .hero-cta:hover,
 .hero-forest .hero-cta:focus-visible {
   color: var(--white);
-  border-bottom-color: var(--ivory);
+  border-bottom-color: var(--gold);
   outline: none;
 }
 .hero-forest .hero-cta:focus-visible {
-  box-shadow: 0 0 0 2px rgba(220, 229, 213, 0.45);
+  box-shadow: 0 0 0 2px rgba(180, 154, 104, 0.45);
 }
 .hero-forest-aside {
   min-height: 12rem;
@@ -598,7 +614,254 @@ table.evidence-map td.paper-col { font-weight: 600; white-space: nowrap; font-si
   list-style: none;
 }
 .scope-strip strong { color: var(--text); font-weight: 600; }
-.scope-strip .sep { color: var(--sand); user-select: none; }
+.scope-strip .sep { color: var(--gold); opacity: 0.55; user-select: none; }
+
+.about-block {
+  padding: 2rem 0 2.25rem;
+  border-top: 1px solid var(--line);
+}
+.about-body {
+  max-width: 42rem;
+}
+.about-block .section-title { margin-bottom: 1rem; }
+.about-lead {
+  margin: 0 0 0.85rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--text);
+}
+.about-detail {
+  margin: 0 0 1.15rem;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--muted);
+}
+.about-author {
+  margin: 0 0 0.65rem;
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--burgundy-dark);
+}
+.about-links {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+  font-size: 0.84rem;
+}
+.about-links a {
+  color: var(--burgundy);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(180, 154, 104, 0.45);
+  padding-bottom: 0.1rem;
+  transition: color var(--km-ease), border-color var(--km-ease);
+}
+.about-links a:hover,
+.about-links a:focus-visible {
+  color: var(--burgundy-dark);
+  border-bottom-color: var(--gold);
+  outline: none;
+}
+.about-links a:focus-visible {
+  box-shadow: 0 0 0 2px rgba(180, 154, 104, 0.35);
+  border-radius: 2px;
+}
+
+.hub-pathways {
+  padding: 2rem 0 1.5rem;
+}
+.pathway-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+  align-items: stretch;
+}
+@media (max-width: 720px) {
+  .pathway-grid { grid-template-columns: 1fr; }
+}
+.pathway-card {
+  display: flex;
+  flex-direction: column;
+  padding: 1.35rem 1.45rem 1.25rem;
+  min-height: 8.5rem;
+  height: 100%;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  text-decoration: none;
+  color: var(--ink);
+  background: var(--paper);
+  transition:
+    background var(--km-ease),
+    border-color var(--km-ease),
+    box-shadow var(--km-ease);
+}
+a.pathway-card:hover,
+a.pathway-card:focus-visible {
+  text-decoration: none;
+  border-color: rgba(128, 0, 32, 0.28);
+  box-shadow: 0 2px 12px rgba(75, 23, 35, 0.06);
+  outline: none;
+}
+a.pathway-card:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+.pathway-card--synthesis {
+  background: linear-gradient(145deg, var(--ivory) 0%, var(--paper) 100%);
+  border-color: rgba(128, 0, 32, 0.18);
+}
+a.pathway-card--synthesis:hover,
+a.pathway-card--synthesis:focus-visible {
+  background: var(--burgundy);
+  color: var(--ivory);
+}
+.pathway-card--textbook {
+  background: linear-gradient(145deg, var(--rose) 0%, var(--paper) 55%);
+  border-color: rgba(180, 154, 104, 0.35);
+}
+a.pathway-card--textbook:hover,
+a.pathway-card--textbook:focus-visible {
+  background: var(--burgundy-dark);
+  color: var(--ivory);
+}
+.pathway-card--soon {
+  cursor: default;
+  opacity: 0.94;
+}
+.pathway-card--soon .pathway-desc { color: var(--muted); }
+.pathway-kicker {
+  margin: 0 0 0.45rem;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--burgundy);
+  opacity: 0.85;
+}
+a.pathway-card:hover .pathway-kicker,
+a.pathway-card:focus-visible .pathway-kicker {
+  color: rgba(180, 154, 104, 0.95);
+  opacity: 1;
+}
+.pathway-card--soon .pathway-kicker { color: var(--muted); }
+.pathway-title {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.4rem;
+  line-height: 1.25;
+  color: var(--burgundy-dark);
+}
+a.pathway-card:hover .pathway-title,
+a.pathway-card:focus-visible .pathway-title {
+  color: var(--ivory);
+}
+.pathway-card--soon .pathway-title { color: var(--burgundy-dark); }
+.pathway-desc {
+  margin: 0;
+  font-size: 0.86rem;
+  line-height: 1.45;
+  color: var(--muted);
+  flex: 1 1 auto;
+}
+a.pathway-card:hover .pathway-desc,
+a.pathway-card:focus-visible .pathway-desc {
+  color: rgba(248, 245, 238, 0.82);
+}
+.pathway-action {
+  margin-top: 0.85rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+a.pathway-card:hover .pathway-action,
+a.pathway-card:focus-visible .pathway-action {
+  color: rgba(248, 245, 238, 0.78);
+}
+.pathway-badge {
+  display: inline-block;
+  margin-top: 0.85rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--burgundy);
+  padding: 0.25rem 0.55rem;
+  border: 1px solid rgba(128, 0, 32, 0.22);
+  border-radius: 4px;
+  background: rgba(248, 245, 238, 0.65);
+}
+
+.resources-block {
+  padding: 0.25rem 0 2.75rem;
+  border-top: 1px solid var(--line);
+}
+.resources-intro {
+  margin: 0 0 1.1rem;
+  font-size: 0.88rem;
+  color: var(--muted);
+  max-width: 40rem;
+  line-height: 1.5;
+}
+.resource-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+@media (max-width: 720px) {
+  .resource-list { grid-template-columns: 1fr; }
+}
+.resource-item {
+  padding: 1rem 1.15rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--paper);
+}
+.resource-item a.resource-link {
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--burgundy);
+  text-decoration: none;
+}
+.resource-item a.resource-link:hover,
+.resource-item a.resource-link:focus-visible {
+  color: var(--burgundy-dark);
+  text-decoration: underline;
+  text-decoration-color: var(--gold);
+  outline: none;
+}
+.resource-meta {
+  margin: 0.35rem 0 0;
+  font-size: 0.78rem;
+  color: var(--muted-light);
+  line-height: 1.4;
+}
+
+.explore-browse-note {
+  margin: 1.35rem 0 0;
+  font-size: 0.84rem;
+}
+.explore-browse-note a {
+  color: var(--burgundy);
+  font-weight: 500;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(180, 154, 104, 0.4);
+}
+.explore-browse-note a:hover,
+.explore-browse-note a:focus-visible {
+  color: var(--burgundy-dark);
+  border-bottom-color: var(--gold);
+  outline: none;
+}
 
 .explore-block {
   padding: 0.5rem 0 2.75rem;
@@ -614,9 +877,9 @@ table.evidence-map td.paper-col { font-weight: 600; white-space: nowrap; font-si
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(168, 185, 155, 0.35) 20%,
-    rgba(37, 71, 53, 0.12) 50%,
-    rgba(168, 185, 155, 0.35) 80%,
+    rgba(180, 154, 104, 0.35) 20%,
+    rgba(128, 0, 32, 0.1) 50%,
+    rgba(180, 154, 104, 0.35) 80%,
     transparent
   );
 }
@@ -626,7 +889,7 @@ table.evidence-map td.paper-col { font-weight: 600; white-space: nowrap; font-si
   font-weight: 500;
   letter-spacing: -0.02em;
   margin: 0 0 1.35rem;
-  color: var(--forest-dark);
+  color: var(--burgundy-dark);
   display: flex;
   align-items: center;
   gap: 0.55rem;
@@ -635,23 +898,23 @@ table.evidence-map td.paper-col { font-weight: 600; white-space: nowrap; font-si
 
 .knowledge-grid {
   display: grid;
-  grid-template-columns: 1.15fr 1fr;
-  grid-auto-rows: minmax(7.25rem, auto);
-  gap: 0.75rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+  align-items: stretch;
 }
-@media (max-width: 820px) {
+@media (max-width: 720px) {
   .knowledge-grid { grid-template-columns: 1fr; }
-  .km--featured { grid-row: auto; grid-column: auto; }
 }
 .km {
   display: flex;
   flex-direction: column;
-  padding: 1.35rem 1.4rem 1.25rem;
+  padding: 1.35rem 1.4rem 1.2rem;
   text-decoration: none;
-  color: var(--forest);
+  color: var(--ink);
   background: var(--surface-light);
   border: 1px solid var(--line);
-  min-height: 7.5rem;
+  min-height: 11.25rem;
+  height: 100%;
   transition:
     background var(--km-ease),
     color var(--km-ease),
@@ -660,70 +923,81 @@ table.evidence-map td.paper-col { font-weight: 600; white-space: nowrap; font-si
   position: relative;
   overflow: hidden;
 }
-a.km:not(.km--featured):hover,
-a.km:not(.km--featured):focus-visible {
+a.km:hover,
+a.km:focus-visible {
   text-decoration: none;
-  background: var(--forest);
-  border-color: var(--forest);
+  background: var(--burgundy-dark);
+  border-color: var(--burgundy-dark);
   color: var(--ivory);
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.34);
   outline: none;
 }
-a.km:not(.km--featured):focus-visible {
-  outline: 2px solid var(--sage);
+a.km:focus-visible {
+  outline: 2px solid var(--gold);
   outline-offset: 3px;
 }
 @media (hover: hover) {
-  a.km:not(.km--featured):hover {
-    background: var(--forest-dark);
-    border-color: var(--forest-dark);
+  a.km:hover {
+    background: #3a1218;
+    border-color: #3a1218;
   }
 }
-a.km--featured:hover,
-a.km--featured:focus-visible {
-  text-decoration: none;
-  background: var(--forest-dark);
-  border-color: var(--forest-dark);
-  color: var(--ivory);
-  box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.42);
-  outline: none;
+a.km.km--climate:hover,
+a.km.km--climate:focus-visible {
+  background: var(--burgundy-dark);
+  border-color: var(--burgundy-dark);
+  box-shadow: inset 0 0 0 1.5px rgba(180, 154, 104, 0.35);
 }
-a.km--featured:focus-visible {
-  outline: 2px solid var(--sage-light);
+a.km.km--climate:focus-visible {
+  outline: 2px solid var(--gold);
   outline-offset: 3px;
 }
-.km--featured {
-  grid-column: 1;
-  grid-row: 1 / span 4;
-  padding: 2rem 1.65rem 1.75rem;
-  background: var(--forest);
-  border: 1px solid var(--forest-dark);
+.km--climate {
+  background: var(--burgundy);
+  border: 1px solid var(--burgundy-dark);
   color: var(--ivory);
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.28);
 }
-@media (max-width: 820px) {
-  .km--featured { grid-row: auto; }
+.km--surface-ivory {
+  background: var(--ivory);
+  border-color: rgba(75, 23, 35, 0.14);
 }
-.km--surface-sand { background: var(--sand); border-color: rgba(121, 90, 66, 0.15); }
-.km--surface-sage { background: var(--sage-light); border-color: rgba(37, 71, 53, 0.12); }
-.km--surface-stone { background: var(--stone); border-color: var(--line); }
-.km--surface-olive { background: #e2e8dc; border-color: rgba(37, 71, 53, 0.14); }
+.km--surface-rose {
+  background: var(--rose);
+  border-color: rgba(128, 0, 32, 0.1);
+}
+.km--surface-sage {
+  background: var(--sage-soft);
+  border-color: rgba(53, 45, 43, 0.1);
+}
+.km--surface-beige {
+  background: var(--beige);
+  border-color: rgba(121, 90, 66, 0.14);
+}
+div.km[aria-disabled="true"] {
+  cursor: default;
+  opacity: 0.92;
+}
 .km-eyebrow {
-  margin: 0 0 0.5rem;
+  margin: 0 0 0.4rem;
   font-size: 0.62rem;
   font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: rgba(247, 244, 235, 0.72);
 }
-.km--featured .km-title {
+.km-title {
   font-family: var(--font-serif);
-  font-size: 1.4rem;
+  font-size: 1.08rem;
   font-weight: 500;
   letter-spacing: -0.02em;
-  margin: 0 0 0.5rem;
+  margin: 0 0 0.45rem;
+  line-height: 1.28;
+  color: var(--burgundy-dark);
+  transition: color 0.2s ease;
+}
+.km--climate .km-title {
   color: var(--white);
-  line-height: 1.25;
 }
 .km-title-sub {
   display: block;
@@ -734,9 +1008,9 @@ a.km--featured:focus-visible {
 }
 .km-botanical-wrap {
   position: absolute;
-  right: 0.75rem;
-  top: 0.5rem;
-  width: 5.5rem;
+  right: 0.65rem;
+  top: 0.45rem;
+  width: 3.75rem;
   color: rgba(255, 255, 255, 0.35);
   pointer-events: none;
 }
@@ -751,64 +1025,52 @@ a.km--featured:focus-visible {
   pointer-events: none;
   color: rgba(255, 255, 255, 0.35);
 }
-a.km:not(.km--featured):hover .km-hover-leaf,
-a.km:not(.km--featured):focus-visible .km-hover-leaf { opacity: 1; }
+a.km:hover .km-hover-leaf,
+a.km:focus-visible .km-hover-leaf { opacity: 1; }
 .km-mini-botanical {
   width: 1.35rem;
   height: 1.35rem;
   margin-bottom: 0.55rem;
-  color: var(--earth);
-  opacity: 0.75;
-}
-.km--secondary .km-title {
-  font-size: 0.92rem;
-  font-weight: 600;
-  margin: 0 0 0.35rem;
-  letter-spacing: -0.01em;
-  color: var(--forest);
-}
-.km-title { transition: color 0.2s ease; }
-.km--featured .km-count {
-  font-size: 0.82rem;
-  margin: 0 0 1rem;
+  color: var(--burgundy);
+  opacity: 0.72;
+  flex-shrink: 0;
 }
 .km-count {
   font-size: 0.78rem;
   color: var(--muted);
-  margin: 0 0 0.65rem;
+  margin: 0 0 0.5rem;
   transition: color 0.2s ease;
 }
-a.km:not(.km--featured):hover .km-title,
-a.km:not(.km--featured):focus-visible .km-title,
-a.km:not(.km--featured):hover .km-count,
-a.km:not(.km--featured):focus-visible .km-count {
+.km--climate .km-count { color: rgba(255, 255, 255, 0.78); }
+a.km:hover .km-title,
+a.km:focus-visible .km-title,
+a.km:hover .km-count,
+a.km:focus-visible .km-count {
   color: var(--ivory);
 }
-a.km:not(.km--featured):hover .km-count,
-a.km:not(.km--featured):focus-visible .km-count {
+a.km:hover .km-count,
+a.km:focus-visible .km-count {
   color: rgba(247, 244, 235, 0.78);
 }
-.km--featured .km-count { color: rgba(255, 255, 255, 0.78); }
-.km--featured .km-tags span {
+.km--climate .km-tags span {
   color: rgba(255, 255, 255, 0.62);
   border-bottom-color: rgba(255, 255, 255, 0.2);
 }
-.km--featured .km-arrow { color: rgba(255, 255, 255, 0.55); }
-a.km--featured:hover .km-arrow,
-a.km--featured:focus-visible .km-arrow { color: rgba(255, 255, 255, 0.85); }
+.km--climate .km-arrow { color: rgba(255, 255, 255, 0.55); }
+a.km.km--climate:hover .km-arrow,
+a.km.km--climate:focus-visible .km-arrow { color: rgba(255, 255, 255, 0.85); }
 .km-arrow {
   margin-top: auto;
   padding-top: 0.85rem;
   font-size: 0.72rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--sage);
+  color: var(--gold);
   display: inline-block;
   transition: transform 0.2s ease, color 0.2s ease;
 }
-.km--featured .km-arrow { padding-top: 1.25rem; }
-a.km:not(.km--featured):hover .km-arrow,
-a.km:not(.km--featured):focus-visible .km-arrow {
+a.km:hover .km-arrow,
+a.km:focus-visible .km-arrow {
   color: rgba(247, 244, 235, 0.72);
 }
 @media (hover: hover) {
@@ -817,13 +1079,13 @@ a.km:not(.km--featured):focus-visible .km-arrow {
     transform: translateX(4px);
   }
 }
-a.km:not(.km--featured):hover .km-tags span,
-a.km:not(.km--featured):focus-visible .km-tags span {
+a.km:hover .km-tags span,
+a.km:focus-visible .km-tags span {
   color: rgba(247, 244, 235, 0.65);
   border-bottom-color: rgba(255, 255, 255, 0.22);
 }
-a.km:not(.km--featured):hover .km-mini-botanical,
-a.km:not(.km--featured):focus-visible .km-mini-botanical {
+a.km:hover .km-mini-botanical,
+a.km:focus-visible .km-mini-botanical {
   color: var(--ivory);
   opacity: 0.85;
 }
@@ -831,19 +1093,20 @@ a.km:not(.km--featured):focus-visible .km-mini-botanical {
   display: flex;
   flex-wrap: wrap;
   gap: 0.35rem;
-  margin-top: auto;
+  flex: 1 1 auto;
+  align-content: flex-start;
 }
 .km-tags span {
   font-size: 0.65rem;
   letter-spacing: 0.03em;
   color: var(--muted-light);
   padding: 0.15rem 0;
-  border-bottom: 1px solid var(--sand);
+  border-bottom: 1px solid rgba(180, 154, 104, 0.35);
 }
 .browse-block {
   padding: 2.5rem 0 3rem;
   border-top: 1px solid var(--line);
-  background: linear-gradient(180deg, transparent 0%, rgba(220, 229, 213, 0.25) 100%);
+  background: linear-gradient(180deg, transparent 0%, rgba(241, 226, 220, 0.35) 100%);
 }
 .browse-grid {
   display: grid;
@@ -862,7 +1125,8 @@ a.km:not(.km--featured):focus-visible .km-mini-botanical {
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--sage);
+  color: var(--burgundy);
+  opacity: 0.85;
 }
 .browse-col ul {
   margin: 0;
@@ -879,7 +1143,7 @@ a.km:not(.km--featured):focus-visible .km-mini-botanical {
 .browse-col li:last-child { border-bottom: none; }
 .browse-col a.browse-link {
   font-weight: 500;
-  color: var(--forest);
+  color: var(--burgundy);
   text-decoration: none;
   border-radius: 4px;
   padding: 0.12rem 0.35rem 0.12rem 0;
@@ -888,27 +1152,27 @@ a.km:not(.km--featured):focus-visible .km-mini-botanical {
 }
 .browse-col a.browse-link:hover,
 .browse-col a.browse-link:focus-visible {
-  color: var(--forest-deep);
+  color: var(--burgundy-dark);
   background: var(--accent-soft);
   text-decoration: underline;
-  text-decoration-color: var(--sage);
+  text-decoration-color: var(--gold);
   text-underline-offset: 2px;
   outline: none;
 }
 .browse-col a.browse-link:focus-visible {
-  box-shadow: inset 0 0 0 1px rgba(42, 82, 69, 0.25);
+  box-shadow: inset 0 0 0 1px rgba(128, 0, 32, 0.22);
 }
 .browse-arr {
   display: inline-block;
   margin-left: 0.12em;
-  color: var(--sage);
+  color: var(--gold);
   transition: transform 0.18s ease, color 0.18s ease;
 }
 @media (hover: hover) {
   .browse-col a.browse-link:hover .browse-arr,
   .browse-col a.browse-link:focus-visible .browse-arr {
     transform: translateX(3px);
-    color: var(--forest);
+    color: var(--burgundy);
   }
 }
 .browse-col ul.browse-sub {
@@ -952,105 +1216,104 @@ a.km:not(.km--featured):focus-visible .km-mini-botanical {
 </head>
 <body class="hub-shell hub-root">
 <header class="hub-sitehead">
-<a class="site-id" href="index.html">Research Knowledge Base</a>
+<div class="hub-sitehead-inner">
+<a class="site-id" href="#top">Research Knowledge Base</a>
 <nav class="site-nav" aria-label="Page sections">
+<a href="#top">Home</a>
+<a href="#about">About</a>
 <a href="#explore">Explore</a>
-<a href="#browse">Browse</a>
+<a href="#resources">Resources</a>
 </nav>
+</div>
 </header>
 <main class="hub-main">
 
-<section class="hero-forest" aria-label="Research Knowledge Base">
+<section class="hero-forest" id="top" aria-label="Research Knowledge Base">
 <div class="hero-forest-bg">
 <svg class="hero-forest-scene" viewBox="0 0 1200 520" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
   <defs>
     <linearGradient id="skyForest" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#193729"/>
-      <stop offset="55%" stop-color="#152a20"/>
-      <stop offset="100%" stop-color="#0f1f18"/>
+      <stop offset="0%" stop-color="#8a4a52" stop-opacity="0.55"/>
+      <stop offset="35%" stop-color="#6B2D3A"/>
+      <stop offset="70%" stop-color="#4B1723"/>
+      <stop offset="100%" stop-color="#3a1219"/>
     </linearGradient>
     <linearGradient id="groundFade" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#152a20" stop-opacity="0"/>
-      <stop offset="100%" stop-color="#152a20" stop-opacity="0.95"/>
+      <stop offset="0%" stop-color="#3a1219" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#F8F5EE" stop-opacity="0.98"/>
     </linearGradient>
+    <radialGradient id="warmLight" cx="72%" cy="18%" r="45%">
+      <stop offset="0%" stop-color="#B49A68" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#B49A68" stop-opacity="0"/>
+    </radialGradient>
   </defs>
   <rect width="1200" height="520" fill="url(#skyForest)"/>
-  <!-- atmospheric mist bands -->
-  <path d="M0 200 Q300 170 600 195 T1200 180 V260 H0 Z" fill="#A8B99B" opacity="0.06"/>
-  <path d="M0 260 Q400 240 800 255 T1200 245 V320 H0 Z" fill="#A8B99B" opacity="0.05"/>
-  <!-- distant tree line -->
-  <g fill="#254735" opacity="0.35">
+  <rect width="1200" height="520" fill="url(#warmLight)"/>
+  <path d="M0 200 Q300 170 600 195 T1200 180 V260 H0 Z" fill="#F1E2DC" opacity="0.07"/>
+  <path d="M0 260 Q400 240 800 255 T1200 245 V320 H0 Z" fill="#F1E2DC" opacity="0.06"/>
+  <g fill="#5c1f2e" opacity="0.4">
     <path d="M0 340 L0 520 L1200 520 L1200 320 Q900 300 600 318 T0 340 Z"/>
-    <path d="M80 338 L108 268 L136 338 Z"/>
-    <path d="M160 342 L188 278 L216 342 Z"/>
-    <path d="M240 336 L268 260 L296 336 Z"/>
-    <path d="M520 332 L552 250 L584 332 Z"/>
-    <path d="M680 338 L710 270 L740 338 Z"/>
-    <path d="M880 334 L912 255 L944 334 Z"/>
-    <path d="M1020 340 L1048 275 L1076 340 Z"/>
+    <path d="M80 338 L108 268 L136 338 Z" fill="#800020"/>
+    <path d="M160 342 L188 278 L216 342 Z" fill="#A0522D"/>
+    <path d="M240 336 L268 260 L296 336 Z" fill="#B45309"/>
+    <path d="M520 332 L552 250 L584 332 Z" fill="#800020"/>
+    <path d="M680 338 L710 270 L740 338 Z" fill="#A0522D"/>
+    <path d="M880 334 L912 255 L944 334 Z" fill="#B45309"/>
+    <path d="M1020 340 L1048 275 L1076 340 Z" fill="#800020"/>
   </g>
-  <!-- mid-ground grove -->
-  <g opacity="0.55">
-    <ellipse cx="420" cy="300" rx="95" ry="72" fill="#2f4f3d"/>
-    <ellipse cx="520" cy="288" rx="110" ry="80" fill="#3d6b52"/>
-    <ellipse cx="780" cy="295" rx="100" ry="70" fill="#2f4f3d"/>
-    <ellipse cx="900" cy="285" rx="85" ry="65" fill="#3d6b52"/>
-    <ellipse cx="260" cy="305" rx="75" ry="58" fill="#2f4f3d"/>
+  <g opacity="0.62">
+    <ellipse cx="420" cy="300" rx="95" ry="72" fill="#7a2838"/>
+    <ellipse cx="520" cy="288" rx="110" ry="80" fill="#8f3d4a"/>
+    <ellipse cx="780" cy="295" rx="100" ry="70" fill="#A0522D" opacity="0.85"/>
+    <ellipse cx="900" cy="285" rx="85" ry="65" fill="#B45309" opacity="0.75"/>
+    <ellipse cx="260" cy="305" rx="75" ry="58" fill="#7a2838"/>
   </g>
-  <!-- trunks — mid -->
-  <g stroke="#1a2e24" stroke-width="5" stroke-linecap="round" opacity="0.5">
+  <g stroke="#2a1015" stroke-width="5" stroke-linecap="round" opacity="0.55">
     <line x1="410" y1="520" x2="418" y2="340"/>
     <line x1="530" y1="520" x2="538" y2="320"/>
     <line x1="770" y1="520" x2="778" y2="335"/>
     <line x1="890" y1="520" x2="898" y2="345"/>
     <line x1="255" y1="520" x2="262" y2="355"/>
   </g>
-  <!-- foreground canopy -->
-  <g opacity="0.72">
-    <ellipse cx="180" cy="360" rx="120" ry="88" fill="#254735"/>
-    <ellipse cx="320" cy="345" rx="130" ry="95" fill="#2f4f3d"/>
-    <ellipse cx="640" cy="355" rx="140" ry="100" fill="#254735"/>
-    <ellipse cx="980" cy="365" rx="125" ry="90" fill="#2f4f3d"/>
-    <ellipse cx="1050" cy="380" rx="90" ry="70" fill="#3d6b52" opacity="0.6"/>
+  <g opacity="0.78">
+    <ellipse cx="180" cy="360" rx="120" ry="88" fill="#800020"/>
+    <ellipse cx="320" cy="345" rx="130" ry="95" fill="#A0522D"/>
+    <ellipse cx="640" cy="355" rx="140" ry="100" fill="#800020"/>
+    <ellipse cx="980" cy="365" rx="125" ry="90" fill="#B45309"/>
+    <ellipse cx="1050" cy="380" rx="90" ry="70" fill="#B87333" opacity="0.55"/>
   </g>
-  <!-- foreground trunks -->
-  <g stroke="#0f1f18" stroke-width="7" stroke-linecap="round" opacity="0.65">
+  <g stroke="#1a0a0d" stroke-width="7" stroke-linecap="round" opacity="0.7">
     <line x1="170" y1="520" x2="182" y2="370"/>
     <line x1="310" y1="520" x2="322" y2="355"/>
     <line x1="630" y1="520" x2="642" y2="348"/>
     <line x1="970" y1="520" x2="982" y2="375"/>
   </g>
-  <!-- ground contour -->
-  <path d="M0 420 Q200 395 400 408 T800 402 T1200 415 L1200 520 L0 520 Z" fill="#152a20" opacity="0.85"/>
-  <path d="M0 455 Q350 430 600 442 T1200 448 L1200 520 L0 520 Z" fill="#0f1f18" opacity="0.5"/>
-  <!-- branches (evidence pathways) -->
-  <g fill="none" stroke="#A8B99B" stroke-width="1" opacity="0.22" stroke-linecap="round">
+  <path d="M0 420 Q200 395 400 408 T800 402 T1200 415 L1200 520 L0 520 Z" fill="#3a1219" opacity="0.88"/>
+  <path d="M0 455 Q350 430 600 442 T1200 448 L1200 520 L0 520 Z" fill="#2a1015" opacity="0.45"/>
+  <g fill="none" stroke="#B49A68" stroke-width="1" opacity="0.2" stroke-linecap="round">
     <path d="M120 280 Q280 250 420 270 T680 258 T920 272"/>
     <path d="M200 320 Q380 300 520 318 T760 305"/>
   </g>
-  <g fill="#F7F4EB" opacity="0.35">
+  <g fill="#F8F5EE" opacity="0.4">
     <circle cx="280" cy="268" r="2.5"/>
     <circle cx="420" cy="272" r="2"/>
     <circle cx="560" cy="262" r="2.5"/>
     <circle cx="720" cy="270" r="2"/>
   </g>
-  <!-- oak leaves (supporting) -->
-  <g fill="none" stroke="#A8B99B" stroke-width="1.1" stroke-linejoin="round" opacity="0.45">
+  <g fill="none" stroke="#F1E2DC" stroke-width="1.1" stroke-linejoin="round" opacity="0.5">
     <path d="M95 380 C95 362 108 352 122 356 C136 360 138 376 122 386 C106 396 95 392 95 380 Z"/>
     <path d="M95 380 L122 356 M95 380 L112 386 M122 386 L122 356"/>
     <path d="M1080 390 C1080 372 1093 362 1107 366 C1121 370 1123 386 1107 396 C1091 406 1080 402 1080 390 Z"/>
-    <path d="M450 240 C450 226 460 218 472 220 C484 222 486 236 472 244 C458 252 450 250 450 240 Z" opacity="0.7"/>
-    <path d="M720 230 C720 216 730 208 742 210 C754 212 756 226 742 234 C728 242 720 240 720 230 Z" opacity="0.6"/>
+    <path d="M450 240 C450 226 460 218 472 220 C484 222 486 236 472 244 C458 252 450 250 450 240 Z" opacity="0.75"/>
+    <path d="M720 230 C720 216 730 208 742 210 C754 212 756 226 742 234 C728 242 720 240 720 230 Z" opacity="0.65"/>
   </g>
-  <!-- acorns on forest floor -->
-  <g fill="#795A42" opacity="0.5">
+  <g fill="#B87333" opacity="0.55">
     <ellipse cx="140" cy="468" rx="5" ry="7"/>
-    <path d="M136 463 Q140 457 144 463" fill="none" stroke="#795A42" stroke-width="0.8"/>
+    <path d="M136 463 Q140 457 144 463" fill="none" stroke="#B49A68" stroke-width="0.8"/>
     <ellipse cx="890" cy="478" rx="4.5" ry="6"/>
     <ellipse cx="1020" cy="472" rx="5" ry="6.5"/>
   </g>
-  <!-- open book in clearing (library) -->
-  <g transform="translate(548 455)" fill="none" stroke="#F7F4EB" stroke-width="0.9" opacity="0.28">
+  <g transform="translate(548 455)" fill="none" stroke="#F8F5EE" stroke-width="0.9" opacity="0.32">
     <path d="M0 8 C18 0 36 0 54 8 V38 C36 30 18 30 0 38 Z"/>
     <path d="M54 8 C72 0 90 0 108 8 V38 C90 30 72 30 54 38 Z"/>
     <line x1="54" y1="8" x2="54" y2="38"/>
@@ -1063,16 +1326,43 @@ a.km:not(.km--featured):focus-visible .km-mini-botanical {
 <p class="hero-eyebrow">Research Knowledge Base</p>
 <h1>Evidence for Education &amp; Development</h1>
 <p class="lead">A personal research knowledge base connecting evidence across education and international development.</p>
-<a class="hero-cta" href="#explore">Explore knowledge →</a>
 </div>
 <div class="hero-forest-aside" aria-hidden="true"></div>
 </div>
 </section>
 <div class="hero-treeline-wrap" aria-hidden="true">
 <svg class="hero-treeline-accent" viewBox="0 0 1200 32" preserveAspectRatio="none" aria-hidden="true">
-  <path d="M0 28 L0 32 L1200 32 L1200 24 Q900 8 600 18 T0 28 Z" fill="#A8B99B" opacity="0.12"/>
-  <path d="M0 26 Q200 14 400 20 T800 16 T1200 22 L1200 32 L0 32 Z" fill="#254735" opacity="0.06"/>
+  <path d="M0 28 L0 32 L1200 32 L1200 24 Q900 8 600 18 T0 28 Z" fill="#4B1723" opacity="0.08"/>
+  <path d="M0 26 Q200 14 400 20 T800 16 T1200 22 L1200 32 L0 32 Z" fill="#B49A68" opacity="0.1"/>
 </svg></div>
+
+
+<section class="hub-pathways" id="pathways" aria-label="Hub entry points">
+<div class="pathway-grid">
+<a class="pathway-card pathway-card--synthesis" href="#explore"><p class="pathway-kicker">Knowledge synthesis</p><p class="pathway-title">Explore knowledge synthesis</p><p class="pathway-desc">Thematic evidence reviews, paper summaries, and cross-study patterns across research areas.</p><span class="pathway-action">View thematic areas →</span></a>
+<div class="pathway-card pathway-card--textbook pathway-card--soon" id="textbook" aria-disabled="true"><p class="pathway-kicker">Learning textbook</p><p class="pathway-title">Read the learning textbook</p><p class="pathway-desc">Structured HTML textbook chapters will be published here when ready.</p><span class="pathway-badge">Coming soon</span></div>
+</div>
+</section>
+
+
+
+<section class="about-block" id="about" aria-labelledby="about-title">
+<h2 class="section-title" id="about-title">
+<svg class="section-leaf" viewBox="0 0 24 16" aria-hidden="true">
+  <path d="M2 14 C2 6 10 2 18 4 C14 8 10 12 2 14 Z" fill="none" stroke="#B49A68" stroke-width="1.2" stroke-linejoin="round"/>
+  <path d="M2 14 L18 4" stroke="#800020" stroke-width="0.8" opacity="0.5"/>
+</svg> About</h2>
+<div class="about-body">
+<p class="about-lead">Research Knowledge Hub is a personal research workspace developed by Kohei Uno to organize, connect, and synthesize evidence in educational development. It brings together thematic literature reviews and research-based learning resources.</p>
+<p class="about-detail">The hub combines knowledge synthesis across thematic areas with structured learning materials as they are published. It is maintained independently and is not an official university or institutional site.</p>
+<p class="about-author">Kohei Uno</p>
+<ul class="about-links">
+<li><a href="https://koheiuno000.github.io/" rel="noopener noreferrer" target="_blank">Personal website<span class="visually-hidden"> (opens in new tab)</span></a></li>
+<li><a href="https://github.com/koheiuno000/koheiuno000.github.io" rel="noopener noreferrer" target="_blank">GitHub<span class="visually-hidden"> (opens in new tab)</span></a></li>
+</ul>
+</div>
+</section>
+
 
 <div class="scope-block">
 <p class="scope-label">Knowledge base at a glance</p>
@@ -1082,11 +1372,14 @@ a.km:not(.km--featured):focus-visible .km-mini-botanical {
 <section class="explore-block" id="explore" aria-labelledby="explore-title">
 <h2 class="section-title" id="explore-title">
 <svg class="section-leaf" viewBox="0 0 24 16" aria-hidden="true">
-  <path d="M2 14 C2 6 10 2 18 4 C14 8 10 12 2 14 Z" fill="none" stroke="#A8B99B" stroke-width="1.2" stroke-linejoin="round"/>
-  <path d="M2 14 L18 4" stroke="#A8B99B" stroke-width="0.8" opacity="0.6"/>
-</svg> Explore knowledge</h2>
+  <path d="M2 14 C2 6 10 2 18 4 C14 8 10 12 2 14 Z" fill="none" stroke="#B49A68" stroke-width="1.2" stroke-linejoin="round"/>
+  <path d="M2 14 L18 4" stroke="#800020" stroke-width="0.8" opacity="0.5"/>
+</svg> Explore knowledge synthesis</h2>
 <div class="knowledge-grid">
-<a class="km km--featured" href="../climate-education/literature-review/literature_review.html"><div class="km-botanical-wrap">
+<a class="km km--surface-ivory" href="../sb-cpd/literature-review/literature_review.html"><svg viewBox="0 0 32 32" class="km-mini-botanical"><path d="M6 22 C6 14 12 8 16 8 C20 8 26 14 26 22" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/><line x1="16" y1="8" x2="16" y2="26" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"/></svg><p class="km-title">Teacher Development<span class="km-title-sub">&amp; School-Based CPD</span></p><p class="km-count">4 papers</p><div class="km-tags"><span>Teachers</span><span>Classroom</span><span>Learning</span></div><span class="km-arrow">Explore →</span>
+<svg class="km-hover-leaf" viewBox="0 0 48 32" aria-hidden="true">
+  <path d="M4 28 C4 14 18 6 32 10 C24 16 16 22 4 28 Z" fill="none" stroke="currentColor" stroke-width="1" opacity="0.25"/>
+</svg></a><div class="km km--surface-rose" aria-disabled="true"><svg viewBox="0 0 32 32" class="km-mini-botanical"><circle cx="16" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 26 L16 18 L22 26" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg><p class="km-title">Preschool<span class="km-title-sub">Early Childhood</span></p><p class="km-count">0 papers</p><div class="km-tags"><span>Early Learning</span><span>Child Development</span></div></div><div class="km km--surface-sage" aria-disabled="true"><svg viewBox="0 0 32 32" class="km-mini-botanical"><rect x="6" y="8" width="20" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 26h8" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/><circle cx="22" cy="12" r="1.5" fill="currentColor"/></svg><p class="km-title">EdTech<span class="km-title-sub">AI</span></p><p class="km-count">0 papers</p><div class="km-tags"><span>Technology</span><span>AI</span><span>Innovation</span></div></div><div class="km km--surface-beige" aria-disabled="true"><svg viewBox="0 0 32 32" class="km-mini-botanical"><path d="M8 26 L16 10 L24 26 Z" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg><p class="km-title">Skills<span class="km-title-sub">TVET</span></p><p class="km-count">0 papers</p><div class="km-tags"><span>Skills</span><span>Employment</span><span>Training</span></div></div><a class="km km--climate" href="../climate-education/literature-review/literature_review.html"><div class="km-botanical-wrap">
 <svg class="km-botanical-art" viewBox="0 0 120 100" aria-hidden="true">
   <g fill="none" stroke="currentColor" stroke-width="1" opacity="0.35" stroke-linejoin="round">
     <path d="M90 20 C90 8 102 2 108 12 C114 22 106 34 96 32 C86 30 90 20 90 20 Z"/>
@@ -1094,18 +1387,30 @@ a.km:not(.km--featured):focus-visible .km-mini-botanical {
     <path d="M100 55 L100 78" stroke-linecap="round"/>
     <circle cx="98" cy="82" r="4" fill="currentColor" stroke="none" opacity="0.25"/>
   </g>
-</svg></div><p class="km-eyebrow">CLIMATE &amp; EDUCATION</p><p class="km-title">Climate &amp; Education</p><p class="km-count">6 papers</p><div class="km-tags"><span>Climate</span><span>Resilience</span><span>Sustainability</span></div><span class="km-arrow">Explore evidence →</span></a><a class="km km--secondary km--surface-stone" href="../sb-cpd/literature-review/literature_review.html"><svg viewBox="0 0 32 32" class="km-mini-botanical"><path d="M6 22 C6 14 12 8 16 8 C20 8 26 14 26 22" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/><line x1="16" y1="8" x2="16" y2="26" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"/></svg><p class="km-title">Teacher Development / SB-CPD</p><p class="km-count">4 papers</p><div class="km-tags"><span>Teachers</span><span>Classroom</span><span>Learning</span></div><span class="km-arrow">Explore →</span>
-<svg class="km-hover-leaf" viewBox="0 0 48 32" aria-hidden="true">
-  <path d="M4 28 C4 14 18 6 32 10 C24 16 16 22 4 28 Z" fill="none" stroke="currentColor" stroke-width="1" opacity="0.25"/>
-</svg></a><div class="km km--secondary km--surface-sand" aria-disabled="true"><svg viewBox="0 0 32 32" class="km-mini-botanical"><circle cx="16" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 26 L16 18 L22 26" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg><p class="km-title">Preschool / Early Childhood</p><p class="km-count">0 papers</p><div class="km-tags"><span>Early Learning</span><span>Child Development</span></div></div><div class="km km--secondary km--surface-sage" aria-disabled="true"><svg viewBox="0 0 32 32" class="km-mini-botanical"><rect x="6" y="8" width="20" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 26h8" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/><circle cx="22" cy="12" r="1.5" fill="currentColor"/></svg><p class="km-title">EdTech / AI</p><p class="km-count">0 papers</p><div class="km-tags"><span>Technology</span><span>AI</span><span>Innovation</span></div></div><div class="km km--secondary km--surface-stone" aria-disabled="true"><svg viewBox="0 0 32 32" class="km-mini-botanical"><path d="M8 26 L16 10 L24 26 Z" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg><p class="km-title">Skills / TVET</p><p class="km-count">0 papers</p><div class="km-tags"><span>Skills</span><span>Employment</span><span>Training</span></div></div>
+</svg></div><p class="km-eyebrow">CLIMATE &amp; EDUCATION</p><p class="km-title">Climate &amp; Education</p><p class="km-count">6 papers</p><div class="km-tags"><span>Climate</span><span>Resilience</span><span>Sustainability</span></div><span class="km-arrow">Explore evidence →</span></a>
 </div>
+<p class="explore-browse-note"><a href="#browse">Browse by country, evidence type, and relationships →</a></p>
 </section>
+
+
+<section class="resources-block" id="resources" aria-labelledby="resources-title">
+<h2 class="section-title" id="resources-title">
+<svg class="section-leaf" viewBox="0 0 24 16" aria-hidden="true">
+  <path d="M2 14 C2 6 10 2 18 4 C14 8 10 12 2 14 Z" fill="none" stroke="#B49A68" stroke-width="1.2" stroke-linejoin="round"/>
+  <path d="M2 14 L18 4" stroke="#800020" stroke-width="0.8" opacity="0.5"/>
+</svg> Resources</h2>
+<p class="resources-intro">Links to generated literature-review pages and other verified hub outputs. Full paper summaries live on each area page—not duplicated here.</p>
+<ul class="resource-list">
+<li class="resource-item"><a class="resource-link" href="../sb-cpd/literature-review/literature_review.html">Teacher Development / SB-CPD</a><p class="resource-meta">Knowledge synthesis · generated literature review (HTML) · 4 papers</p><p class="resource-meta">School-based CPD and teacher development evidence.</p></li><li class="resource-item"><a class="resource-link" href="../climate-education/literature-review/literature_review.html">Climate Change and Education</a><p class="resource-meta">Knowledge synthesis · generated literature review (HTML) · 6 papers</p><p class="resource-meta">Extreme weather, schooling disruption, and education outcomes.</p></li>
+</ul>
+</section>
+
 
 <section class="browse-block" id="browse" aria-labelledby="browse-title">
 <h2 class="section-title" id="browse-title">
 <svg class="section-leaf" viewBox="0 0 24 16" aria-hidden="true">
-  <path d="M2 14 C2 6 10 2 18 4 C14 8 10 12 2 14 Z" fill="none" stroke="#A8B99B" stroke-width="1.2" stroke-linejoin="round"/>
-  <path d="M2 14 L18 4" stroke="#A8B99B" stroke-width="0.8" opacity="0.6"/>
+  <path d="M2 14 C2 6 10 2 18 4 C14 8 10 12 2 14 Z" fill="none" stroke="#B49A68" stroke-width="1.2" stroke-linejoin="round"/>
+  <path d="M2 14 L18 4" stroke="#800020" stroke-width="0.8" opacity="0.5"/>
 </svg> Browse evidence</h2>
 <div class="browse-grid">
 <div class="browse-col"><h3>Research areas</h3><ul><li><a class="browse-link" href="../sb-cpd/literature-review/literature_review.html">Teacher Development / SB-CPD<span class="browse-arr" aria-hidden="true">→</span></a> <span class="count">· 4 papers</span></li><li>Preschool / Early Childhood <span class="count">· 0 papers</span></li><li>EdTech / AI <span class="count">· 0 papers</span></li><li>Skills / TVET <span class="count">· 0 papers</span></li><li><a class="browse-link" href="../climate-education/literature-review/literature_review.html">Climate &amp; Education<span class="browse-arr" aria-hidden="true">→</span></a> <span class="count">· 6 papers</span></li></ul></div>
@@ -1119,8 +1424,8 @@ a.km:not(.km--featured):focus-visible .km-mini-botanical {
 <div class="footer-botanical-wrap">
 
 <svg class="footer-botanical" viewBox="0 0 20 24" aria-hidden="true">
-  <ellipse cx="10" cy="14" rx="6" ry="8" fill="none" stroke="#A8B99B" stroke-width="1.1"/>
-  <path d="M6 8 Q10 4 14 8" fill="none" stroke="#795A42" stroke-width="1" opacity="0.7"/>
+  <ellipse cx="10" cy="14" rx="6" ry="8" fill="none" stroke="#B49A68" stroke-width="1.1"/>
+  <path d="M6 8 Q10 4 14 8" fill="none" stroke="#800020" stroke-width="1" opacity="0.65"/>
 </svg>
 <div>
 <p class="footer-meta">Dr. Kohei Uno · Updated September 22, 2026</p>

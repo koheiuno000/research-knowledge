@@ -37,35 +37,44 @@ def _hub_meta(hub: HubDisplayConfig) -> str:
 
 ROOT_HUB_STYLES = """
 .hub-root {
-  --forest: #254735;
-  --forest-dark: #193729;
-  --sage: #A8B99B;
-  --sage-light: #DCE5D5;
-  --earth: #795A42;
-  --earth-dark: #59412F;
-  --sand: #E7D8BE;
-  --ivory: #F7F4EB;
+  --burgundy: #800020;
+  --burgundy-dark: #4B1723;
+  --gold: #B49A68;
+  --ivory: #F8F5EE;
+  --rose: #F1E2DC;
+  --sage-soft: #E5EEE4;
+  --beige: #E9E0D4;
   --paper: #FFFCF6;
-  --stone: #E9E5DA;
-  --ink: #26342B;
-  --muted: #687368;
+  --ink: #352D2B;
+  --muted: #6f6461;
   --white: #FFFFFF;
   --bg: var(--ivory);
   --bg-hero: var(--paper);
-  --surface: var(--stone);
+  --surface: var(--beige);
   --surface-light: var(--paper);
   --text: var(--ink);
-  --muted-light: #8a928c;
-  --line: rgba(37, 71, 53, 0.12);
-  --forest-deep: var(--forest-dark);
-  --accent: var(--forest);
-  --accent-soft: rgba(37, 71, 53, 0.08);
+  --muted-light: #9a8f8c;
+  --line: rgba(75, 23, 35, 0.12);
+  --forest-deep: var(--burgundy-dark);
+  --accent: var(--burgundy);
+  --accent-soft: rgba(128, 0, 32, 0.08);
   --radius: 10px;
   --shadow: none;
   --km-ease: 0.22s ease;
 }
 .hub-root { background: var(--ivory); color: var(--ink); }
-.hub-root a { color: var(--forest); }
+.hub-root .hub-main a { color: var(--burgundy); }
+.hub-root .visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
 @media (prefers-reduced-motion: reduce) {
   .hub-root *, .hub-root *::before, .hub-root *::after {
     transition-duration: 0.01ms !important;
@@ -73,7 +82,14 @@ ROOT_HUB_STYLES = """
   }
 }
 
-.hub-sitehead {
+.hub-root .hub-sitehead {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  background: var(--burgundy-dark);
+  border-bottom: 1px solid rgba(180, 154, 104, 0.28);
+}
+.hub-sitehead-inner {
   max-width: 1120px;
   margin: 0 auto;
   padding: 1rem 1.5rem;
@@ -82,17 +98,16 @@ ROOT_HUB_STYLES = """
   align-items: center;
   justify-content: space-between;
   gap: 1.5rem;
-  border-bottom: 1px solid var(--line);
 }
 .site-id {
   font-family: var(--font-serif);
   font-size: 0.95rem;
   font-weight: 500;
   letter-spacing: -0.02em;
-  color: var(--forest);
+  color: var(--ivory);
   text-decoration: none;
 }
-.site-id:hover { text-decoration: none; color: var(--forest-deep); }
+.site-id:hover { text-decoration: none; color: var(--white); }
 .site-nav {
   display: flex;
   gap: 1.25rem;
@@ -101,18 +116,19 @@ ROOT_HUB_STYLES = """
   text-transform: uppercase;
 }
 .site-nav a {
-  color: var(--muted);
+  color: rgba(248, 245, 238, 0.78);
   text-decoration: none;
+  transition: color var(--km-ease), box-shadow var(--km-ease);
 }
-.site-nav a:hover { color: var(--forest); text-decoration: none; }
+.site-nav a:hover { color: var(--gold); text-decoration: none; }
 .site-nav a:focus-visible {
-  color: var(--forest);
+  color: var(--gold);
   outline: none;
-  box-shadow: inset 0 -2px 0 var(--sage);
+  box-shadow: inset 0 -2px 0 var(--gold);
 }
 
 @media (hover: hover) {
-  .site-nav a:hover { box-shadow: inset 0 -2px 0 var(--accent-soft); }
+  .site-nav a:hover { box-shadow: inset 0 -2px 0 rgba(180, 154, 104, 0.65); }
 }
 
 .hub-root .hub-main { padding-top: 0; }
@@ -123,7 +139,7 @@ ROOT_HUB_STYLES = """
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
   min-height: min(32rem, 78vh);
-  background: var(--forest-dark);
+  background: var(--burgundy-dark);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -137,9 +153,9 @@ ROOT_HUB_STYLES = """
   pointer-events: none;
   background: linear-gradient(
     105deg,
-    rgba(15, 31, 24, 0.78) 0%,
-    rgba(15, 31, 24, 0.42) 38%,
-    rgba(15, 31, 24, 0.12) 58%,
+    rgba(58, 18, 25, 0.82) 0%,
+    rgba(75, 23, 35, 0.48) 38%,
+    rgba(75, 23, 35, 0.14) 58%,
     transparent 72%
   );
 }
@@ -180,7 +196,7 @@ ROOT_HUB_STYLES = """
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--sage-light);
+  color: rgba(180, 154, 104, 0.92);
 }
 .hero-forest h1 {
   font-family: var(--font-serif);
@@ -195,7 +211,7 @@ ROOT_HUB_STYLES = """
 }
 .hero-forest .lead {
   font-size: 1.02rem;
-  color: rgba(247, 244, 235, 0.82);
+  color: rgba(248, 245, 238, 0.85);
   margin: 0;
   line-height: 1.55;
   max-width: 32rem;
@@ -209,17 +225,17 @@ ROOT_HUB_STYLES = """
   color: var(--ivory);
   text-decoration: none;
   padding: 0.35rem 0;
-  border-bottom: 1px solid rgba(220, 229, 213, 0.55);
+  border-bottom: 1px solid rgba(180, 154, 104, 0.55);
   transition: color var(--km-ease), border-color var(--km-ease);
 }
 .hero-forest .hero-cta:hover,
 .hero-forest .hero-cta:focus-visible {
   color: var(--white);
-  border-bottom-color: var(--ivory);
+  border-bottom-color: var(--gold);
   outline: none;
 }
 .hero-forest .hero-cta:focus-visible {
-  box-shadow: 0 0 0 2px rgba(220, 229, 213, 0.45);
+  box-shadow: 0 0 0 2px rgba(180, 154, 104, 0.45);
 }
 .hero-forest-aside {
   min-height: 12rem;
@@ -280,7 +296,254 @@ ROOT_HUB_STYLES = """
   list-style: none;
 }
 .scope-strip strong { color: var(--text); font-weight: 600; }
-.scope-strip .sep { color: var(--sand); user-select: none; }
+.scope-strip .sep { color: var(--gold); opacity: 0.55; user-select: none; }
+
+.about-block {
+  padding: 2rem 0 2.25rem;
+  border-top: 1px solid var(--line);
+}
+.about-body {
+  max-width: 42rem;
+}
+.about-block .section-title { margin-bottom: 1rem; }
+.about-lead {
+  margin: 0 0 0.85rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--text);
+}
+.about-detail {
+  margin: 0 0 1.15rem;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--muted);
+}
+.about-author {
+  margin: 0 0 0.65rem;
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--burgundy-dark);
+}
+.about-links {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+  font-size: 0.84rem;
+}
+.about-links a {
+  color: var(--burgundy);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(180, 154, 104, 0.45);
+  padding-bottom: 0.1rem;
+  transition: color var(--km-ease), border-color var(--km-ease);
+}
+.about-links a:hover,
+.about-links a:focus-visible {
+  color: var(--burgundy-dark);
+  border-bottom-color: var(--gold);
+  outline: none;
+}
+.about-links a:focus-visible {
+  box-shadow: 0 0 0 2px rgba(180, 154, 104, 0.35);
+  border-radius: 2px;
+}
+
+.hub-pathways {
+  padding: 2rem 0 1.5rem;
+}
+.pathway-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+  align-items: stretch;
+}
+@media (max-width: 720px) {
+  .pathway-grid { grid-template-columns: 1fr; }
+}
+.pathway-card {
+  display: flex;
+  flex-direction: column;
+  padding: 1.35rem 1.45rem 1.25rem;
+  min-height: 8.5rem;
+  height: 100%;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  text-decoration: none;
+  color: var(--ink);
+  background: var(--paper);
+  transition:
+    background var(--km-ease),
+    border-color var(--km-ease),
+    box-shadow var(--km-ease);
+}
+a.pathway-card:hover,
+a.pathway-card:focus-visible {
+  text-decoration: none;
+  border-color: rgba(128, 0, 32, 0.28);
+  box-shadow: 0 2px 12px rgba(75, 23, 35, 0.06);
+  outline: none;
+}
+a.pathway-card:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+.pathway-card--synthesis {
+  background: linear-gradient(145deg, var(--ivory) 0%, var(--paper) 100%);
+  border-color: rgba(128, 0, 32, 0.18);
+}
+a.pathway-card--synthesis:hover,
+a.pathway-card--synthesis:focus-visible {
+  background: var(--burgundy);
+  color: var(--ivory);
+}
+.pathway-card--textbook {
+  background: linear-gradient(145deg, var(--rose) 0%, var(--paper) 55%);
+  border-color: rgba(180, 154, 104, 0.35);
+}
+a.pathway-card--textbook:hover,
+a.pathway-card--textbook:focus-visible {
+  background: var(--burgundy-dark);
+  color: var(--ivory);
+}
+.pathway-card--soon {
+  cursor: default;
+  opacity: 0.94;
+}
+.pathway-card--soon .pathway-desc { color: var(--muted); }
+.pathway-kicker {
+  margin: 0 0 0.45rem;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--burgundy);
+  opacity: 0.85;
+}
+a.pathway-card:hover .pathway-kicker,
+a.pathway-card:focus-visible .pathway-kicker {
+  color: rgba(180, 154, 104, 0.95);
+  opacity: 1;
+}
+.pathway-card--soon .pathway-kicker { color: var(--muted); }
+.pathway-title {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.4rem;
+  line-height: 1.25;
+  color: var(--burgundy-dark);
+}
+a.pathway-card:hover .pathway-title,
+a.pathway-card:focus-visible .pathway-title {
+  color: var(--ivory);
+}
+.pathway-card--soon .pathway-title { color: var(--burgundy-dark); }
+.pathway-desc {
+  margin: 0;
+  font-size: 0.86rem;
+  line-height: 1.45;
+  color: var(--muted);
+  flex: 1 1 auto;
+}
+a.pathway-card:hover .pathway-desc,
+a.pathway-card:focus-visible .pathway-desc {
+  color: rgba(248, 245, 238, 0.82);
+}
+.pathway-action {
+  margin-top: 0.85rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+a.pathway-card:hover .pathway-action,
+a.pathway-card:focus-visible .pathway-action {
+  color: rgba(248, 245, 238, 0.78);
+}
+.pathway-badge {
+  display: inline-block;
+  margin-top: 0.85rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--burgundy);
+  padding: 0.25rem 0.55rem;
+  border: 1px solid rgba(128, 0, 32, 0.22);
+  border-radius: 4px;
+  background: rgba(248, 245, 238, 0.65);
+}
+
+.resources-block {
+  padding: 0.25rem 0 2.75rem;
+  border-top: 1px solid var(--line);
+}
+.resources-intro {
+  margin: 0 0 1.1rem;
+  font-size: 0.88rem;
+  color: var(--muted);
+  max-width: 40rem;
+  line-height: 1.5;
+}
+.resource-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+@media (max-width: 720px) {
+  .resource-list { grid-template-columns: 1fr; }
+}
+.resource-item {
+  padding: 1rem 1.15rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--paper);
+}
+.resource-item a.resource-link {
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--burgundy);
+  text-decoration: none;
+}
+.resource-item a.resource-link:hover,
+.resource-item a.resource-link:focus-visible {
+  color: var(--burgundy-dark);
+  text-decoration: underline;
+  text-decoration-color: var(--gold);
+  outline: none;
+}
+.resource-meta {
+  margin: 0.35rem 0 0;
+  font-size: 0.78rem;
+  color: var(--muted-light);
+  line-height: 1.4;
+}
+
+.explore-browse-note {
+  margin: 1.35rem 0 0;
+  font-size: 0.84rem;
+}
+.explore-browse-note a {
+  color: var(--burgundy);
+  font-weight: 500;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(180, 154, 104, 0.4);
+}
+.explore-browse-note a:hover,
+.explore-browse-note a:focus-visible {
+  color: var(--burgundy-dark);
+  border-bottom-color: var(--gold);
+  outline: none;
+}
 
 .explore-block {
   padding: 0.5rem 0 2.75rem;
@@ -296,9 +559,9 @@ ROOT_HUB_STYLES = """
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(168, 185, 155, 0.35) 20%,
-    rgba(37, 71, 53, 0.12) 50%,
-    rgba(168, 185, 155, 0.35) 80%,
+    rgba(180, 154, 104, 0.35) 20%,
+    rgba(128, 0, 32, 0.1) 50%,
+    rgba(180, 154, 104, 0.35) 80%,
     transparent
   );
 }
@@ -308,7 +571,7 @@ ROOT_HUB_STYLES = """
   font-weight: 500;
   letter-spacing: -0.02em;
   margin: 0 0 1.35rem;
-  color: var(--forest-dark);
+  color: var(--burgundy-dark);
   display: flex;
   align-items: center;
   gap: 0.55rem;
@@ -317,23 +580,23 @@ ROOT_HUB_STYLES = """
 
 .knowledge-grid {
   display: grid;
-  grid-template-columns: 1.15fr 1fr;
-  grid-auto-rows: minmax(7.25rem, auto);
-  gap: 0.75rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+  align-items: stretch;
 }
-@media (max-width: 820px) {
+@media (max-width: 720px) {
   .knowledge-grid { grid-template-columns: 1fr; }
-  .km--featured { grid-row: auto; grid-column: auto; }
 }
 .km {
   display: flex;
   flex-direction: column;
-  padding: 1.35rem 1.4rem 1.25rem;
+  padding: 1.35rem 1.4rem 1.2rem;
   text-decoration: none;
-  color: var(--forest);
+  color: var(--ink);
   background: var(--surface-light);
   border: 1px solid var(--line);
-  min-height: 7.5rem;
+  min-height: 11.25rem;
+  height: 100%;
   transition:
     background var(--km-ease),
     color var(--km-ease),
@@ -342,70 +605,81 @@ ROOT_HUB_STYLES = """
   position: relative;
   overflow: hidden;
 }
-a.km:not(.km--featured):hover,
-a.km:not(.km--featured):focus-visible {
+a.km:hover,
+a.km:focus-visible {
   text-decoration: none;
-  background: var(--forest);
-  border-color: var(--forest);
+  background: var(--burgundy-dark);
+  border-color: var(--burgundy-dark);
   color: var(--ivory);
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.34);
   outline: none;
 }
-a.km:not(.km--featured):focus-visible {
-  outline: 2px solid var(--sage);
+a.km:focus-visible {
+  outline: 2px solid var(--gold);
   outline-offset: 3px;
 }
 @media (hover: hover) {
-  a.km:not(.km--featured):hover {
-    background: var(--forest-dark);
-    border-color: var(--forest-dark);
+  a.km:hover {
+    background: #3a1218;
+    border-color: #3a1218;
   }
 }
-a.km--featured:hover,
-a.km--featured:focus-visible {
-  text-decoration: none;
-  background: var(--forest-dark);
-  border-color: var(--forest-dark);
-  color: var(--ivory);
-  box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.42);
-  outline: none;
+a.km.km--climate:hover,
+a.km.km--climate:focus-visible {
+  background: var(--burgundy-dark);
+  border-color: var(--burgundy-dark);
+  box-shadow: inset 0 0 0 1.5px rgba(180, 154, 104, 0.35);
 }
-a.km--featured:focus-visible {
-  outline: 2px solid var(--sage-light);
+a.km.km--climate:focus-visible {
+  outline: 2px solid var(--gold);
   outline-offset: 3px;
 }
-.km--featured {
-  grid-column: 1;
-  grid-row: 1 / span 4;
-  padding: 2rem 1.65rem 1.75rem;
-  background: var(--forest);
-  border: 1px solid var(--forest-dark);
+.km--climate {
+  background: var(--burgundy);
+  border: 1px solid var(--burgundy-dark);
   color: var(--ivory);
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.28);
 }
-@media (max-width: 820px) {
-  .km--featured { grid-row: auto; }
+.km--surface-ivory {
+  background: var(--ivory);
+  border-color: rgba(75, 23, 35, 0.14);
 }
-.km--surface-sand { background: var(--sand); border-color: rgba(121, 90, 66, 0.15); }
-.km--surface-sage { background: var(--sage-light); border-color: rgba(37, 71, 53, 0.12); }
-.km--surface-stone { background: var(--stone); border-color: var(--line); }
-.km--surface-olive { background: #e2e8dc; border-color: rgba(37, 71, 53, 0.14); }
+.km--surface-rose {
+  background: var(--rose);
+  border-color: rgba(128, 0, 32, 0.1);
+}
+.km--surface-sage {
+  background: var(--sage-soft);
+  border-color: rgba(53, 45, 43, 0.1);
+}
+.km--surface-beige {
+  background: var(--beige);
+  border-color: rgba(121, 90, 66, 0.14);
+}
+div.km[aria-disabled="true"] {
+  cursor: default;
+  opacity: 0.92;
+}
 .km-eyebrow {
-  margin: 0 0 0.5rem;
+  margin: 0 0 0.4rem;
   font-size: 0.62rem;
   font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: rgba(247, 244, 235, 0.72);
 }
-.km--featured .km-title {
+.km-title {
   font-family: var(--font-serif);
-  font-size: 1.4rem;
+  font-size: 1.08rem;
   font-weight: 500;
   letter-spacing: -0.02em;
-  margin: 0 0 0.5rem;
+  margin: 0 0 0.45rem;
+  line-height: 1.28;
+  color: var(--burgundy-dark);
+  transition: color 0.2s ease;
+}
+.km--climate .km-title {
   color: var(--white);
-  line-height: 1.25;
 }
 .km-title-sub {
   display: block;
@@ -416,9 +690,9 @@ a.km--featured:focus-visible {
 }
 .km-botanical-wrap {
   position: absolute;
-  right: 0.75rem;
-  top: 0.5rem;
-  width: 5.5rem;
+  right: 0.65rem;
+  top: 0.45rem;
+  width: 3.75rem;
   color: rgba(255, 255, 255, 0.35);
   pointer-events: none;
 }
@@ -433,64 +707,52 @@ a.km--featured:focus-visible {
   pointer-events: none;
   color: rgba(255, 255, 255, 0.35);
 }
-a.km:not(.km--featured):hover .km-hover-leaf,
-a.km:not(.km--featured):focus-visible .km-hover-leaf { opacity: 1; }
+a.km:hover .km-hover-leaf,
+a.km:focus-visible .km-hover-leaf { opacity: 1; }
 .km-mini-botanical {
   width: 1.35rem;
   height: 1.35rem;
   margin-bottom: 0.55rem;
-  color: var(--earth);
-  opacity: 0.75;
-}
-.km--secondary .km-title {
-  font-size: 0.92rem;
-  font-weight: 600;
-  margin: 0 0 0.35rem;
-  letter-spacing: -0.01em;
-  color: var(--forest);
-}
-.km-title { transition: color 0.2s ease; }
-.km--featured .km-count {
-  font-size: 0.82rem;
-  margin: 0 0 1rem;
+  color: var(--burgundy);
+  opacity: 0.72;
+  flex-shrink: 0;
 }
 .km-count {
   font-size: 0.78rem;
   color: var(--muted);
-  margin: 0 0 0.65rem;
+  margin: 0 0 0.5rem;
   transition: color 0.2s ease;
 }
-a.km:not(.km--featured):hover .km-title,
-a.km:not(.km--featured):focus-visible .km-title,
-a.km:not(.km--featured):hover .km-count,
-a.km:not(.km--featured):focus-visible .km-count {
+.km--climate .km-count { color: rgba(255, 255, 255, 0.78); }
+a.km:hover .km-title,
+a.km:focus-visible .km-title,
+a.km:hover .km-count,
+a.km:focus-visible .km-count {
   color: var(--ivory);
 }
-a.km:not(.km--featured):hover .km-count,
-a.km:not(.km--featured):focus-visible .km-count {
+a.km:hover .km-count,
+a.km:focus-visible .km-count {
   color: rgba(247, 244, 235, 0.78);
 }
-.km--featured .km-count { color: rgba(255, 255, 255, 0.78); }
-.km--featured .km-tags span {
+.km--climate .km-tags span {
   color: rgba(255, 255, 255, 0.62);
   border-bottom-color: rgba(255, 255, 255, 0.2);
 }
-.km--featured .km-arrow { color: rgba(255, 255, 255, 0.55); }
-a.km--featured:hover .km-arrow,
-a.km--featured:focus-visible .km-arrow { color: rgba(255, 255, 255, 0.85); }
+.km--climate .km-arrow { color: rgba(255, 255, 255, 0.55); }
+a.km.km--climate:hover .km-arrow,
+a.km.km--climate:focus-visible .km-arrow { color: rgba(255, 255, 255, 0.85); }
 .km-arrow {
   margin-top: auto;
   padding-top: 0.85rem;
   font-size: 0.72rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--sage);
+  color: var(--gold);
   display: inline-block;
   transition: transform 0.2s ease, color 0.2s ease;
 }
-.km--featured .km-arrow { padding-top: 1.25rem; }
-a.km:not(.km--featured):hover .km-arrow,
-a.km:not(.km--featured):focus-visible .km-arrow {
+a.km:hover .km-arrow,
+a.km:focus-visible .km-arrow {
   color: rgba(247, 244, 235, 0.72);
 }
 @media (hover: hover) {
@@ -499,13 +761,13 @@ a.km:not(.km--featured):focus-visible .km-arrow {
     transform: translateX(4px);
   }
 }
-a.km:not(.km--featured):hover .km-tags span,
-a.km:not(.km--featured):focus-visible .km-tags span {
+a.km:hover .km-tags span,
+a.km:focus-visible .km-tags span {
   color: rgba(247, 244, 235, 0.65);
   border-bottom-color: rgba(255, 255, 255, 0.22);
 }
-a.km:not(.km--featured):hover .km-mini-botanical,
-a.km:not(.km--featured):focus-visible .km-mini-botanical {
+a.km:hover .km-mini-botanical,
+a.km:focus-visible .km-mini-botanical {
   color: var(--ivory);
   opacity: 0.85;
 }
@@ -513,19 +775,20 @@ a.km:not(.km--featured):focus-visible .km-mini-botanical {
   display: flex;
   flex-wrap: wrap;
   gap: 0.35rem;
-  margin-top: auto;
+  flex: 1 1 auto;
+  align-content: flex-start;
 }
 .km-tags span {
   font-size: 0.65rem;
   letter-spacing: 0.03em;
   color: var(--muted-light);
   padding: 0.15rem 0;
-  border-bottom: 1px solid var(--sand);
+  border-bottom: 1px solid rgba(180, 154, 104, 0.35);
 }
 .browse-block {
   padding: 2.5rem 0 3rem;
   border-top: 1px solid var(--line);
-  background: linear-gradient(180deg, transparent 0%, rgba(220, 229, 213, 0.25) 100%);
+  background: linear-gradient(180deg, transparent 0%, rgba(241, 226, 220, 0.35) 100%);
 }
 .browse-grid {
   display: grid;
@@ -544,7 +807,8 @@ a.km:not(.km--featured):focus-visible .km-mini-botanical {
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--sage);
+  color: var(--burgundy);
+  opacity: 0.85;
 }
 .browse-col ul {
   margin: 0;
@@ -561,7 +825,7 @@ a.km:not(.km--featured):focus-visible .km-mini-botanical {
 .browse-col li:last-child { border-bottom: none; }
 .browse-col a.browse-link {
   font-weight: 500;
-  color: var(--forest);
+  color: var(--burgundy);
   text-decoration: none;
   border-radius: 4px;
   padding: 0.12rem 0.35rem 0.12rem 0;
@@ -570,27 +834,27 @@ a.km:not(.km--featured):focus-visible .km-mini-botanical {
 }
 .browse-col a.browse-link:hover,
 .browse-col a.browse-link:focus-visible {
-  color: var(--forest-deep);
+  color: var(--burgundy-dark);
   background: var(--accent-soft);
   text-decoration: underline;
-  text-decoration-color: var(--sage);
+  text-decoration-color: var(--gold);
   text-underline-offset: 2px;
   outline: none;
 }
 .browse-col a.browse-link:focus-visible {
-  box-shadow: inset 0 0 0 1px rgba(42, 82, 69, 0.25);
+  box-shadow: inset 0 0 0 1px rgba(128, 0, 32, 0.22);
 }
 .browse-arr {
   display: inline-block;
   margin-left: 0.12em;
-  color: var(--sage);
+  color: var(--gold);
   transition: transform 0.18s ease, color 0.18s ease;
 }
 @media (hover: hover) {
   .browse-col a.browse-link:hover .browse-arr,
   .browse-col a.browse-link:focus-visible .browse-arr {
     transform: translateX(3px);
-    color: var(--forest);
+    color: var(--burgundy);
   }
 }
 .browse-col ul.browse-sub {
@@ -765,15 +1029,120 @@ def _evidence_type_browse_html(
     return items
 
 
+# Canonical textbook landing (repo root). Linked from dashboard as ../textbook/index.html.
+TEXTBOOK_INDEX_REL = "textbook/index.html"
+TEXTBOOK_HREF_FROM_DASHBOARD = "../textbook/index.html"
+
+
+def _textbook_href_from_dashboard(repo_root: Path) -> str | None:
+    if (repo_root / TEXTBOOK_INDEX_REL).is_file():
+        return TEXTBOOK_HREF_FROM_DASHBOARD
+    return None
+
+
+def _about_html() -> str:
+    leaf = section_title_leaf_svg()
+    site = "https://koheiuno000.github.io/"
+    github = "https://github.com/koheiuno000/koheiuno000.github.io"
+    return f"""
+<section class="about-block" id="about" aria-labelledby="about-title">
+<h2 class="section-title" id="about-title">{leaf} About</h2>
+<div class="about-body">
+<p class="about-lead">Research Knowledge Hub is a personal research workspace developed by Kohei Uno to organize, connect, and synthesize evidence in educational development. It brings together thematic literature reviews and research-based learning resources.</p>
+<p class="about-detail">The hub combines knowledge synthesis across thematic areas with structured learning materials as they are published. It is maintained independently and is not an official university or institutional site.</p>
+<p class="about-author">Kohei Uno</p>
+<ul class="about-links">
+<li><a href="{_esc(site)}" rel="noopener noreferrer" target="_blank">Personal website<span class="visually-hidden"> (opens in new tab)</span></a></li>
+<li><a href="{_esc(github)}" rel="noopener noreferrer" target="_blank">GitHub<span class="visually-hidden"> (opens in new tab)</span></a></li>
+</ul>
+</div>
+</section>
+"""
+
+
+def _pathways_html(textbook_href: str | None) -> str:
+    synthesis = (
+        '<a class="pathway-card pathway-card--synthesis" href="#explore">'
+        '<p class="pathway-kicker">Knowledge synthesis</p>'
+        '<p class="pathway-title">Explore knowledge synthesis</p>'
+        '<p class="pathway-desc">Thematic evidence reviews, paper summaries, '
+        "and cross-study patterns across research areas.</p>"
+        '<span class="pathway-action">View thematic areas →</span>'
+        "</a>"
+    )
+    if textbook_href:
+        textbook = (
+            f'<a class="pathway-card pathway-card--textbook" id="textbook" '
+            f'href="{_esc(textbook_href)}">'
+            '<p class="pathway-kicker">Learning textbook</p>'
+            '<p class="pathway-title">Read the learning textbook</p>'
+            '<p class="pathway-desc">Structured, textbook-style lessons '
+            "built from this knowledge base.</p>"
+            '<span class="pathway-action">Open textbook →</span>'
+            "</a>"
+        )
+    else:
+        textbook = (
+            '<div class="pathway-card pathway-card--textbook pathway-card--soon" '
+            'id="textbook" aria-disabled="true">'
+            '<p class="pathway-kicker">Learning textbook</p>'
+            '<p class="pathway-title">Read the learning textbook</p>'
+            '<p class="pathway-desc">Structured HTML textbook chapters '
+            "will be published here when ready.</p>"
+            '<span class="pathway-badge">Coming soon</span>'
+            "</div>"
+        )
+    return f"""
+<section class="hub-pathways" id="pathways" aria-label="Hub entry points">
+<div class="pathway-grid">
+{synthesis}
+{textbook}
+</div>
+</section>
+"""
+
+
+def _resources_html(
+    area_rows: list[tuple[ResearchAreaDisplay, int, str | None]],
+) -> str:
+    items: list[str] = []
+    for display, count, href in area_rows:
+        if not href:
+            continue
+        cnt = f"{count} paper{'s' if count != 1 else ''}"
+        items.append(
+            f'<li class="resource-item">'
+            f'<a class="resource-link" href="{_esc(href)}">{_esc(display.name)}</a>'
+            f'<p class="resource-meta">Knowledge synthesis · generated literature review '
+            f"(HTML) · {cnt}</p>"
+            f'<p class="resource-meta">{_esc(display.short_description)}</p>'
+            f"</li>"
+        )
+    if not items:
+        items.append(
+            '<li class="resource-item"><p class="resource-meta">'
+            "No generated literature reviews yet.</p></li>"
+        )
+    return f"""
+<section class="resources-block" id="resources" aria-labelledby="resources-title">
+<h2 class="section-title" id="resources-title">{section_title_leaf_svg()} Resources</h2>
+<p class="resources-intro">Links to generated literature-review pages and other verified hub outputs. Full paper summaries live on each area page—not duplicated here.</p>
+<ul class="resource-list">
+{"".join(items)}
+</ul>
+</section>
+"""
+
+
 _KM_SURFACE: dict[str, str] = {
-    "preschool-impact": "km--surface-sand",
+    "sb-cpd": "km--surface-ivory",
+    "preschool-impact": "km--surface-rose",
     "edtech-ai": "km--surface-sage",
-    "skills-tvet": "km--surface-stone",
-    "climate-education": "km--surface-olive",
+    "skills-tvet": "km--surface-beige",
 }
 
 
-def _featured_title_html(display: ResearchAreaDisplay) -> str:
+def _card_title_html(display: ResearchAreaDisplay) -> str:
     if display.slug == "sb-cpd":
         return (
             "Teacher Development"
@@ -788,7 +1157,7 @@ def _featured_title_html(display: ResearchAreaDisplay) -> str:
     return _esc(display.card_title)
 
 
-def _featured_eyebrow(display: ResearchAreaDisplay) -> str:
+def _card_eyebrow(display: ResearchAreaDisplay) -> str:
     head = display.card_title.split("/")[0].strip()
     return _esc(head.upper())
 
@@ -804,43 +1173,44 @@ def _knowledge_module(
     display: ResearchAreaDisplay,
     paper_count: int,
     href: str | None,
-    *,
-    featured: bool,
 ) -> str:
     count_label = f"{paper_count} paper{'s' if paper_count != 1 else ''}"
     tags = "".join(f"<span>{_esc(t)}</span>" for t in display.topic_tags)
     leaf = hover_leaf_svg()
-    if featured:
-        arrow = '<span class="km-arrow">Explore evidence →</span>'
+    surface = _KM_SURFACE.get(display.slug, "km--surface-beige")
+    climate = display.slug == "climate-education"
+    classes = "km"
+    if climate:
+        classes += " km--climate"
+    else:
+        classes += f" {surface}"
+
+    arrow_label = "Explore evidence →" if climate else "Explore →"
+    arrow = f'<span class="km-arrow">{arrow_label}</span>'
+
+    title_block = f'<p class="km-title">{_card_title_html(display)}</p>'
+    if climate:
         inner = (
             f'<div class="km-botanical-wrap">{featured_module_botanical_svg()}</div>'
-            f'<p class="km-eyebrow">{_featured_eyebrow(display)}</p>'
-            f'<p class="km-title">{_featured_title_html(display)}</p>'
+            f'<p class="km-eyebrow">{_card_eyebrow(display)}</p>'
+            f"{title_block}"
             f'<p class="km-count">{count_label}</p>'
             f'<div class="km-tags">{tags}</div>'
             f"{arrow if href else ''}"
         )
-        if href:
-            return f'<a class="km km--featured" href="{_esc(href)}">{inner}</a>'
-        return f'<div class="km km--featured">{inner}</div>'
-
-    surface = _KM_SURFACE.get(display.slug, "km--surface-stone")
-    arrow = '<span class="km-arrow">Explore →</span>'
-    inner = (
-        f"{area_botanical_mini(display.slug)}"
-        f'<p class="km-title">{_esc(display.card_title)}</p>'
-        f'<p class="km-count">{count_label}</p>'
-        f'<div class="km-tags">{tags}</div>'
-        f"{arrow if href else ''}"
-        f"{leaf if href else ''}"
-    )
-    if href:
-        return (
-            f'<a class="km km--secondary {surface}" href="{_esc(href)}">{inner}</a>'
+    else:
+        inner = (
+            f"{area_botanical_mini(display.slug)}"
+            f"{title_block}"
+            f'<p class="km-count">{count_label}</p>'
+            f'<div class="km-tags">{tags}</div>'
+            f"{arrow if href else ''}"
+            f"{leaf if href else ''}"
         )
-    return (
-        f'<div class="km km--secondary {surface}" aria-disabled="true">{inner}</div>'
-    )
+
+    if href:
+        return f'<a class="{classes}" href="{_esc(href)}">{inner}</a>'
+    return f'<div class="{classes}" aria-disabled="true">{inner}</div>'
 
 
 def build_root_body(
@@ -868,18 +1238,10 @@ def build_root_body(
         f"<li><strong>{n_reviews}</strong> review / synthesis</li>"
     )
 
-    max_count = max((c for _, c, _ in area_rows), default=0)
-    leaders = [d.slug for d, c, _ in area_rows if c == max_count]
-    featured_slug = leaders[0] if max_count and len(leaders) == 1 else None
-
-    modules: list[str] = []
-    for display, count, href in area_rows:
-        featured = featured_slug is not None and display.slug == featured_slug
-        mod = _knowledge_module(display, count, href, featured=featured)
-        if featured:
-            modules.insert(0, mod)
-        else:
-            modules.append(mod)
+    modules = [
+        _knowledge_module(display, count, href)
+        for display, count, href in area_rows
+    ]
 
     sb_cpd_href = next((h for d, c, h in area_rows if d.slug == "sb-cpd" and h), None)
 
@@ -916,8 +1278,13 @@ def build_root_body(
         rel_browse.append("<li><span class=\"count\">Available with area evidence</span></li>")
 
     leaf = section_title_leaf_svg()
+    textbook_href = _textbook_href_from_dashboard(repo_root)
+    pathways = _pathways_html(textbook_href)
+    about = _about_html()
+    resources = _resources_html(area_rows)
+
     return f"""
-<section class="hero-forest" aria-label="Research Knowledge Base">
+<section class="hero-forest" id="top" aria-label="Research Knowledge Base">
 <div class="hero-forest-bg">{hero_botanical_svg()}</div>
 <div class="hero-forest-fade" aria-hidden="true"></div>
 <div class="hero-forest-inner">
@@ -925,12 +1292,15 @@ def build_root_body(
 <p class="hero-eyebrow">Research Knowledge Base</p>
 <h1>Evidence for Education &amp; Development</h1>
 <p class="lead">A personal research knowledge base connecting evidence across education and international development.</p>
-<a class="hero-cta" href="#explore">Explore knowledge →</a>
 </div>
 <div class="hero-forest-aside" aria-hidden="true"></div>
 </div>
 </section>
 <div class="hero-treeline-wrap" aria-hidden="true">{hero_treeline_accent_svg()}</div>
+
+{pathways}
+
+{about}
 
 <div class="scope-block">
 <p class="scope-label">Knowledge base at a glance</p>
@@ -938,11 +1308,14 @@ def build_root_body(
 </div>
 
 <section class="explore-block" id="explore" aria-labelledby="explore-title">
-<h2 class="section-title" id="explore-title">{leaf} Explore knowledge</h2>
+<h2 class="section-title" id="explore-title">{leaf} Explore knowledge synthesis</h2>
 <div class="knowledge-grid">
 {"".join(modules)}
 </div>
+<p class="explore-browse-note"><a href="#browse">Browse by country, evidence type, and relationships →</a></p>
 </section>
+
+{resources}
 
 <section class="browse-block" id="browse" aria-labelledby="browse-title">
 <h2 class="section-title" id="browse-title">{leaf} Browse evidence</h2>
