@@ -7,6 +7,7 @@ import json
 import sys
 import tempfile
 import unittest
+import urllib.error
 from pathlib import Path
 from unittest.mock import patch
 
@@ -530,6 +531,156 @@ class CrashConsistencyTests(unittest.TestCase):
 
             after = json.loads(bundle_path.read_text(encoding="utf-8"))
             self.assertEqual(len(after["candidates"]), 2)
+
+
+class MaxWorkUnitsPilotTests(unittest.TestCase):
+    @patch("fetch_candidates.fetch_query_pages")
+    def test_max_work_units_stops_after_n_attempts(self, mock_fetch) -> None:
+        mock_fetch.return_value = ([], "http://example/empty", {"count": 0}, 1, True)
+        units = _five_units()
+
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_path = Path(tmp)
+            bundle_path = tmp_path / "candidates_openalex.json"
+            atomic_write_json(bundle_path, _bundle_with_existing())
+
+            argv = [
+                "fetch_candidates.py",
+                "--search-date",
+                "2026-09-23",
+                "--from-date",
+                "2016-09-23",
+                "--to-date",
+                "2026-09-23",
+                "--resume",
+                "--paginate",
+                "--max-work-units",
+                "3",
+                "--source",
+                "IJER",
+                "--no-checkpoint-bundle",
+            ]
+            with patch.object(fc, "OUTPUT_DIR", tmp_path), patch.object(
+                fc, "iter_work_units", lambda _t, _s: units
+            ), patch("fetch_candidates.time.sleep", lambda *_a, **_k: None):
+                with patch.object(sys, "argv", argv):
+                    rc = fc.main()
+
+            self.assertEqual(mock_fetch.call_count, 3)
+            self.assertEqual(rc, 1)
+            manifest = json.loads((tmp_path / "query_manifest.json").read_text())
+            keys = [qm.unified_query_key(u.source_label, u.search) for u in units]
+            self.assertFalse(qm.run_is_complete(manifest, keys))
+            self.assertNotIn("last_complete_run_at", manifest)
+
+    @patch("fetch_candidates.fetch_query_pages")
+    def test_max_work_units_skips_trusted_without_counting(self, mock_fetch) -> None:
+        mock_fetch.return_value = ([], "http://example/empty", {"count": 0}, 1, True)
+        units = _five_units()
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_path = Path(tmp)
+            bundle_path = tmp_path / "candidates_openalex.json"
+            manifest_path = tmp_path / "query_manifest.json"
+            atomic_write_json(bundle_path, _bundle_with_existing())
+            atomic_write_json(manifest_path, _manifest_mixed())
+
+            argv = [
+                "fetch_candidates.py",
+                "--search-date",
+                "2026-09-23",
+                "--from-date",
+                "2016-09-23",
+                "--to-date",
+                "2026-09-23",
+                "--resume",
+                "--paginate",
+                "--max-work-units",
+                "2",
+                "--source",
+                "IJER",
+                "--no-checkpoint-bundle",
+            ]
+            with patch.object(fc, "OUTPUT_DIR", tmp_path), patch.object(
+                fc, "iter_work_units", lambda _t, _s: units
+            ), patch("fetch_candidates.time.sleep", lambda *_a, **_k: None):
+                with patch.object(sys, "argv", argv):
+                    fc.main()
+
+            self.assertEqual(mock_fetch.call_count, 2)
+
+    @patch("fetch_candidates.fetch_query_pages")
+    def test_http_failure_clears_stale_manifest_metadata(self, mock_fetch) -> None:
+        units = _five_units()[:1]
+        stale_query = units[0].search
+        ukey = qm.unified_query_key(units[0].source_label, stale_query)
+
+        def raise_429(**_kwargs):
+            raise urllib.error.HTTPError(
+                "https://api.openalex.org/works",
+                429,
+                "Too Many Requests",
+                hdrs=None,
+                fp=None,
+            )
+
+        mock_fetch.side_effect = raise_429
+
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_path = Path(tmp)
+            bundle_path = tmp_path / "candidates_openalex.json"
+            manifest_path = tmp_path / "query_manifest.json"
+            atomic_write_json(bundle_path, _bundle_with_existing())
+            manifest = {
+                "schema_version": 2,
+                "search_executed_on": "2026-09-23",
+                "publication_window": {
+                    "start_date": "2016-09-23",
+                    "end_date": "2026-09-23",
+                },
+                "queries": {
+                    ukey: {
+                        "source_label": units[0].source_label,
+                        "query": stale_query,
+                        "track_ids": list(units[0].track_ids),
+                        "status": "complete",
+                        "ingestion_verified": False,
+                        "meta_count": 8,
+                        "results_returned": 8,
+                        "pages_fetched": 1,
+                    }
+                },
+            }
+            atomic_write_json(manifest_path, manifest)
+
+            argv = [
+                "fetch_candidates.py",
+                "--search-date",
+                "2026-09-23",
+                "--from-date",
+                "2016-09-23",
+                "--to-date",
+                "2026-09-23",
+                "--resume",
+                "--paginate",
+                "--max-work-units",
+                "1",
+                "--source",
+                "IJER",
+                "--no-checkpoint-bundle",
+            ]
+            with patch.object(fc, "OUTPUT_DIR", tmp_path), patch.object(
+                fc, "iter_work_units", lambda _t, _s: units
+            ), patch("fetch_candidates.time.sleep", lambda *_a, **_k: None):
+                with patch.object(sys, "argv", argv):
+                    fc.main()
+
+            updated = json.loads(manifest_path.read_text(encoding="utf-8"))
+            entry = updated["queries"][ukey]
+            self.assertEqual(entry["status"], "failed")
+            self.assertIn("HTTP 429", entry["last_error"])
+            self.assertFalse(entry.get("ingestion_verified"))
+            self.assertIsNone(entry.get("meta_count"))
+            self.assertEqual(entry.get("last_success_meta_count"), 8)
 
 
 class ProductionInferReadOnlyTests(unittest.TestCase):

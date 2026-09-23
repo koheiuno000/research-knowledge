@@ -235,6 +235,45 @@ def is_trusted_complete(entry: dict[str, Any]) -> bool:
     )
 
 
+ATTEMPT_RESPONSE_FIELDS = (
+    "meta_count",
+    "results_returned",
+    "pages_fetched",
+    "next_page",
+    "http_calls_this_run",
+    "last_elapsed_seconds",
+)
+
+
+def manifest_patch_for_fetch_failure(
+    entry: dict[str, Any],
+    *,
+    error: str,
+    preserve_pagination_progress: bool = False,
+) -> dict[str, Any]:
+    """Manifest update for a failed fetch attempt (no stale success as current state)."""
+    patch: dict[str, Any] = {
+        "status": "failed",
+        "last_error": error,
+        "ingestion_verified": False,
+    }
+    if preserve_pagination_progress:
+        return patch
+    if (
+        not is_trusted_complete(entry)
+        and entry.get("meta_count") is not None
+        and entry.get("status") in ("complete", "incomplete_pagination", "raw_unverified")
+    ):
+        patch["last_success_meta_count"] = entry.get("meta_count")
+        patch["last_success_results_returned"] = entry.get("results_returned")
+        patch["last_success_pages_fetched"] = entry.get("pages_fetched")
+        if entry.get("last_success_at"):
+            patch["last_success_at"] = entry.get("last_success_at")
+    for field in ATTEMPT_RESPONSE_FIELDS:
+        patch[field] = None
+    return patch
+
+
 def load_manifest(path: Path) -> dict[str, Any] | None:
     if not path.is_file():
         return None

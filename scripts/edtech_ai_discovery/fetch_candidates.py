@@ -47,6 +47,7 @@ from query_manifest import (  # noqa: E402
     empty_manifest,
     infer_manifest_from_bundle,
     load_manifest,
+    manifest_patch_for_fetch_failure,
     merge_audit_pipeline,
     merge_by_source,
     query_key,
@@ -527,7 +528,16 @@ def main() -> int:
         action="store_true",
         help="Disable per-query bundle checkpoints",
     )
+    parser.add_argument(
+        "--max-work-units",
+        type=int,
+        default=None,
+        metavar="N",
+        help="Stop after N work-unit fetch attempts (failures count; skipped units do not)",
+    )
     args = parser.parse_args()
+    if args.max_work_units is not None and args.max_work_units < 1:
+        parser.error("--max-work-units must be a positive integer")
     mailto = resolve_mailto(args.mailto)
     request_delay = args.request_delay
     if request_delay is None:
@@ -714,12 +724,22 @@ def main() -> int:
 
     http_calls = 0
     queries_skipped = 0
+    work_units_attempted = 0
     for unit in work_units:
         source = source_by_label[unit.source_label]
         qentry = work_unit_entry(unit)
         if args.resume and not should_fetch_query(qentry, resume=True):
             queries_skipped += 1
             continue
+
+        if args.max_work_units is not None and work_units_attempted >= args.max_work_units:
+            log_progress(
+                f"STOP --max-work-units={args.max_work_units} reached "
+                f"({work_units_attempted} attempted this run)"
+            )
+            break
+
+        work_units_attempted += 1
 
         start_page = 1
         if args.resume and qentry.get("status") == "incomplete_pagination":
@@ -826,7 +846,11 @@ def main() -> int:
                 f"source={unit.source_label} q={unit.search!r}"
             )
             errors.append(err)
-            fail_patch = {"status": "failed", "last_error": err}
+            fail_patch = manifest_patch_for_fetch_failure(
+                qentry,
+                error=err,
+                preserve_pagination_progress=start_page > 1,
+            )
             qentry.update(fail_patch)
             sync_legacy_manifest_entries(
                 manifest_queries,
@@ -842,7 +866,11 @@ def main() -> int:
         except urllib.error.URLError as e:
             err = f"URL error track={unit.track_ids[0]} source={unit.source_label}: {e}"
             errors.append(err)
-            fail_patch = {"status": "failed", "last_error": err}
+            fail_patch = manifest_patch_for_fetch_failure(
+                qentry,
+                error=err,
+                preserve_pagination_progress=start_page > 1,
+            )
             qentry.update(fail_patch)
             sync_legacy_manifest_entries(
                 manifest_queries,
@@ -994,6 +1022,7 @@ def main() -> int:
         "errors": errors,
         "retrieval_mode": args.mode,
         "work_units": len(work_units),
+        "session_work_units_attempted": work_units_attempted,
         "session_http_calls": http_calls,
         "candidates": list(candidates.values()),
     }

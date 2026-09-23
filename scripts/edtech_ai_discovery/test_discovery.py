@@ -179,6 +179,43 @@ class ResumeManifestTests(unittest.TestCase):
         entry = {"status": "incomplete_pagination", "pages_fetched": 1, "meta_count": 368}
         self.assertTrue(qm.should_fetch_query(entry, resume=True))
 
+    def test_fetch_failure_clears_stale_attempt_metadata(self) -> None:
+        entry = {
+            "status": "complete",
+            "ingestion_verified": False,
+            "meta_count": 8,
+            "results_returned": 8,
+            "pages_fetched": 1,
+            "next_page": None,
+            "http_calls_this_run": 1,
+            "last_success_at": "2026-09-22T00:00:00Z",
+        }
+        patch = qm.manifest_patch_for_fetch_failure(
+            entry,
+            error="HTTP 429 track=teachers_and_ai source=IJER",
+        )
+        self.assertEqual(patch["status"], "failed")
+        self.assertFalse(patch["ingestion_verified"])
+        self.assertIsNone(patch["meta_count"])
+        self.assertIsNone(patch["results_returned"])
+        self.assertEqual(patch["last_success_meta_count"], 8)
+        self.assertEqual(patch["last_success_results_returned"], 8)
+
+    def test_fetch_failure_preserves_pagination_on_page_gt_one(self) -> None:
+        entry = {
+            "status": "incomplete_pagination",
+            "meta_count": 300,
+            "pages_fetched": 1,
+            "results_returned": 200,
+        }
+        patch = qm.manifest_patch_for_fetch_failure(
+            entry,
+            error="HTTP 503",
+            preserve_pagination_progress=True,
+        )
+        self.assertEqual(patch["status"], "failed")
+        self.assertNotIn("meta_count", patch)
+
     def test_infer_manifest_marks_failed_and_truncated(self) -> None:
         bundle = {
             "search": {
