@@ -8,10 +8,6 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 PRODUCTION_DISCOVERY_DATA = REPO_ROOT / "edtech-ai" / "discovery" / "data"
-PRODUCTION_BUNDLE_SHA256 = (
-    "c5186cdca78df81bf321abc932c251dafd1c5f7fe1ac9953c1d90c0c2d144183"
-)
-PRODUCTION_BUNDLE_COUNT = 147
 
 
 def bundle_path_for(output_dir: Path) -> Path:

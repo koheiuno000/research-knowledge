@@ -19,13 +19,16 @@ import persist  # noqa: E402
 import query_manifest as qm  # noqa: E402
 from persist import atomic_write_json  # noqa: E402
 from retrieval_plan import WorkUnit  # noqa: E402
-from test_data_isolation import assert_production_bundle_unchanged  # noqa: E402
+from test_data_isolation import (  # noqa: E402
+    assert_production_bundle_unchanged,
+    begin_production_isolation_watch,
+)
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
 
 def setUpModule() -> None:
-    assert_production_bundle_unchanged()
+    begin_production_isolation_watch()
 
 
 def tearDownModule() -> None:
