@@ -242,6 +242,9 @@ def load_manifest(path: Path) -> dict[str, Any] | None:
 
 
 def save_manifest(path: Path, manifest: dict[str, Any]) -> None:
+    from data_paths import refuse_production_discovery_write
+
+    refuse_production_discovery_write(path)
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 

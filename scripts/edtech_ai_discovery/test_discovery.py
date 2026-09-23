@@ -311,10 +311,12 @@ class RetrievalPlanTests(unittest.TestCase):
 
 class PersistTests(unittest.TestCase):
     def test_atomic_write_json(self) -> None:
-        path = REPO_ROOT / "edtech-ai" / "discovery" / "data" / "_test_atomic.json"
-        atomic_write_json(path, {"ok": True})
-        self.assertTrue(path.is_file())
-        path.unlink(missing_ok=True)
+        import tempfile
+
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "ok.json"
+            atomic_write_json(path, {"ok": True})
+            self.assertTrue(path.is_file())
 
 
 class MergeCandidateTests(unittest.TestCase):

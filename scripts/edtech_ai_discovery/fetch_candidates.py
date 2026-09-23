@@ -41,6 +41,7 @@ from work_dates import (  # noqa: E402
     publication_timeline,
     within_window,
 )
+from data_paths import refuse_production_discovery_write  # noqa: E402
 from persist import atomic_write_json  # noqa: E402
 from query_manifest import (  # noqa: E402
     empty_manifest,
@@ -66,9 +67,15 @@ CONFIG_SOURCES = REPO_ROOT / "edtech-ai" / "config" / "sources.yaml"
 CONFIG_TRACKS = REPO_ROOT / "edtech-ai" / "config" / "tracks.yaml"
 CONFIG_DISCOVERY = REPO_ROOT / "edtech-ai" / "config" / "discovery.yaml"
 OUTPUT_DIR = REPO_ROOT / "edtech-ai" / "discovery" / "data"
-MANIFEST_PATH = OUTPUT_DIR / "query_manifest.json"
-BUNDLE_PATH = OUTPUT_DIR / "candidates_openalex.json"
 USER_AGENT = "research-knowledge-edtech-discovery/0.2 (prototype; mailto:local)"
+
+
+def bundle_path() -> Path:
+    return OUTPUT_DIR / "candidates_openalex.json"
+
+
+def manifest_path() -> Path:
+    return OUTPUT_DIR / "query_manifest.json"
 
 
 def load_config(path: Path) -> dict:
@@ -377,6 +384,34 @@ def ingest_works_multi_track(
         by_source[slabel]["unique_candidate_ids"].add(rid)
 
 
+def persist_working_bundle(
+    *,
+    candidates: dict[str, dict],
+    retrieved_at: str,
+    pub_window,
+    prev_bundle: dict | None,
+) -> None:
+    """Durably save candidates before trusted-complete manifest checkpoints."""
+    search_block = (prev_bundle or {}).get("search")
+    if not search_block:
+        search_block = pub_window.to_bundle_dict(retrieved_at)
+    doc: dict = {
+        "schema_version": 1,
+        "generated_at": retrieved_at,
+        "provider": "openalex",
+        "search": search_block,
+        "candidate_count": len(candidates),
+        "candidates": list(candidates.values()),
+        "bundle_persisted_at": utc_now_iso(),
+        "retrieval_in_progress": True,
+    }
+    if prev_bundle:
+        for key in ("audit_pipeline", "resume_baseline"):
+            if prev_bundle.get(key) is not None:
+                doc[key] = prev_bundle[key]
+    atomic_write_json(bundle_path(), doc)
+
+
 def ingest_works(
     *,
     works: list[dict],
@@ -563,9 +598,10 @@ def main() -> int:
     resume_baseline: dict | None = None
     candidates: dict[str, dict] = {}
     if args.resume:
-        if not BUNDLE_PATH.is_file():
-            parser.error(f"--resume requires existing bundle at {BUNDLE_PATH}")
-        prev_bundle = json.loads(BUNDLE_PATH.read_text(encoding="utf-8"))
+        bp = bundle_path()
+        if not bp.is_file():
+            parser.error(f"--resume requires existing bundle at {bp}")
+        prev_bundle = json.loads(bp.read_text(encoding="utf-8"))
         resume_baseline = {
             "generated_at": prev_bundle.get("generated_at"),
             "candidate_count": prev_bundle.get("candidate_count"),
@@ -612,7 +648,7 @@ def main() -> int:
             by_source[label]["eligible_candidates"] = 0
 
     if args.resume:
-        manifest = load_manifest(MANIFEST_PATH)
+        manifest = load_manifest(manifest_path())
         if manifest is None and prev_bundle:
             raw_root = OUTPUT_DIR / "raw"
             raw_dirs = sorted(raw_root.iterdir()) if raw_root.is_dir() else []
@@ -638,6 +674,9 @@ def main() -> int:
     manifest_queries = manifest.setdefault("queries", {})
     source_by_label = {s["user_label"]: s for s in enabled}
     work_units = list(iter_work_units(tracks, enabled))
+    work_unit_keys = [
+        unified_query_key(u.source_label, u.search) for u in work_units
+    ]
 
     from_updated: date | None = None
     if args.mode == "incremental":
@@ -764,6 +803,7 @@ def main() -> int:
 
             if args.audit and raw_dir is not None:
                 raw_path = raw_dir / f"{unit.slug()}.json"
+                refuse_production_discovery_write(raw_path)
                 raw_path.write_text(
                     json.dumps(
                         {
@@ -796,7 +836,7 @@ def main() -> int:
                 patch=fail_patch,
             )
             manifest["updated_at"] = utc_now_iso()
-            save_manifest(MANIFEST_PATH, manifest)
+            save_manifest(manifest_path(), manifest)
             time.sleep(request_delay)
             continue
         except urllib.error.URLError as e:
@@ -812,7 +852,7 @@ def main() -> int:
                 patch=fail_patch,
             )
             manifest["updated_at"] = utc_now_iso()
-            save_manifest(MANIFEST_PATH, manifest)
+            save_manifest(manifest_path(), manifest)
             time.sleep(request_delay)
             continue
 
@@ -832,6 +872,12 @@ def main() -> int:
             by_source=by_source,
             stats=session_stats,
         )
+        persist_working_bundle(
+            candidates=candidates,
+            retrieved_at=retrieved_at,
+            pub_window=pub_window,
+            prev_bundle=prev_bundle,
+        )
         if qentry.get("status") == "complete":
             verified_patch = {
                 "ingestion_verified": True,
@@ -847,16 +893,18 @@ def main() -> int:
             )
         manifest["updated_at"] = utc_now_iso()
         manifest["session_http_calls"] = http_calls
-        save_manifest(MANIFEST_PATH, manifest)
+        save_manifest(manifest_path(), manifest)
         if checkpoint_bundle:
-            partial = {
-                "schema_version": 1,
-                "generated_at": retrieved_at,
-                "checkpoint": True,
-                "candidate_count": len(candidates),
-                "candidates": list(candidates.values()),
-            }
-            atomic_write_json(OUTPUT_DIR / "candidates_openalex.checkpoint.json", partial)
+            atomic_write_json(
+                OUTPUT_DIR / "candidates_openalex.checkpoint.json",
+                {
+                    "schema_version": 1,
+                    "generated_at": retrieved_at,
+                    "checkpoint": True,
+                    "candidate_count": len(candidates),
+                    "candidates": list(candidates.values()),
+                },
+            )
         time.sleep(request_delay)
 
     def finalize_by_source() -> dict[str, dict]:
@@ -902,7 +950,7 @@ def main() -> int:
         audit_pipeline = session_pipeline
 
     manifest["updated_at"] = retrieved_at
-    save_manifest(MANIFEST_PATH, manifest)
+    save_manifest(manifest_path(), manifest)
 
     query_status_counts = Counter(
         (manifest_queries.get(k, {}).get("status") or "not_run")
@@ -950,14 +998,11 @@ def main() -> int:
         "candidates": list(candidates.values()),
     }
 
-    work_unit_keys = [
-        unified_query_key(u.source_label, u.search) for u in work_units
-    ]
     complete_run = run_is_complete(manifest, work_unit_keys)
     if complete_run:
         manifest["last_complete_run_at"] = retrieved_at
     manifest["run_complete"] = complete_run
-    save_manifest(MANIFEST_PATH, manifest)
+    save_manifest(manifest_path(), manifest)
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     out_path = OUTPUT_DIR / "candidates_openalex.json"
@@ -970,11 +1015,13 @@ def main() -> int:
             if k != "candidates"
         }
         audit_doc["candidate_count"] = len(candidates)
+        refuse_production_discovery_write(stats_path)
         stats_path.write_text(
             json.dumps(audit_doc, indent=2, ensure_ascii=False) + "\n",
             encoding="utf-8",
         )
         processed_path = OUTPUT_DIR / "candidates_openalex_processed.json"
+        refuse_production_discovery_write(processed_path)
         processed_path.write_text(
             json.dumps(bundle, indent=2, ensure_ascii=False) + "\n",
             encoding="utf-8",
@@ -984,8 +1031,12 @@ def main() -> int:
         f"SUMMARY candidates={len(candidates)} http_calls={http_calls} "
         f"query_status={dict(status_counts)} complete_run={complete_run}"
     )
+    try:
+        out_disp = out_path.relative_to(REPO_ROOT)
+    except ValueError:
+        out_disp = out_path
     print(
-        f"Wrote {out_path.relative_to(REPO_ROOT)} "
+        f"Wrote {out_disp} "
         f"({len(candidates)} candidates, window {pub_window.start_date}..{pub_window.end_date}, "
         f"{len(errors)} failed queries, run_complete={complete_run})"
     )
