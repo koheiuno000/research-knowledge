@@ -13,7 +13,16 @@ Run the prototype fetcher:
 
 ```bash
 # Rolling 10-year window ending on search date (Sep 2026 example → 2016-09-23 .. 2026-09-23):
-python3 scripts/edtech_ai_discovery/fetch_candidates.py --search-date 2026-09-23 --max-per-query 3 --mailto you@example.com --write-html
+python3 scripts/edtech_ai_discovery/fetch_candidates.py --dry-run --search-date 2026-09-23
+
+# Resumable historical backfill (mailto via OPENALEX_MAILTO or git user.email):
+python3 scripts/edtech_ai_discovery/fetch_candidates.py --mode backfill --search-date 2026-09-23 \
+  --max-per-query 200 --paginate --audit --resume --request-delay 0.5
+
+# Audit only (no HTTP):
+python3 scripts/edtech_ai_discovery/generate_audit_report.py
 ```
+
+See `reports/retrieval_optimization.md` for pacing, checkpoints, and incremental mode.
 
 See [`../DESIGN.md`](../DESIGN.md) for architecture and integration plan.

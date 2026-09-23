@@ -15,5 +15,13 @@
     "exclude_citation_dates": true,
     "window_anchors_on": "initial_publication_date",
     "allow_foundational_exceptions": true
+  },
+  "retrieval": {
+    "work_unit_strategy": "source_unique_query",
+    "default_request_delay_seconds": 0.35,
+    "resume_request_delay_seconds": 0.5,
+    "checkpoint_manifest_after_each_work_unit": true,
+    "checkpoint_bundle_on_resume": true,
+    "incremental_overlap_days": 7
   }
 }
